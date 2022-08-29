@@ -21,14 +21,12 @@ import React, {useEffect} from "react";
 
 const ClubInfoForm = () => {
 
-    const {club, gas} = useSelector(selectCreateClub);
+    const {club} = useSelector(selectCreateClub);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
     }, []);
-
-    console.log(gas, 'gas');
 
     const formik = useFormik({
         validateOnChange: true,
