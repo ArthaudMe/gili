@@ -2,16 +2,23 @@ import {Button, Card, CardContent, Divider, Grid, Stack, Typography} from "@mui/
 import {useDispatch, useSelector} from "react-redux";
 import {CREATE_CLUB_ACTION_CREATORS, selectCreateClub} from "../../../redux/features/create-club/create-club-slice";
 import React, {useEffect} from "react";
+import {useWallets} from "@web3-onboard/react";
 
 const CreateClubSummary = () => {
 
     const {club, selectedNetwork, wallet, gas} = useSelector(selectCreateClub);
+
+    const [] = useWallets();
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
     }, []);
+
+    const handleSignTransaction = () => {
+
+    }
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
@@ -42,7 +49,7 @@ const CreateClubSummary = () => {
                             Fundraising goal
                         </Typography>
                         <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
-                            {`${club.goal} ${selectedNetwork?.label}`}
+                            {`${club.goal} ${club.currency}`}
                         </Typography>
                     </Stack>
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -86,6 +93,7 @@ const CreateClubSummary = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Button
+                            onClick={handleSignTransaction}
                             sx={{
                                 textTransform: 'capitalize',
                                 backgroundColor: '#6052FF',
