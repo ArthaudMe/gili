@@ -8,19 +8,18 @@ const getGas = createAsyncThunk('createClub/getGas', async (arg, {rejectWithValu
             url: 'https://api.blocknative.com/gasprices/blockprices'
         });
         return response.data;
-    } catch (e) {
+    }catch (e) {
         return rejectWithValue(e.response.data);
     }
 })
 
-const createClubSlice = createSlice({
-    name: 'createClub',
+const clubInvitationsSlice = createSlice({
+    name: 'clubInvitations',
     initialState: {
         loading: false,
         error: null,
         club: {
-            _id: 'geometryresearch',
-            name: 'Geometry Research',
+            name: '',
             goal: '',
             durationAmount: '',
             durationUnit: '',
@@ -40,11 +39,13 @@ const createClubSlice = createSlice({
             label: ''
         },
         gas: '',
-        step: 6
+        step: 1
     },
     reducers: {
         next: (state) => {
-            state.step += 1;
+            if (state.step < 5) {
+                state.step += 1;
+            }
         },
         previous: (state) => {
             if (state.step > 1) {
@@ -75,5 +76,5 @@ const createClubSlice = createSlice({
 });
 
 export const selectCreateClub = state => state.createClub;
-export const CREATE_CLUB_ACTION_CREATORS = {...createClubSlice.actions, getGas};
-export default createClubSlice.reducer;
+export const CREATE_CLUB_ACTION_CREATORS = {...clubInvitationsSlice.actions, getGas};
+export default clubInvitationsSlice.reducer;

@@ -14,6 +14,7 @@ import metamask from "./assets/images/metamask.png";
 import walletConnectModule from "@web3-onboard/walletconnect";
 import injectedModule from "@web3-onboard/injected-wallets";
 import gnosisModule from "@web3-onboard/gnosis";
+import {SnackbarProvider} from "notistack";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -69,7 +70,12 @@ root.render(
                     <CssBaseline enableColorScheme={true}/>
                     <SafeProvider>
                         <Web3OnboardProvider web3Onboard={web3Onboard}>
-                            <App/>
+                            <SnackbarProvider
+                                autoHideDuration={2000}
+                                anchorOrigin={{vertical: 'top', horizontal: 'left'}}
+                                maxSnack={5}>
+                                <App/>
+                            </SnackbarProvider>
                         </Web3OnboardProvider>
                     </SafeProvider>
                 </ThemeProvider>

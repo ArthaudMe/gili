@@ -38,6 +38,7 @@
     "ethers": "^5.5.2",
     "formik": "^2.2.9",
     "magic-sdk": "^9.0.0",
+    "notistack": "^2.0.5",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
