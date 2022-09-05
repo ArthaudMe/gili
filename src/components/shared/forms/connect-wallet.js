@@ -24,8 +24,6 @@ const ConnectWallet = () => {
         await connect();
     }
 
-    console.log(wallet)
-
     return (
         <Card elevation={0} sx={{backgroundColor: 'white'}}>
             {connecting && <LinearProgress variant="query" color="secondary"/> }

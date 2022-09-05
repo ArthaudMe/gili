@@ -21,61 +21,65 @@ const UserInvitationClubHub = () => {
 
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Your stake
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             2 GEO
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Your ownership
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             66%
                         </Typography>
                     </Grid>
                 </Grid>
-                <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
-
+                <Grid
+                    sx={{mb: 2}}
+                    container={true}
+                    justifyContent="space-between"
+                    alignItems="center"
+                    spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Club treasury
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             0.3 eth
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Club max. token supply
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             100 eth
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Club token minted
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             0.3%
                         </Typography>
                     </Grid>

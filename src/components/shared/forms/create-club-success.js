@@ -16,36 +16,36 @@ const CreateClubSuccess = () => {
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
 
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Link to club
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             app.gili.club/0x42fhdgd534
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Club wallet address
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             0x42fhdgd534
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Club creation transaction
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             etherscan.com/02349294
                         </Typography>
                     </Grid>

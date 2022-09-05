@@ -2,13 +2,17 @@ import {Button, Card, CardContent, Divider, Grid, Stack, Typography} from "@mui/
 import {useDispatch, useSelector} from "react-redux";
 import {CREATE_CLUB_ACTION_CREATORS, selectCreateClub} from "../../../redux/features/create-club/create-club-slice";
 import React, {useEffect} from "react";
-import {useWallets} from "@web3-onboard/react";
+import {useSafeAppsSDK} from "@gnosis.pm/safe-apps-react-sdk";
+import {ethers} from "ethers";
 
 const CreateClubSummary = () => {
 
-    const {club, selectedNetwork, wallet, gas} = useSelector(selectCreateClub);
+    const {club, selectedNetwork, selectedWallet, gas} = useSelector(selectCreateClub);
+    const {safe} = useSafeAppsSDK();
+    const ethersProvider = ethers.getDefaultProvider(selectedNetwork.chainID);
+    // const wallet = new ethers.Wallet('');
 
-    const [] = useWallets();
+    // console.log(selectedWallet, 'selectedWallet');
 
     const dispatch = useDispatch();
 
@@ -16,8 +20,26 @@ const CreateClubSummary = () => {
         dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
     }, []);
 
-    const handleSignTransaction = () => {
+    // const makeTransaction = async () => {
+    //     return {
+    //         to: selectedWallet.address,
+    //         value: ethers.utils.parseEther('0.001'),
+    //         maxFeePerGas: ethers.utils.parseUnits(gas.maxPrice, gas.unit),
+    //         nonce: await ethersProvider.getTransactionCount(wallet.address),
+    //         type: 0,
+    //         data: '0x',
+    //         chainId: selectedNetwork.chainID
+    //     }
+    // }
 
+
+    const handleSignTransaction = async () => {
+        try {
+            // const signedTransaction = await wallet.signTransaction(await makeTransaction())
+            // console.log(signedTransaction, 'signedTransaction');
+        }catch (e) {
+            console.log(e.message);
+        }
     }
 
     return (
@@ -49,7 +71,7 @@ const CreateClubSummary = () => {
                             Fundraising goal
                         </Typography>
                         <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
-                            {`${club.goal} ${club.currency}`}
+                            {`${club.goal} ${selectedNetwork.token}`}
                         </Typography>
                     </Stack>
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -57,7 +79,7 @@ const CreateClubSummary = () => {
                             Fundraising duration
                         </Typography>
                         <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
-                            {`${club.durationAmount} ${club.durationUnit}${club.durationAmount > 1 ? 's': ''}`}
+                            {`${club.durationAmount} ${club.durationUnit}${club.durationAmount > 1 ? 's' : ''}`}
                         </Typography>
                     </Stack>
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -73,7 +95,7 @@ const CreateClubSummary = () => {
                             SAFE address
                         </Typography>
                         <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
-                            {`${wallet?.address?.slice(0, 5)}...${wallet?.address?.slice(wallet?.address?.length - 5)}`}
+                            {`${selectedWallet?.address?.slice(0, 5)}...${selectedWallet?.address?.slice(selectedWallet?.address?.length - 5)}`}
                         </Typography>
                     </Stack>
                     <Stack direction="row" justifyContent="space-between" alignItems="center">

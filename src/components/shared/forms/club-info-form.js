@@ -9,7 +9,6 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    Stack,
     TextField,
     Typography
 } from "@mui/material";
@@ -146,45 +145,49 @@ const ClubInfoForm = () => {
                     <Box sx={{mb: 3}}>
                         <Grid container={true} spacing={2}>
                             <Grid item={true} xs={12} md={6}>
-                                <Stack direction="row" sx={{width: '100%'}} spacing={2}>
-                                    <TextField
-                                        sx={{flex: 1}}
-                                        type="number"
-                                        size="medium"
-                                        fullWidth={true}
-                                        required={true}
-                                        value={formik.values.durationAmount}
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        label="Duration"
-                                        error={Boolean(formik.touched.durationAmount && formik.errors.durationAmount)}
-                                        helperText={formik.touched.durationAmount && formik.errors.durationAmount}
-                                        placeholder="Fund raising duration"
-                                        name="durationAmount"
-                                    />
-                                    <FormControl sx={{flex: 1}} variant="outlined" fullWidth={true}>
-                                        <InputLabel htmlFor="unit">Unit</InputLabel>
-                                        <Select
-                                            id="unit"
-                                            required={true}
-                                            onChange={formik.handleChange}
-                                            name="durationUnit"
+                                <Grid container={true} spacing={2}>
+                                    <Grid item={true} xs={12} md={6}>
+                                        <TextField
+                                            sx={{flex: 1}}
+                                            type="number"
+                                            size="medium"
                                             fullWidth={true}
-                                            label="Unit"
-                                            value={formik.values.durationUnit}
-                                            variant="outlined" size="medium">
-                                            <MenuItem value="day">Day</MenuItem>
-                                            <MenuItem value="week">Week</MenuItem>
-                                            <MenuItem value="month">Month</MenuItem>
-                                            <MenuItem value="year">Year</MenuItem>
-                                        </Select>
-                                        {Boolean(formik.touched.durationUnit) && (
-                                            <FormHelperText>
-                                                {formik.errors.durationUnit}
-                                            </FormHelperText>
-                                        )}
-                                    </FormControl>
-                                </Stack>
+                                            required={true}
+                                            value={formik.values.durationAmount}
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            label="Duration"
+                                            error={Boolean(formik.touched.durationAmount && formik.errors.durationAmount)}
+                                            helperText={formik.touched.durationAmount && formik.errors.durationAmount}
+                                            placeholder="Fund raising duration"
+                                            name="durationAmount"
+                                        />
+                                    </Grid>
+                                    <Grid item={true} xs={12} md={6}>
+                                        <FormControl sx={{flex: 1}} variant="outlined" fullWidth={true}>
+                                            <InputLabel htmlFor="unit">Unit</InputLabel>
+                                            <Select
+                                                id="unit"
+                                                required={true}
+                                                onChange={formik.handleChange}
+                                                name="durationUnit"
+                                                fullWidth={true}
+                                                label="Unit"
+                                                value={formik.values.durationUnit}
+                                                variant="outlined" size="medium">
+                                                <MenuItem value="day">Day</MenuItem>
+                                                <MenuItem value="week">Week</MenuItem>
+                                                <MenuItem value="month">Month</MenuItem>
+                                                <MenuItem value="year">Year</MenuItem>
+                                            </Select>
+                                            {Boolean(formik.touched.durationUnit) && (
+                                                <FormHelperText>
+                                                    {formik.errors.durationUnit}
+                                                </FormHelperText>
+                                            )}
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                             <Grid item={true} xs={12} md={6}>
                                 <TextField

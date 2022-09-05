@@ -57,7 +57,7 @@ const CreateClubPage = () => {
                                 justifyContent: 'center'
                             }}>
                             <Box
-                                sx={{minWidth: '40%', maxWidth: '60%'}}>
+                                sx={{minWidth: '60%', maxWidth: {xs: '100%', lg: '70%'}}}>
                                 {renderForm(step)}
                                 {step > 1 && (
                                     <Box sx={{mt: 4}}>

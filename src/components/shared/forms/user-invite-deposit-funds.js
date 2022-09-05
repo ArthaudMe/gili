@@ -16,36 +16,36 @@ const UserInviteDepositFunds = () => {
             <CardContent sx={{paddingX: 5}}>
                 <Grid container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Club token
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             app.gili.club/0x42fhdgd534
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Club token minted
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             0x42fhdgd534
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Club max. token supply
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2" align="center">
+                        <Typography sx={{color: 'text.secondary'}} variant="body2">
                             etherscan.com/02349294
                         </Typography>
                     </Grid>

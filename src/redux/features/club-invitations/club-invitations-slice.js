@@ -75,6 +75,6 @@ const clubInvitationsSlice = createSlice({
     }
 });
 
-export const selectCreateClub = state => state.createClub;
+export const selectClubInvitation = state => state.clubInvitation;
 export const CREATE_CLUB_ACTION_CREATORS = {...clubInvitationsSlice.actions, getGas};
 export default clubInvitationsSlice.reducer;

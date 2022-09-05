@@ -1,34 +1,6 @@
 import {createTheme} from "@mui/material";
 import {red, grey} from "@mui/material/colors";
 
-const lightTheme = createTheme({
-    palette: {
-        primary: {main: '#285028'},
-        secondary: {main: '#73b56f'},
-        light: {
-            secondary: 'rgba(115,181,111,0.15)',
-            gray: grey[200]
-        },
-        action: {
-            active: '#73b56f'
-        },
-        background: {
-            paper: '#ffffff',
-            default: '#f9f9f9'
-        },
-        text: {
-            primary: "#12131c",
-            secondary: "#989ba9"
-        },
-    },
-    typography: {
-        fontFamily: 'EuclidCircularB, GTWalsheimPro, EuclidCircularA,Raleway'
-    },
-    shape: {
-        borderRadius: 32
-    }
-});
-
 const darkTheme = createTheme({
     palette: {
         primary: {main: '#285028'},
@@ -52,11 +24,11 @@ const darkTheme = createTheme({
         divider: grey[400]
     },
     typography: {
-        fontFamily: 'Sofia, Poppins,TTSquares, EuclidCircularB, GoogleSans, Sora'
+        fontFamily: 'GoogleSans, Sora, Sofia, TTSquares, EuclidCircularB'
     },
     shape: {
         borderRadius: 8
     }
 });
 
-export const THEMES = {darkTheme, lightTheme};
+export const THEMES = {darkTheme};
