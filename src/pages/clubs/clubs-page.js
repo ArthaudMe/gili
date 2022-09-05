@@ -130,13 +130,6 @@ const ClubsPage = () => {
                                                                     <VisibilityOutlined color="secondary"/>
                                                                 </Link>
                                                             </Tooltip>
-                                                            <Tooltip title={`Update ${club.name} settings`}>
-                                                                <Link
-                                                                    style={{textDecoration: 'none'}}
-                                                                    to={`/clubs/${club._id}/settings/modify`}>
-                                                                    <EditOutlined color="secondary"/>
-                                                                </Link>
-                                                            </Tooltip>
                                                             <Tooltip title={`View ${club.name} settings`}>
                                                                 <Link
                                                                     style={{textDecoration: 'none'}}
