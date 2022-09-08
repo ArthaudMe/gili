@@ -8,8 +8,8 @@ const AuthLayout = ({children}) => {
     const dispatch = useDispatch();
     const {drawerOpen} = useSelector(selectUI);
     return (
-        <Box sx={{minHeight: '100vh', backgroundImage: ''}}>
-            <Box sx={{display: 'flex'}}>
+        <Box sx={{minHeight: '100vh'}}>
+            <Box sx={{display: 'flex', position: 'relative'}}>
                 <Box
                     sx={{
                         display: {xs: 'none', lg: 'block'},
@@ -20,7 +20,14 @@ const AuthLayout = ({children}) => {
                 <Box
                     sx={{
                         flexBasis: {xs: '100%', lg: '84%'},
-                        maxHeight: '100vh', height: '100vh', overflowY: 'scroll'
+                        maxHeight: '100vh', height: '100vh', overflowY: 'scroll',
+                        backgroundImage: 'linear-gradient()',
+                        backgroundAttachment: 'fixed',
+                        backgroundColor: 'background.default',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        backgroundBlendMode: 'lighten',
+                        backgroundSize: 'cover'
                     }}>
                     {children}
                 </Box>
