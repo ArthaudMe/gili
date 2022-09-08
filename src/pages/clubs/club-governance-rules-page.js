@@ -81,7 +81,7 @@ const ClubGovernanceRulesPage = () => {
                                 </Box>
                             </Stack>
 
-                            <Grid container={true} justifyContent="space-between" spacing={2}>
+                            <Grid container={true} justifyContent="center">
                                 <Grid item={true} xs={12} md={6}>
                                     <Button
                                         disableElevation={true}
@@ -102,7 +102,7 @@ const ClubGovernanceRulesPage = () => {
                     <Grid container={true} spacing={2} justifyContent="space-between">
                         <Grid item={true} xs={12} md="auto">
                             <Button
-                                sx={{textTransform: 'capitalize'}}
+                                sx={{textTransform: 'capitalize', color: 'text.primary'}}
                                 onClick={() => navigate(-1)}
                                 variant="text"
                                 size="small" startIcon={<KeyboardArrowLeft />}>

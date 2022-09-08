@@ -10,7 +10,7 @@ const SafeForm = () => {
 
     const dispatch = useDispatch();
 
-    const [{connecting}, connect] = useConnectWallet();
+    const [{connecting, wallet}, connect] = useConnectWallet();
 
     const handleSafeConnect = async () => {
         await connect();
@@ -36,7 +36,9 @@ const SafeForm = () => {
                 </Typography>
 
                 <Button
+                    onClick={handleSafeConnect}
                     sx={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
                         textTransform: 'capitalize',
                         padding: 2,
                         mb: 2,
@@ -50,6 +52,7 @@ const SafeForm = () => {
                 </Button>
 
                 <Button
+                    onClick={handleSafeConnect}
                     sx={{
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
                         textTransform: 'capitalize',
@@ -63,18 +66,8 @@ const SafeForm = () => {
                     Create a new wallet
                 </Button>
 
-                <Grid container={true} spacing={2} sx={{mb: 2}}>
-                    <Grid item={true} xs={12} md={6}>
-                        <Button
-                            fullWidth={true}
-                            sx={{textTransform: 'capitalize'}}
-                            variant="contained"
-                            disableElevation={true}
-                            size="small">
-                            Connect wallet
-                        </Button>
-                    </Grid>
-                    <Grid item={true} xs={12} md={6}>
+                {
+                    wallet && (
                         <Button
                             onClick={handleNextClick}
                             sx={{
@@ -86,11 +79,10 @@ const SafeForm = () => {
                             size="small">
                             Next
                         </Button>
-                    </Grid>
-                </Grid>
+                    )
+                }
 
                 <Button
-                    onClick={handleSafeConnect}
                     sx={{
                         textTransform: 'capitalize',
                         textDecoration: 'underline',

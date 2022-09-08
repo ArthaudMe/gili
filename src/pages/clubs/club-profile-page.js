@@ -36,6 +36,7 @@ const ClubProfilePage = () => {
 
     const {clubID} = useParams();
     const [index, setIndex] = useState("assets");
+
     const handleTabChange = (event, value) => {
         setIndex(value);
     }
@@ -52,7 +53,7 @@ const ClubProfilePage = () => {
             case 'members':
                 return <MembersTab members={club.members}/>;
             case 'activity':
-                return <Activity transactions={transactions} />;
+                return <Activity transactions={transactions}/>;
             default:
                 return (
                     <Assets
@@ -146,7 +147,7 @@ const ClubProfilePage = () => {
                                 </Link>
                             </Grid>
                             <Grid item={true} xs={12} md="auto">
-                                <Link to={`/clubs/${club?._id}/deposit`} style={{textDecoration: 'none'}}>
+                                <Link to={`/clubs/${club?._id}/funds`} style={{textDecoration: 'none'}}>
                                     <Button
                                         size="small"
                                         variant="text"
@@ -178,9 +179,21 @@ const ClubProfilePage = () => {
 
                     <Box>
                         <Tabs value={index} onChange={handleTabChange} variant="scrollable">
-                            <Tab value="assets" label="Assets"/>
-                            <Tab value="members" label="Members"/>
-                            <Tab value="activity" label="Activity"/>
+                            <Tab
+                                sx={{
+                                    textTransform: 'capitalize',
+                                    color: index === 'assets' ? 'text.primary' : 'text.secondary'
+                                }} value="assets" label="Assets"/>
+                            <Tab
+                                sx={{
+                                    textTransform: 'capitalize',
+                                    color: index === 'assets' ? 'text.primary' : 'text.secondary'
+                                }} value="members" label="Members"/>
+                            <Tab
+                                sx={{
+                                    textTransform: 'capitalize',
+                                    color: index === 'assets' ? 'text.primary' : 'text.secondary'
+                                }} value="activity" label="Activity"/>
                         </Tabs>
                     </Box>
                     <Box>

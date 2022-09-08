@@ -1,7 +1,14 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Gili",
+  "name": "Gili",
+  "description": "Create a club to invest in crypto/NFTs + startups / real estate / art etc. with your friends",
+  "iconPath": "./logo512.png",
   "icons": [
+    {
+      "src": "logo192.png",
+      "sizes": "any",
+      "type": "image/png"
+    },
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",

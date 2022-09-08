@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
-import {CssBaseline, ThemeProvider} from "@mui/material";
+import {Box, CircularProgress, Container, CssBaseline, Stack, ThemeProvider, Typography} from "@mui/material";
 import {THEMES} from "./utils/themes";
 import {Provider} from "react-redux";
 import store from "./redux/app/store";
@@ -42,7 +42,7 @@ const web3Onboard = init({
         {
             label: 'Gnosis',
             id: '0x64',
-            rpcUrl: `http://localhost:3000`,
+            rpcUrl: `https://mainnet.infura.io/v3/${INFURA_ID}`,
             token: 'GNO'
         }
     ],
@@ -69,33 +69,33 @@ root.render(
                 <ThemeProvider theme={THEMES.darkTheme}>
                     <CssBaseline enableColorScheme={true}/>
                     <SafeProvider
-                        // loader={
-                        //     <Box
-                        //         sx={{
-                        //             minHeight: '100vh',
-                        //             justifyContent: 'center',
-                        //             alignItems: 'center',
-                        //             display: 'flex'
-                        //         }}>
-                        //         <Container>
-                        //             <Stack direction="column" spacing={3}>
-                        //                 <Typography align="center" variant="h5" sx={{color: 'text.primary'}}>
-                        //                     Loading Safe App
-                        //                 </Typography>
-                        //                 <Stack direction="row" justifyContent="center">
-                        //                     <CircularProgress
-                        //                         variant="indeterminate"
-                        //                         size={50}
-                        //                         color="secondary"
-                        //                     />
-                        //                 </Stack>
-                        //                 <Typography align="center" variant="body1" sx={{color: 'text.primary'}}>
-                        //                     Please wait...
-                        //                 </Typography>
-                        //             </Stack>
-                        //         </Container>
-                        //     </Box>
-                        // }
+                        loader={
+                            <Box
+                                sx={{
+                                    minHeight: '100vh',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    display: 'flex'
+                                }}>
+                                <Container>
+                                    <Stack direction="column" spacing={3}>
+                                        <Typography align="center" variant="h5" sx={{color: 'text.primary'}}>
+                                            Loading Safe App
+                                        </Typography>
+                                        <Stack direction="row" justifyContent="center">
+                                            <CircularProgress
+                                                variant="indeterminate"
+                                                size={50}
+                                                color="secondary"
+                                            />
+                                        </Stack>
+                                        <Typography align="center" variant="body1" sx={{color: 'text.primary'}}>
+                                            Please wait...
+                                        </Typography>
+                                    </Stack>
+                                </Container>
+                            </Box>
+                        }
                         opts={{debug: true}}>
                         <Web3OnboardProvider web3Onboard={web3Onboard}>
                             <SnackbarProvider
@@ -112,7 +112,4 @@ root.render(
     </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

@@ -19,14 +19,14 @@ const createClubSlice = createSlice({
         loading: false,
         error: null,
         club: {
-            _id: 'geometryresearch',
-            name: 'Geometry',
-            goal: '5000',
-            durationAmount: '50',
-            durationUnit: 'day',
-            token: 'GEO',
-            currency: 'Ethereum',
-            maximumMemberCount: 10
+            _id: '',
+            name: '',
+            goal: '',
+            durationAmount: '',
+            durationUnit: '',
+            token: '',
+            currency: '',
+            maximumMemberCount: ''
         },
         selectedWallet: {
             type: '',
@@ -40,7 +40,7 @@ const createClubSlice = createSlice({
             label: ''
         },
         gas: '',
-        step: 2
+        step: 1
     },
     reducers: {
         next: (state) => {

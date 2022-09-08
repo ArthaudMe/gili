@@ -109,7 +109,7 @@ const ClubSettingsPage = () => {
                     <Grid container={true} spacing={2} justifyContent="space-between">
                         <Grid item={true} xs={12} md="auto">
                             <Button
-                                sx={{textTransform: 'capitalize'}}
+                                sx={{textTransform: 'capitalize', color: 'text.primary'}}
                                 onClick={() => navigate(-1)}
                                 variant="text"
                                 size="small"
