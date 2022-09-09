@@ -1,5 +1,4 @@
 import {createTheme} from "@mui/material";
-import {grey} from "@mui/material/colors";
 
 const darkTheme = createTheme({
     palette: {
@@ -19,7 +18,7 @@ const darkTheme = createTheme({
         divider: '#fefefe'
     },
     typography: {
-        fontFamily: 'Sora, Sofia, TTSquares, EuclidCircularB'
+        fontFamily: 'GoogleSans, Sora'
     },
     shape: {
         borderRadius: 8
