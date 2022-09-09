@@ -6,10 +6,10 @@ const Transactions = ({transactions}) => {
 
     return (
         <TableRow hover={true}>
-            {transactions.map((transaction, index) => {
+            {transactions.map((transaction) => {
                 return (
                     <React.Fragment key={transaction._id}>
-                        <Transaction index={index} transaction={transaction}/>
+                        <Transaction transaction={transaction}/>
                     </React.Fragment>
                 )
             })}

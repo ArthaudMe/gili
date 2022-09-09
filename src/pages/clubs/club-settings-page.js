@@ -18,7 +18,7 @@ const ClubSettingsPage = () => {
         <AuthLayout>
             <Box sx={{py: 4, minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <Container maxWidth="md">
-                    <Card sx={{mb: 4}} elevation={1}>
+                    <Card sx={{mb: 4, backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} elevation={1}>
                         <CardContent>
                             <Typography variant="h6" sx={{color: 'text.primary', mb: 2}} align="center">
                                 {`${club?.name} club settings`}

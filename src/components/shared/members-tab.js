@@ -22,14 +22,13 @@ const MembersTab = ({members}) => {
     return (
         <Stack direction="column" spacing={4}>
             <Box>
-                <Typography variant="h6" sx={{color: 'text.primary', mb: 2}}>
+                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
                     Admins
                 </Typography>
-                <TableContainer component={Paper} elevation={1}>
+                <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>
                     <Table size="small">
                         <TableHead>
                             <TableRow>
-                                <TableCell>#</TableCell>
                                 <TableCell>Address</TableCell>
                                 <TableCell>Holding</TableCell>
                             </TableRow>
@@ -39,16 +38,29 @@ const MembersTab = ({members}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                {filterByRole(members, 'admin').length === 0 && (
+                    <Box sx={{
+                        padding: 4,
+                        backgroundColor: 'rgba(245, 245, 245, 0.2)',
+                        display: 'flex',
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 1
+                    }}>
+                        <Typography variant="body2" sx={{color: 'text.primary'}} align="center">
+                            No admins available
+                        </Typography>
+                    </Box>
+                )}
             </Box>
             <Box>
-                <Typography variant="h6" sx={{color: 'text.primary', mb: 2}}>
+                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
                     Members
                 </Typography>
-                <TableContainer component={Paper} elevation={1}>
+                <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>
                     <Table size="small">
                         <TableHead>
                             <TableRow>
-                                <TableCell>#</TableCell>
                                 <TableCell>Address</TableCell>
                                 <TableCell>Holding</TableCell>
                             </TableRow>
@@ -58,7 +70,20 @@ const MembersTab = ({members}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-
+                {filterByRole(members, 'user').length === 0 && (
+                    <Box sx={{
+                        padding: 4,
+                        backgroundColor: 'rgba(245, 245, 245, 0.2)',
+                        display: 'flex',
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 1
+                    }}>
+                        <Typography variant="body2" sx={{color: 'text.primary'}} align="center">
+                            No members available
+                        </Typography>
+                    </Box>
+                )}
             </Box>
         </Stack>
     )

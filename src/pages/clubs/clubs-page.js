@@ -68,7 +68,7 @@ const ClubsPage = () => {
                 <Container>
                     {clubs && clubs.length === 0 ? (
                         <Box>
-                            <TableContainer component={Paper} elevation={1}>
+                            <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>
                                 <Table size="medium">
                                     <TableHead>
                                         <TableRow>
@@ -100,7 +100,7 @@ const ClubsPage = () => {
                         </Box>
                     ) : (
                         <Box>
-                            <TableContainer component={Paper} elevation={1}>
+                            <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>
                                 <Table size="medium">
                                     <TableHead>
                                         <TableRow>

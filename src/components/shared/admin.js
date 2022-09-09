@@ -1,7 +1,7 @@
 import {TableCell} from "@mui/material";
 import React from "react";
 
-const Admin = ({admin, index}) => {
+const Admin = ({admin}) => {
 
     const calculateHolding = admin => {
         return 50
@@ -9,7 +9,6 @@ const Admin = ({admin, index}) => {
 
     return (
         <React.Fragment>
-            <TableCell>{index + 1}</TableCell>
             <TableCell>{admin.address}</TableCell>
             <TableCell>{calculateHolding(admin)}%</TableCell>
         </React.Fragment>

@@ -9,6 +9,7 @@ import {
     Card,
     CardContent,
     Container,
+    Divider,
     Grid,
     LinearProgress,
     Tab,
@@ -74,7 +75,8 @@ const ClubProfilePage = () => {
                     )}
                     <Box sx={{mb: 2}}>
                         <Typography align="center" variant="h6" sx={{mb: 4}}>{`${club?.name} portfolio`}</Typography>
-                        <Card elevation={1}>
+                        <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}
+                              elevation={1}>
                             <CardContent>
                                 <Grid sx={{mb: 2}} container={true} spacing={2} justifyContent="space-between">
                                     <Grid item={true} xs={12} md="auto">
@@ -177,7 +179,7 @@ const ClubProfilePage = () => {
                         </Grid>
                     </Box>
 
-                    <Box>
+                    <Box sx={{mb: 2}}>
                         <Tabs value={index} onChange={handleTabChange} variant="scrollable">
                             <Tab
                                 sx={{
@@ -196,6 +198,7 @@ const ClubProfilePage = () => {
                                 }} value="activity" label="Activity"/>
                         </Tabs>
                     </Box>
+                    <Divider variant="fullWidth" sx={{my: 2}}/>
                     <Box>
                         {club && transactions && renderTabContent(index)}
                     </Box>

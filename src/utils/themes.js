@@ -1,17 +1,12 @@
 import {createTheme} from "@mui/material";
-import {red, grey} from "@mui/material/colors";
+import {grey} from "@mui/material/colors";
 
 const darkTheme = createTheme({
     palette: {
-        primary: {main: '#285028'},
-        secondary: {main: '#73b56f'},
-        light: {
-            secondary: 'rgba(6,254,52,0.15)',
-            red: red[200],
-            gray: grey[400]
-        },
+        primary: {main: '#fefefe'},
+        secondary: {main: '#fefefe'},
         action: {
-            active: '#73b56f'
+            active: '#fefefe'
         },
         background: {
             paper: '#24252e',
@@ -21,10 +16,10 @@ const darkTheme = createTheme({
             primary: "#fefefe",
             secondary: "#777a8b"
         },
-        divider: grey[400]
+        divider: '#fefefe'
     },
     typography: {
-        fontFamily: 'GoogleSans, Sora, Sofia, TTSquares, EuclidCircularB'
+        fontFamily: 'Sora, Sofia, TTSquares, EuclidCircularB'
     },
     shape: {
         borderRadius: 8

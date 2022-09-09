@@ -22,14 +22,14 @@ const Activity = ({transactions}) => {
     return (
         <Stack direction="column" spacing={4}>
             <Box>
-                <Typography variant="h6" sx={{color: 'text.primary', mb: 2}}>
+                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
                     Pending transactions
                 </Typography>
-                <TableContainer component={Paper} elevation={1}>
+                <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}
+                                component={Paper} elevation={1}>
                     <Table size="small">
                         <TableHead>
                             <TableRow>
-                                <TableCell>#</TableCell>
                                 <TableCell>Address</TableCell>
                                 <TableCell>Amount</TableCell>
                             </TableRow>
@@ -41,16 +41,31 @@ const Activity = ({transactions}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                {filterTransactions(transactions, 'pending').length === 0 && (
+                    <Box sx={{
+                        padding: 4,
+                        backgroundColor: 'rgba(245, 245, 245, 0.2)',
+                        display: 'flex',
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 1
+                    }}>
+                        <Typography variant="body2" sx={{color: 'text.primary'}} align="center">
+                            No pending transactions available
+                        </Typography>
+                    </Box>
+                )}
             </Box>
             <Box>
-                <Typography variant="h6" sx={{color: 'text.primary', mb: 2}}>
+                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
                     Past transactions
                 </Typography>
-                <TableContainer component={Paper} elevation={1}>
+                <TableContainer
+                    sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}
+                    component={Paper} elevation={1}>
                     <Table size="small">
                         <TableHead>
                             <TableRow>
-                                <TableCell>#</TableCell>
                                 <TableCell>Address</TableCell>
                                 <TableCell>Amount</TableCell>
                             </TableRow>
@@ -62,6 +77,20 @@ const Activity = ({transactions}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                {filterTransactions(transactions, 'completed').length === 0 && (
+                    <Box sx={{
+                        padding: 4,
+                        backgroundColor: 'rgba(245, 245, 245, 0.2)',
+                        display: 'flex',
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 1
+                    }}>
+                        <Typography variant="body2" sx={{color: 'text.primary'}} align="center">
+                            No transactions available
+                        </Typography>
+                    </Box>
+                )}
             </Box>
         </Stack>
     )
