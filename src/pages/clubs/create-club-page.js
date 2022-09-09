@@ -46,33 +46,28 @@ const CreateClubPage = () => {
     }
     return (
         <AuthLayout>
-            <Box sx={{display: 'relative'}}>
-                <Box sx={{minHeight: '100vh', justifyContent: 'center', alignItems: 'center', py: 4}}>
-                    <Container sx={{minHeight: '100vh'}}>
-                        <Box
-                            sx={{
-                                minHeight: '100vh',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}>
-                            <Box
-                                sx={{minWidth: '60%', maxWidth: {xs: '100%', lg: '70%'}}}>
-                                {renderForm(step)}
-                                {step > 1 && (
-                                    <Box sx={{mt: 4}}>
-                                        <Button
-                                            onClick={() => dispatch(CREATE_CLUB_ACTION_CREATORS.previous())}
-                                            startIcon={<West/>}
-                                            variant="text" sx={{color: 'text.secondary', textTransform: 'capitalize'}}>
-                                            Back
-                                        </Button>
-                                    </Box>
-                                )}
+            <Box sx={{minHeight: '100vh', justifyContent: 'center', alignItems: 'center', py: 4}}>
+                <Container maxWidth="lg" sx={{minHeight: '100vh'}}>
+                    <Box
+                        sx={{
+                            minHeight: '100vh',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                        {renderForm(step)}
+                        {step > 1 && (
+                            <Box sx={{mt: 4}}>
+                                <Button
+                                    onClick={() => dispatch(CREATE_CLUB_ACTION_CREATORS.previous())}
+                                    startIcon={<West/>}
+                                    variant="text" sx={{color: 'text.secondary', textTransform: 'capitalize'}}>
+                                    Back
+                                </Button>
                             </Box>
-                        </Box>
-                    </Container>
-                </Box>
+                        )}
+                    </Box>
+                </Container>
             </Box>
         </AuthLayout>
     )
