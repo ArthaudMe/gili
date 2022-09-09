@@ -2,10 +2,10 @@ import {createTheme} from "@mui/material";
 
 const darkTheme = createTheme({
     palette: {
-        primary: {main: '#fefefe'},
-        secondary: {main: '#fefefe'},
+        primary: {main: '#5552FF'},
+        secondary: {main: '#5552FF'},
         action: {
-            active: '#fefefe'
+            active: '#5552FF'
         },
         background: {
             paper: '#24252e',

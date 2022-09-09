@@ -1,4 +1,4 @@
-import {Button, Card, CardContent, Grid, Typography} from "@mui/material";
+import {Button, Card, CardContent, Grid, Link, Typography} from "@mui/material";
 import React from "react";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
 import {useDispatch} from "react-redux";
@@ -14,16 +14,17 @@ const CreateClubSuccess = () => {
             </Typography>
             <CardContent sx={{paddingX: 5}}>
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
-
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
                             Link to club
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            app.gili.club/0x42fhdgd534
-                        </Typography>
+                        <Link href={`https://app.gili.club/0x42fhdgd534`} target="_blank">
+                            <Typography sx={{color: 'text.primary'}} variant="body1">
+                                app.gili.club/0x42fhdgd534
+                            </Typography>
+                        </Link>
                     </Grid>
                 </Grid>
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
@@ -33,7 +34,7 @@ const CreateClubSuccess = () => {
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2">
+                        <Typography sx={{color: 'text.primary'}} variant="body1">
                             0x42fhdgd534
                         </Typography>
                     </Grid>
@@ -45,9 +46,11 @@ const CreateClubSuccess = () => {
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            etherscan.com/02349294
-                        </Typography>
+                        <Link href={`https://etherscan.com/02349294`} target="_blank">
+                            <Typography sx={{color: 'text.primary'}} variant="body1">
+                                etherscan.com/02349294
+                            </Typography>
+                        </Link>
                     </Grid>
                 </Grid>
 
@@ -57,8 +60,7 @@ const CreateClubSuccess = () => {
                             onClick={() => dispatch(CREATE_CLUB_ACTION_CREATORS.next())}
                             sx={{
                                 textTransform: 'capitalize',
-                                backgroundColor: '#6052FF',
-                                '&:hover': {backgroundColor: '#6052FF'}
+                                py: 1.2
                             }}
                             fullWidth={true}
                             variant="contained"

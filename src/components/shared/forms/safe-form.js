@@ -3,7 +3,7 @@ import personalWalletIcon from "./../../../assets/images/img.png";
 import newWalletIcon from "./../../../assets/images/new-wallet.png";
 import {useDispatch} from "react-redux";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
-import React from "react";
+import React, {useEffect} from "react";
 import {useConnectWallet} from "@web3-onboard/react";
 
 const SafeForm = () => {
@@ -16,9 +16,11 @@ const SafeForm = () => {
         await connect();
     }
 
-    const handleNextClick = async () => {
-        dispatch(CREATE_CLUB_ACTION_CREATORS.next());
-    }
+    useEffect(() => {
+        if(wallet){
+            dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+        }
+    }, [wallet]);
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
@@ -57,7 +59,7 @@ const SafeForm = () => {
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
                         textTransform: 'capitalize',
                         padding: 2,
-                        mb: 2,
+                        mb: 4,
                         color: 'white'
                     }}
                     startIcon={<img src={newWalletIcon} alt="" style={{width: 30, height: 30}}/>}
@@ -66,27 +68,11 @@ const SafeForm = () => {
                     Create a new wallet
                 </Button>
 
-                {
-                    wallet && (
-                        <Button
-                            onClick={handleNextClick}
-                            sx={{
-                                textTransform: 'capitalize'
-                            }}
-                            variant="contained"
-                            fullWidth={true}
-                            disableElevation={true}
-                            size="small">
-                            Next
-                        </Button>
-                    )
-                }
-
                 <Button
                     sx={{
                         textTransform: 'capitalize',
                         textDecoration: 'underline',
-                        color: 'text.secondary'
+                        color: 'text.primary'
                     }}
                     variant="text"
                     fullWidth={true}

@@ -1,59 +1,38 @@
 import Layout from "../../components/layout/layout";
-import {Box, Button, Container, Grid, Stack, Typography} from "@mui/material";
+import {Box, Button, Container, Stack, Typography} from "@mui/material";
 import React from "react";
 import {Link} from "react-router-dom";
 
 const LandingPage = () => {
 
-    return (<Layout>
-            <Box>
-                <Container sx={{width: '100%', minHeight: '100vh'}}>
-                    <Grid
-                        container={true}
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{minHeight: '80vh'}}>
-                        <Grid item={true} xs={12} md={6}>
-                            <Typography
-                                variant="h3"
-                                sx={{color: 'text.primary', textTransform: 'uppercase', mb: 2}}>
-                                Investment clubs for all
-                            </Typography>
-                            <Typography
-                                variant="body2"
-                                sx={{color: 'text.secondary', mb: 2}}>
-                                Create a club to invest in crypto/NFTs + startups / real estate / art etc. with your
-                                friends
-                            </Typography>
-                            <Stack direction="row">
-                                <Link to={`/club/new`} style={{textDecoration: 'none'}}>
-                                    <Button variant="contained" size="large" sx={{textTransform: 'lowercase'}}>
-                                        create a club
-                                    </Button>
-                                </Link>
-                            </Stack>
-                        </Grid>
-                        <Grid item={true} xs={12} md={6}></Grid>
-                    </Grid>
-                </Container>
-                <Container>
-                    <Grid container={true} spacing={4}>
-                        <Grid item={true} xs={12} md={3}>
-
-                        </Grid>
-                        <Grid item={true} xs={12} md={3}>
-
-                        </Grid>
-                        <Grid item={true} xs={12} md={3}>
-
-                        </Grid>
-                        <Grid item={true} xs={12} md={3}>
-
-                        </Grid>
-                    </Grid>
+    return (
+        <Layout>
+            <Box
+                sx={{minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', paddingY: 4}}>
+                <Container maxWidth="sm">
+                    <Typography
+                        align="center"
+                        variant="h3"
+                        sx={{color: 'text.primary', mb: 2, fontWeight: 700}}>
+                        Invest with your friends
+                    </Typography>
+                    <Typography
+                        align="center"
+                        variant="body2"
+                        sx={{color: 'text.primary', mb: 4}}>
+                        Create a club in 2 minutes to invest in tokens, NFTs and more
+                    </Typography>
+                    <Stack direction="row" justifyContent="center">
+                        <Link to={`/club/new`} style={{textDecoration: 'none'}}>
+                            <Button variant="contained" size="large" sx={{textTransform: 'capitalize'}}>
+                                start your club
+                            </Button>
+                        </Link>
+                    </Stack>
                 </Container>
             </Box>
-        </Layout>)
+        </Layout>
+    )
 }
 
 export default LandingPage;

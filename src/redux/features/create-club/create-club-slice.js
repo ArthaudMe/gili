@@ -11,7 +11,8 @@ const getGas = createAsyncThunk('createClub/getGas', async (arg, {rejectWithValu
     } catch (e) {
         return rejectWithValue(e.response.data);
     }
-})
+});
+
 
 const createClubSlice = createSlice({
     name: 'createClub',
@@ -22,22 +23,13 @@ const createClubSlice = createSlice({
             _id: '',
             name: '',
             goal: '',
-            durationAmount: '',
-            durationUnit: '',
+            duration: {
+                amount: '',
+                unit: ''
+            },
             token: '',
             currency: '',
             maximumMemberCount: ''
-        },
-        selectedWallet: {
-            type: '',
-            address: null,
-        },
-        selectedNetwork: {
-            token: '',
-            id: '',
-            chainID: '',
-            icon: '',
-            label: ''
         },
         gas: '',
         step: 1
@@ -53,12 +45,6 @@ const createClubSlice = createSlice({
         },
         saveClub: (state, action) => {
             state.club = action.payload
-        },
-        saveWallet: (state, action) => {
-            state.selectedWallet = action.payload
-        },
-        saveNetwork: (state, action) => {
-            state.selectedNetwork = action.payload
         }
     },
     extraReducers: builder => {
@@ -75,5 +61,10 @@ const createClubSlice = createSlice({
 });
 
 export const selectCreateClub = state => state.createClub;
-export const CREATE_CLUB_ACTION_CREATORS = {...createClubSlice.actions, getGas};
+export const CREATE_CLUB_ACTION_CREATORS = {
+    next: createClubSlice.actions.next,
+    previous: createClubSlice.actions.previous,
+    saveClub: createClubSlice.actions.saveClub,
+    getGas
+};
 export default createClubSlice.reducer;

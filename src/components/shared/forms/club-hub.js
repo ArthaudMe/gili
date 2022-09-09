@@ -77,8 +77,7 @@ const ClubHub = () => {
                             onClick={handleFundsDeposit}
                             sx={{
                                 textTransform: 'capitalize',
-                                backgroundColor: '#6052FF',
-                                '&:hover': {backgroundColor: '#6052FF'}
+                                py: 1.2
                             }}
                             fullWidth={true}
                             variant="contained"

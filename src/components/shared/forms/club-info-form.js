@@ -37,8 +37,10 @@ const ClubInfoForm = () => {
         initialValues: {
             name: club.name,
             goal: club.goal,
-            durationAmount: club.durationAmount,
-            durationUnit: club.durationUnit,
+            duration: {
+                amount: club.duration.amount,
+                unit: club.duration.unit
+            },
             token: club.token,
             currency: club.currency,
             maximumMemberCount: club.maximumMemberCount
@@ -46,9 +48,11 @@ const ClubInfoForm = () => {
         validationSchema: yup.object().shape({
             name: yup.string().required('Club name required'),
             goal: yup.string().required('Club goal required'),
-            durationAmount: yup.number().min(1, 'Amount must be at least one').required('Duration amount is required'),
-            durationUnit: yup.string().oneOf(['day', 'week', 'month', 'year'], 'Unit must be one of day, week, month, year'),
-            token: yup.string().required('Club token required'),
+            duration: yup.object().shape({
+                amount: yup.number().min(1, 'Amount must be at least one').required('Duration amount is required'),
+                unit: yup.string().oneOf(['day', 'week', 'month', 'year'], 'Unit must be one of day, week, month, year')
+            }),
+           token: yup.string().required('Club token required'),
             currency: yup.string().required('Club currency required'),
             maximumMemberCount: yup.number().min(1, 'Amount must be at least one').required('Duration amount is required')
         })
@@ -130,7 +134,7 @@ const ClubInfoForm = () => {
                                         error={Boolean(formik.touched.currency && formik.errors.currency)}
                                         placeholder="Currency"
                                         name="currency">
-                                        <MenuItem value="Testnet">Testnet USDC</MenuItem>
+                                        <MenuItem value="Polygon">Polygon</MenuItem>
                                         <MenuItem value="Ethereum">Ethereum</MenuItem>
                                     </Select>
                                     {Boolean(formik.touched.currency && formik.errors.currency) && (
@@ -157,10 +161,10 @@ const ClubInfoForm = () => {
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
                                             label="Duration"
-                                            error={Boolean(formik.touched.durationAmount && formik.errors.durationAmount)}
-                                            helperText={formik.touched.durationAmount && formik.errors.durationAmount}
+                                            error={Boolean(formik.touched.duration?.amount && formik.errors.duration?.amount)}
+                                            helperText={formik.touched.duration?.amount && formik.errors.duration?.amount}
                                             placeholder="Fund raising duration"
-                                            name="durationAmount"
+                                            name="duration.amount"
                                         />
                                     </Grid>
                                     <Grid item={true} xs={12} md={6}>
@@ -170,19 +174,19 @@ const ClubInfoForm = () => {
                                                 id="unit"
                                                 required={true}
                                                 onChange={formik.handleChange}
-                                                name="durationUnit"
+                                                name="duration.unit"
                                                 fullWidth={true}
                                                 label="Unit"
-                                                value={formik.values.durationUnit}
+                                                value={formik.values.duration.unit}
                                                 variant="outlined" size="medium">
                                                 <MenuItem value="day">Day</MenuItem>
                                                 <MenuItem value="week">Week</MenuItem>
                                                 <MenuItem value="month">Month</MenuItem>
                                                 <MenuItem value="year">Year</MenuItem>
                                             </Select>
-                                            {Boolean(formik.touched.durationUnit) && (
+                                            {Boolean(formik.touched.duration?.unit) && (
                                                 <FormHelperText>
-                                                    {formik.errors.durationUnit}
+                                                    {formik.errors.duration?.unit}
                                                 </FormHelperText>
                                             )}
                                         </FormControl>
@@ -216,9 +220,8 @@ const ClubInfoForm = () => {
                                 onClick={formik.handleSubmit}
                                 variant="contained" size="large"
                                 sx={{
-                                    textTransform: 'lowercase',
-                                    backgroundColor: '#6052FF',
-                                    '&:hover': {backgroundColor: '#6052FF'}
+                                    textTransform: 'capitalize',
+                                    py: 1.2
                                 }}>
                                 Next
                             </Button>

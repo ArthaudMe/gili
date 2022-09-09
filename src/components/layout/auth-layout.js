@@ -3,25 +3,18 @@ import Sidebar from "../sidebar/sidebar";
 import {useDispatch, useSelector} from "react-redux";
 import {closeDrawer, openDrawer, selectUI} from "../../redux/features/ui/ui-slice";
 import React from "react";
+import background from "./../../assets/images/blur-background.png";
 
 const AuthLayout = ({children}) => {
     const dispatch = useDispatch();
     const {drawerOpen} = useSelector(selectUI);
     return (
         <Box sx={{minHeight: '100vh'}}>
-            <Box sx={{display: 'flex', position: 'relative'}}>
+            <Box sx={{position: 'relative'}}>
                 <Box
                     sx={{
-                        display: {xs: 'none', lg: 'block'},
-                        flexBasis: {xs: '0%', lg: '16%'}, backgroundColor: 'background.paper'
-                    }}>
-                    <Sidebar/>
-                </Box>
-                <Box
-                    sx={{
-                        flexBasis: {xs: '100%', lg: '84%'},
                         maxHeight: '100vh', height: '100vh', overflowY: 'scroll',
-                        backgroundImage: 'linear-gradient(93.37deg, #030B2B 2.41%, #270A64 94.3%)',
+                        backgroundImage: `url(${background})`,
                         backgroundAttachment: 'fixed',
                         backgroundColor: 'background.default',
                         backgroundRepeat: 'no-repeat',
@@ -31,7 +24,7 @@ const AuthLayout = ({children}) => {
                     }}>
                     {children}
                 </Box>
-                <Box sx={{display: {xs: 'none', lg: 'block'}, position: 'absolute', right: 0, bottom: 0, padding: 2}}>
+                <Box sx={{display: {xs: 'none', lg: 'block'}, position: 'absolute', right: 8, bottom: 8, padding: 4}}>
                     <Typography
                         variant="h2"
                         sx={{color: 'text.primary', mb: 1, textAlign: 'right'}}>gili</Typography>

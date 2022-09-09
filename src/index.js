@@ -20,7 +20,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const walletConnect = walletConnectModule();
 const injected = injectedModule();
-const gnosis = gnosisModule({whitelistedDomains: []});
+const gnosis = gnosisModule();
 
 const INFURA_ID = '7044fd6b60b94929a59819a4c6b1e82a';
 
