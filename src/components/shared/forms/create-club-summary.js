@@ -2,42 +2,20 @@ import {Button, Card, CardContent, Divider, Grid, Stack, Typography} from "@mui/
 import {useDispatch, useSelector} from "react-redux";
 import {CREATE_CLUB_ACTION_CREATORS, selectCreateClub} from "../../../redux/features/create-club/create-club-slice";
 import React, {useEffect} from "react";
-import {useSafeAppsSDK} from "@gnosis.pm/safe-apps-react-sdk";
-import {ethers} from "ethers";
 
 const CreateClubSummary = () => {
 
     const {club, selectedNetwork, selectedWallet, gas} = useSelector(selectCreateClub);
-    const {safe} = useSafeAppsSDK();
-    const ethersProvider = ethers.getDefaultProvider(selectedNetwork.chainID);
-    // const wallet = new ethers.Wallet('');
-
-    // console.log(selectedWallet, 'selectedWallet');
-
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
     }, []);
 
-    // const makeTransaction = async () => {
-    //     return {
-    //         to: selectedWallet.address,
-    //         value: ethers.utils.parseEther('0.001'),
-    //         maxFeePerGas: ethers.utils.parseUnits(gas.maxPrice, gas.unit),
-    //         nonce: await ethersProvider.getTransactionCount(wallet.address),
-    //         type: 0,
-    //         data: '0x',
-    //         chainId: selectedNetwork.chainID
-    //     }
-    // }
-
-
     const handleSignTransaction = async () => {
         try {
-            // const signedTransaction = await wallet.signTransaction(await makeTransaction())
-            // console.log(signedTransaction, 'signedTransaction');
-        }catch (e) {
+
+        } catch (e) {
             console.log(e.message);
         }
     }

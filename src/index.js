@@ -42,7 +42,7 @@ const web3Onboard = init({
         {
             label: 'Gnosis',
             id: '0x64',
-            rpcUrl: `https://mainnet.infura.io/v3/${INFURA_ID}`,
+            rpcUrl: `https://mainnet.infura.io/v3/7044fd6b60b94929a59819a4c6b1e82a`,
             token: 'GNO'
         }
     ],
@@ -69,33 +69,33 @@ root.render(
                 <ThemeProvider theme={THEMES.darkTheme}>
                     <CssBaseline enableColorScheme={true}/>
                     <SafeProvider
-                        // loader={
-                        //     <Box
-                        //         sx={{
-                        //             minHeight: '100vh',
-                        //             justifyContent: 'center',
-                        //             alignItems: 'center',
-                        //             display: 'flex'
-                        //         }}>
-                        //         <Container>
-                        //             <Stack direction="column" spacing={3}>
-                        //                 <Typography align="center" variant="h5" sx={{color: 'text.primary'}}>
-                        //                     Loading Safe App
-                        //                 </Typography>
-                        //                 <Stack direction="row" justifyContent="center">
-                        //                     <CircularProgress
-                        //                         variant="indeterminate"
-                        //                         size={50}
-                        //                         color="secondary"
-                        //                     />
-                        //                 </Stack>
-                        //                 <Typography align="center" variant="body1" sx={{color: 'text.primary'}}>
-                        //                     Please wait...
-                        //                 </Typography>
-                        //             </Stack>
-                        //         </Container>
-                        //     </Box>
-                        // }
+                        loader={
+                            <Box
+                                sx={{
+                                    minHeight: '100vh',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    display: 'flex'
+                                }}>
+                                <Container>
+                                    <Stack direction="column" spacing={3}>
+                                        <Typography align="center" variant="h5" sx={{color: 'text.primary'}}>
+                                            Loading Safe App
+                                        </Typography>
+                                        <Stack direction="row" justifyContent="center">
+                                            <CircularProgress
+                                                variant="indeterminate"
+                                                size={50}
+                                                color="secondary"
+                                            />
+                                        </Stack>
+                                        <Typography align="center" variant="body1" sx={{color: 'text.primary'}}>
+                                            Please wait...
+                                        </Typography>
+                                    </Stack>
+                                </Container>
+                            </Box>
+                        }
                         opts={{debug: true}}>
                         <Web3OnboardProvider web3Onboard={web3Onboard}>
                             <SnackbarProvider

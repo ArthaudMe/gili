@@ -18,7 +18,7 @@ const darkTheme = createTheme({
         divider: '#fefefe'
     },
     typography: {
-        fontFamily: 'GoogleSans, Sora'
+        fontFamily: 'Sora'
     },
     shape: {
         borderRadius: 8
