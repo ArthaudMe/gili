@@ -159,7 +159,6 @@ const ClubProfilePage = () => {
                                         variant="text"
                                         sx={{
                                             textDecoration: 'underline',
-                                            color: 'text.secondary',
                                             textTransform: 'capitalize'
                                         }}>
                                         Deposit more

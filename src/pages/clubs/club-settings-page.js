@@ -5,7 +5,7 @@ import {useSelector} from "react-redux";
 import {selectClubs} from "../../redux/features/clubs/clubs-slice";
 import {useParams} from "react-router";
 import {KeyboardArrowLeft} from "@mui/icons-material";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const ClubSettingsPage = () => {
 
@@ -88,17 +88,25 @@ const ClubSettingsPage = () => {
                                 </Grid>
                             </Grid>
 
+                            <Box sx={{my: 3}}>
+                                <Link to={`/clubs/${clubID}/invitations`} style={{textDecoration: 'none'}}>
+                                    <Typography variant="body2" sx={{color: 'text.primary', textDecoration: 'underline'}} align="center">
+                                        invite more members to join the club
+                                    </Typography>
+                                </Link>
+                            </Box>
+
                             <Grid container={true} justifyContent="center">
                                 <Grid item={true} xs={12} md="auto">
                                     <Button
                                         disableElevation={true}
                                         fullWidth={true}
                                         type="submit"
-                                        variant="contained" size="large"
+                                        variant="contained"
+                                        size="large"
                                         sx={{
-                                            textTransform: 'lowercase',
-                                            backgroundColor: '#6052FF',
-                                            '&:hover': {backgroundColor: '#6052FF'}
+                                            textTransform: 'capitalize',
+                                            py: 1.2
                                         }}>
                                         Submit Changes
                                     </Button>
