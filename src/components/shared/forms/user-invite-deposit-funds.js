@@ -1,72 +1,126 @@
-import {Button, Card, CardContent, Divider, Grid, Typography} from "@mui/material";
+import {Button, Card, CardContent, Divider, Grid, Stack, TextField, Typography} from "@mui/material";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
 import React from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
+import {useFormik} from "formik";
+import * as yup from "yup";
+import {UTILS} from "../../../utils/utils";
 
 const UserInviteDepositFunds = () => {
 
     const dispatch = useDispatch();
+    const {club} = useSelector(selectClubs);
 
+    const handleValidatePost = () => {
+        dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+    }
+
+    const formik = useFormik({
+        validateOnBlur: true,
+        validateOnChange: true,
+        validationSchema: yup.object().shape({
+            deposit: yup.number().required('Deposit required')
+        }),
+        onSubmit: (values, formikHelpers) => {
+            console.log(values, formikHelpers);
+        },
+        initialValues: {
+            deposit: ''
+        }
+    });
     return (
-        <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
-            <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2}} variant="h6" align="center">
-                Geometry club hub
+        <Card
+            sx={{
+                backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                backdropFilter: 'blur(5px)'
+            }}>
+            <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
+                Deposit funds to join club
             </Typography>
-            <Divider variant="fullWidth" sx={{my: 2}} light={true}/>
             <CardContent sx={{paddingX: 5}}>
-                <Grid container={true} justifyContent="space-between" alignItems="center" spacing={2}>
-                    <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            Club token
-                        </Typography>
+                <form onSubmit={formik.handleSubmit}>
+                    <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
+                        <Grid item={true} xs={12} md="auto">
+                            <Typography sx={{color: 'text.primary'}} variant="body1">
+                                Deposit funds
+                            </Typography>
+                        </Grid>
+                        <Grid item={true} xs={12} md="auto">
+                            <Stack direction="row" spacing={2} alignItems="center">
+                                <TextField
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    required={true}
+                                    variant="outlined"
+                                    placeholder="Amount"
+                                    label="Deposit"
+                                    value={formik.values.deposit}
+                                    color="secondary"
+                                    name="deposit"
+                                    size="small"
+                                    error={formik.touched.deposit && formik.errors.deposit}
+                                    helperText={formik.touched.deposit && formik.errors.deposit}
+                                />
+                                <Typography sx={{color: 'text.primary'}} variant="body1">
+                                    {UTILS.selectCurrency(club.currency)}
+                                </Typography>
+                            </Stack>
+                        </Grid>
                     </Grid>
-                    <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            app.gili.club/0x42fhdgd534
-                        </Typography>
+                    <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
+                        <Grid item={true} xs={12} md="auto">
+                            <Typography sx={{color: 'text.primary'}} variant="body1">
+                                Amount raised
+                            </Typography>
+                        </Grid>
+                        <Grid item={true} xs={12} md="auto">
+
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
+                                    {club?.treasury}
+                                </Typography>
+                                <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
+                                    {UTILS.selectCurrency(club?.currency)}
+                                </Typography>
+                            </Stack>
+                        </Grid>
                     </Grid>
-                </Grid>
-                <Grid container={true} justifyContent="space-between" alignItems="center" spacing={2}>
-                    <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            Club token minted
-                        </Typography>
+                    <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
+                        <Grid item={true} xs={12} md="auto">
+                            <Typography sx={{color: 'text.primary'}} variant="body1">
+                                Club max. token supply
+                            </Typography>
+                        </Grid>
+                        <Grid item={true} xs={12} md="auto">
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
+                                    {club?.goal}
+                                </Typography>
+                                <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
+                                    {UTILS.selectCurrency(club.currency)}
+                                </Typography>
+                            </Stack>
+                        </Grid>
                     </Grid>
-                    <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            0x42fhdgd534
-                        </Typography>
+                    <Grid container={true} justifyContent="center" alignItems="center" spacing={2}>
+                        <Grid item={true} xs={12} md={6}>
+                            <Button
+                                onClick={handleValidatePost}
+                                sx={{
+                                    textTransform: 'capitalize',
+                                    py: 1.2
+                                }}
+                                type="submit"
+                                fullWidth={true}
+                                variant="contained"
+                                disableElevation={true}
+                                size="small">
+                                Validate deposit
+                            </Button>
+                        </Grid>
                     </Grid>
-                </Grid>
-                <Grid container={true} justifyContent="space-between" alignItems="center" spacing={2}>
-                    <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            Club max. token supply
-                        </Typography>
-                    </Grid>
-                    <Grid item={true} xs={12} md="auto">
-                        <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            etherscan.com/02349294
-                        </Typography>
-                    </Grid>
-                </Grid>
-                <Grid container={true} justifyContent="space-between" alignItems="center" spacing={2}>
-                    <Grid item={true} xs={12} md="auto">
-                        <Button
-                            onClick={() => dispatch(CREATE_CLUB_ACTION_CREATORS.next())}
-                            sx={{
-                                textTransform: 'capitalize',
-                                backgroundColor: '#6052FF',
-                                '&:hover': {backgroundColor: '#6052FF'}
-                            }}
-                            fullWidth={true}
-                            variant="contained"
-                            disableElevation={true}
-                            size="small">
-                            Deposit funds to join the club
-                        </Button>
-                    </Grid>
-                </Grid>
+                </form>
             </CardContent>
         </Card>
     )

@@ -1,4 +1,4 @@
-import {Button, Card, CardContent, Divider, Grid, LinearProgress, Typography} from "@mui/material";
+import {Button, Card, CardContent, Divider, LinearProgress, Typography} from "@mui/material";
 import personalWalletIcon from "./../../../assets/images/img.png";
 import newWalletIcon from "./../../../assets/images/new-wallet.png";
 import {useDispatch} from "react-redux";

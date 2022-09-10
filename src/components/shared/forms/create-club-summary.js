@@ -5,6 +5,7 @@ import React, {useEffect} from "react";
 import {useSafeAppsSDK} from "@gnosis.pm/safe-apps-react-sdk";
 import {useWallets} from "@web3-onboard/react";
 import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
+import {UTILS} from "../../../utils/utils";
 
 const CreateClubSummary = () => {
 
@@ -12,6 +13,8 @@ const CreateClubSummary = () => {
     const wallets = useWallets();
     const dispatch = useDispatch();
     const {sdk, connected, safe} = useSafeAppsSDK();
+
+
 
     useEffect(() => {
         dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
@@ -31,17 +34,6 @@ const CreateClubSummary = () => {
             console.log(txHash);
         } catch (e) {
             console.log(e.message);
-        }
-    }
-
-    const selectCurrency = currency => {
-        switch (currency.toLocaleString()) {
-            case 'ethereum':
-                return 'eth';
-            case 'polygon':
-                return 'MATIC';
-            default:
-                return 'eth';
         }
     }
 
@@ -74,7 +66,7 @@ const CreateClubSummary = () => {
                             Fundraising goal
                         </Typography>
                         <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                            {`${club.goal} ${selectCurrency(club.currency)}`}
+                            {`${club.goal} ${UTILS.selectCurrency(club.currency)}`}
                         </Typography>
                     </Stack>
                     <Stack direction="row" justifyContent="space-between" alignItems="center">

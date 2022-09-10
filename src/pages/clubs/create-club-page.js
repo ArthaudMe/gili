@@ -55,7 +55,7 @@ const CreateClubPage = () => {
                             <Button
                                 onClick={() => dispatch(CREATE_CLUB_ACTION_CREATORS.previous())}
                                 startIcon={<West/>}
-                                variant="text" sx={{color: 'text.secondary', textTransform: 'capitalize'}}>
+                                variant="text" sx={{color: 'text.primary', textTransform: 'capitalize'}}>
                                 Back
                             </Button>
                         </Box>

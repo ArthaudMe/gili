@@ -1,11 +1,8 @@
 import {Button, Card, CardContent, Divider, Grid, Typography} from "@mui/material";
 import React from "react";
-import {useDispatch} from "react-redux";
 import {Link} from "react-router-dom";
 
 const UserInvitationClubHub = () => {
-
-    const dispatch = useDispatch();
 
     return (
         <Card

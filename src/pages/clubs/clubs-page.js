@@ -23,7 +23,7 @@ import {
     Typography
 } from "@mui/material";
 import moment from "moment";
-import {EditOutlined, SettingsOutlined, VisibilityOutlined} from "@mui/icons-material";
+import {SettingsOutlined, VisibilityOutlined} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 
 const ClubsPage = () => {
@@ -68,7 +68,9 @@ const ClubsPage = () => {
                 <Container>
                     {clubs && clubs.length === 0 ? (
                         <Box>
-                            <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>
+                            <TableContainer
+                                sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}
+                                component={Paper} elevation={1}>
                                 <Table size="medium">
                                     <TableHead>
                                         <TableRow>
@@ -100,11 +102,12 @@ const ClubsPage = () => {
                         </Box>
                     ) : (
                         <Box>
-                            <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>
+                            <TableContainer
+                                sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}
+                                component={Paper} elevation={1}>
                                 <Table size="medium">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell>#</TableCell>
                                             <TableCell>Name</TableCell>
                                             <TableCell>Fundraising Goal</TableCell>
                                             <TableCell>Safe Address</TableCell>
@@ -113,10 +116,9 @@ const ClubsPage = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {clubs && clubs.map((club, index) => {
+                                        {clubs && clubs.map((club) => {
                                             return (
                                                 <TableRow key={club._id}>
-                                                    <TableCell>{index + 1}</TableCell>
                                                     <TableCell>{club.name}</TableCell>
                                                     <TableCell>{club.goal}</TableCell>
                                                     <TableCell>{club.safeAddress}</TableCell>

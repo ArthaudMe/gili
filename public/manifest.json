@@ -2,11 +2,10 @@
   "short_name": "Gili",
   "name": "Gili",
   "description": "Create a club to invest in crypto/NFTs + startups / real estate / art etc. with your friends",
-  "iconPath": "logo.svg",
   "icons": [
     {
       "src": "logo.svg",
-      "sizes": "200x200",
+      "sizes": "any",
       "type": "image/svg+xml"
     },
     {

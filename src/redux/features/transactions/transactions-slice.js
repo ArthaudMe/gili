@@ -30,5 +30,5 @@ const transactionsSlice = createSlice({
 });
 
 export const selectTransactions = state => state.transactions;
-export const TRANSACTION_ACTION_CREATORS = {};
+export const TRANSACTION_ACTION_CREATORS = {getTransactions, getTransaction};
 export default transactionsSlice.reducer;

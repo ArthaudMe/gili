@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import {useParams} from "react-router";
 import {Link} from "react-router-dom";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Assets from "../../components/shared/assets";
 import MembersTab from "../../components/shared/members-tab";
 import Activity from "../../components/shared/activity";
@@ -64,6 +64,10 @@ const ClubProfilePage = () => {
                     />);
         }
     }
+
+    useEffect(() => {
+        console.log(clubID);
+    }, []);
 
     return (
         <AuthLayout>

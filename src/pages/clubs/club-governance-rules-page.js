@@ -1,10 +1,9 @@
 import AuthLayout from "../../components/layout/auth-layout";
-import React from "react";
+import React, {useEffect} from "react";
 import {Box, Button, Card, CardContent, Container, Grid, Stack, Typography} from "@mui/material";
 import {useSelector} from "react-redux";
 import {selectClubs} from "../../redux/features/clubs/clubs-slice";
 import {useParams} from "react-router";
-import moment from "moment/moment";
 import {KeyboardArrowLeft} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 
@@ -14,6 +13,9 @@ const ClubGovernanceRulesPage = () => {
     const {clubID} = useParams();
 
     const navigate = useNavigate();
+    useEffect(() => {
+        console.log(clubID);
+    }, []);
 
     return (
         <AuthLayout>

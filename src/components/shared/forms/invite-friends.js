@@ -2,12 +2,13 @@ import {Box, Button, Card, CardContent, Divider, Grid, Typography} from "@mui/ma
 import React, {useState} from "react";
 import {useSnackbar} from "notistack";
 import {useSelector} from "react-redux";
-import {selectCreateClub} from "../../../redux/features/create-club/create-club-slice";
+import {Link} from "react-router-dom";
+import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
 
 const InviteFriends = () => {
     const {enqueueSnackbar} = useSnackbar();
     const [selectedRole, setSelectedRole] = useState('member');
-    const {club: {name, _id}} = useSelector(selectCreateClub);
+    const {club: {name, _id}} = useSelector(selectClubs);
 
     const handleInvitationGenerate = () => {
         window
@@ -16,8 +17,8 @@ const InviteFriends = () => {
             .writeText(
                 `You have been invited by ${name} to join their club. Follow the link https://gili.vercel.app/invitations/clubs/${_id}/${selectedRole} to join the club`)
             .then(() => {
-            enqueueSnackbar('Invitation link copied', {variant: 'success'});
-        })
+                enqueueSnackbar('Invitation link copied', {variant: 'success'});
+            })
     }
 
     return (
@@ -66,6 +67,7 @@ const InviteFriends = () => {
                         cursor: 'pointer',
                         padding: 4,
                         borderRadius: 1,
+                        mb: 4,
                         backgroundColor: selectedRole === 'member' ? 'rgba(255, 255, 255, 0.1)' : false
                     }}>
                     <Typography sx={{color: 'text.primary', fontWeight: 'bold', mb: 1}} variant="body1">
@@ -81,8 +83,7 @@ const InviteFriends = () => {
                                 onClick={handleInvitationGenerate}
                                 sx={{
                                     textTransform: 'capitalize',
-                                    backgroundColor: '#6052FF',
-                                    '&:hover': {backgroundColor: '#6052FF'}
+                                    py: 1.2
                                 }}
                                 fullWidth={true}
                                 variant="contained"
@@ -93,6 +94,24 @@ const InviteFriends = () => {
                         </Grid>
                     </Grid>
                 </Box>
+                <Grid container={true} justifyContent="center" alignItems="center" spacing={2}>
+                    <Grid item={true} xs={12} md="auto">
+                        <Link to={`/clubs/${_id}`} style={{textDecoration: 'none'}}>
+                            <Button
+                                onClick={handleInvitationGenerate}
+                                sx={{
+                                    textTransform: 'capitalize',
+                                    py: 1.2
+                                }}
+                                fullWidth={true}
+                                variant="contained"
+                                disableElevation={true}
+                                size="small">
+                                Portfolio
+                            </Button>
+                        </Link>
+                    </Grid>
+                </Grid>
             </CardContent>
         </Card>
     )
