@@ -32,7 +32,7 @@ const createClubSlice = createSlice({
             maximumMemberCount: 10
         },
         gas: '',
-        step: 5
+        step: 1
     },
     reducers: {
         next: (state) => {
