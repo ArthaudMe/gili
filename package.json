@@ -57,7 +57,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "set HTTPS=true set SSL_CRT_FILE=.certificates/localhost.crt set SSL_KEY_FILE=.certificates/localhost.key && react-scripts start",
+    "start": "set HTTPS=true set SSL_CRT_FILE=.certificates/localhost.crt set SSL_KEY_FILE=.certificates/localhost.key && react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"

@@ -20,6 +20,7 @@ const SafeForm = () => {
         if(wallet){
             dispatch(CREATE_CLUB_ACTION_CREATORS.next());
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet]);
 
     return (

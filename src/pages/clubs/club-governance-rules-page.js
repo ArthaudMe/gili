@@ -15,6 +15,7 @@ const ClubGovernanceRulesPage = () => {
     const navigate = useNavigate();
     useEffect(() => {
         console.log(clubID);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

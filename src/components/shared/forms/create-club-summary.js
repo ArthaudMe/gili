@@ -18,6 +18,7 @@ const CreateClubSummary = () => {
 
     useEffect(() => {
         dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSignTransaction = async () => {

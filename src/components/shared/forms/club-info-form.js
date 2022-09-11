@@ -25,6 +25,7 @@ const ClubInfoForm = () => {
 
     useEffect(() => {
         dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const formik = useFormik({

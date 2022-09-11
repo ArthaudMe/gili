@@ -22,21 +22,5 @@ module.exports = {
             process: 'process/browser',
             Buffer: ['buffer', 'Buffer']
         })
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.(png|jpg|gif|)$/i,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8192,
-                        }
-                    },
-                ],
-                type: 'javascript/auto'
-            },
-        ]
-    },
+    ]
 }
