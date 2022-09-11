@@ -19,13 +19,9 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Tooltip,
     Typography
 } from "@mui/material";
-import moment from "moment";
-import {SettingsOutlined, VisibilityOutlined} from "@mui/icons-material";
-import {Link} from "react-router-dom";
-import {useConnectWallet, useWallets} from "@web3-onboard/react";
+import {useConnectWallet} from "@web3-onboard/react";
 
 const ClubsPage = () => {
     const {clubs, loading, error} = useSelector(selectClubs);
@@ -49,13 +45,13 @@ const ClubsPage = () => {
         const memberClubs = [];
         const adminClubs = [];
 
-        if(clubs){
+        if (clubs) {
             clubs.forEach(club => {
                 club.members.forEach(member => {
-                    if(member.address === wallet.accounts[0].address){
-                        if(member.role === 'member'){
+                    if (member.address === wallet.accounts[0].address) {
+                        if (member.role === 'member') {
                             memberClubs.push(club);
-                        }else if (member.role === 'admin'){
+                        } else if (member.role === 'admin') {
                             adminClubs.push(club);
                         }
                     }
@@ -69,7 +65,7 @@ const ClubsPage = () => {
     const getOwnership = members => {
         let ownership = 0;
         members.forEach(member => {
-            if(member.address === wallet.accounts[0].address){
+            if (member.address === wallet.accounts[0].address) {
                 ownership = member.ownership;
             }
         });
@@ -106,17 +102,37 @@ const ClubsPage = () => {
             </Box>
             <Divider variant="fullWidth" sx={{my: 3}} light={true}/>
             <Box sx={{py: 4}}>
-                <Container>
+                <Container maxWidth="md">
                     <Stack sx={{mb: 4}} direction="row" spacing={4} alignItems="center">
                         <Typography
+                            onClick={() => setTab('admin')}
                             variant="body1"
-                            sx={{color: 'text.primary', textDecoration: tab === 'admin' ? 'underline': 'none'}}>
+                            sx={{
+                                color: 'text.primary',
+                                cursor: 'pointer',
+                                textDecoration: tab === 'admin' ? 'underline' : 'none',
+                                '&:hover': {
+                                    color: 'text.secondary',
+                                    textDecoration:'underline',
+                                    transition: 'all 300ms 50ms ease-in-out'
+                                }
+                            }}>
                             Admin
                         </Typography>
 
                         <Typography
+                            onClick={() => setTab('member')}
                             variant="body1"
-                            sx={{color: 'text.primary', textDecoration: tab === 'member' ? 'underline': 'none'}}>
+                            sx={{
+                                color: 'text.primary',
+                                cursor: 'pointer',
+                                textDecoration: tab === 'member' ? 'underline' : 'none',
+                                '&:hover': {
+                                    color: 'text.secondary',
+                                    textDecoration:'underline',
+                                    transition: 'all 300ms 50ms ease-in-out'
+                                }
+                            }}>
                             Member
                         </Typography>
                     </Stack>
@@ -188,7 +204,7 @@ const ClubsPage = () => {
                                 </Box>
                             )}
                         </Box>
-                    ): (tab === 'member') ? (
+                    ) : (tab === 'member') ? (
                         <Box>
                             {memberClubs && memberClubs.length === 0 ? (
                                 <Box>
@@ -256,7 +272,7 @@ const ClubsPage = () => {
                                 </Box>
                             )}
                         </Box>
-                    ): null}
+                    ) : null}
                 </Container>
             </Box>
         </AuthLayout>
