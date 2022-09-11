@@ -20,16 +20,16 @@ const createClubSlice = createSlice({
         loading: false,
         error: null,
         club: {
-            _id: 'geometry',
-            name: 'Geometry',
+            _id: '',
+            name: '',
             goal: 5000,
             duration: {
-                amount: 1,
-                unit: 'month'
+                amount: '',
+                unit: ''
             },
-            token: 'GEO',
-            currency: 'Ethereum',
-            maximumMemberCount: 10
+            token: '',
+            currency: '',
+            maximumMemberCount: ''
         },
         gas: '',
         step: 1

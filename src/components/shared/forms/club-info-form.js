@@ -158,7 +158,7 @@ const ClubInfoForm = () => {
                                             size="medium"
                                             fullWidth={true}
                                             required={true}
-                                            value={formik.values.durationAmount}
+                                            value={formik.values.duration.amount}
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
                                             label="Duration"
@@ -200,6 +200,7 @@ const ClubInfoForm = () => {
                                     size="medium"
                                     fullWidth={true}
                                     required={true}
+                                    value={formik.values.maximumMemberCount}
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
                                     label="Maximum number of members"

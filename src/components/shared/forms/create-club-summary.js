@@ -24,14 +24,14 @@ const CreateClubSummary = () => {
     const handleSignTransaction = async () => {
         try {
             const txHash = await sdk.txs.send({
-                txs: [{to: safe.safeAddress, value: '0', data: wallets[0].address}],
-                params: {safeTxGas: gas}
+                txs: [{to: safe.safeAddress, value: '10000000', data: wallets[0].accounts[0].address}],
+                params: {safeTxGas: '100000'}
             });
+            dispatch(CREATE_CLUB_ACTION_CREATORS.next())
             // CREATE CLUB IN DATABASE
-            dispatch(CLUBS_ACTION_CREATORS.createClub({
-                data: {...club, wallet: {address: wallets[0].address}},
-                token: '',
-                handleNext: dispatch(CREATE_CLUB_ACTION_CREATORS.next())}));
+            // dispatch(CLUBS_ACTION_CREATORS.createClub({
+            //     data: {...club, wallet: {address: wallets[0].address}},
+            //     handleNext: dispatch(CREATE_CLUB_ACTION_CREATORS.next())}));
             console.log(txHash);
         } catch (e) {
             console.log(e.message);
