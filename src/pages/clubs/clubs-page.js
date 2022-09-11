@@ -22,6 +22,7 @@ import {
     Typography
 } from "@mui/material";
 import {useConnectWallet} from "@web3-onboard/react";
+import {Link} from "react-router-dom";
 
 const ClubsPage = () => {
     const {clubs, loading, error} = useSelector(selectClubs);
@@ -38,7 +39,7 @@ const ClubsPage = () => {
                 dispatch(CLUBS_ACTION_CREATORS.getClubs({address: wallet.accounts[0].address}));
             }
         }
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -60,6 +61,7 @@ const ClubsPage = () => {
         }
         setMemberClubs(memberClubs);
         setAdminClubs(adminClubs);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getOwnership = members => {
