@@ -87,14 +87,16 @@ const ClubsPage = () => {
                             </Typography>
                         </Grid>
                         <Grid item={true} xs={12} md="auto">
-                            <Button
-                                sx={{textTransform: 'capitalize', color: 'white'}}
-                                fullWidth={true}
-                                color="primary"
-                                variant="contained"
-                                disableElevation={true}>
-                                Create a Club
-                            </Button>
+                            <Link to={`/club/new`} style={{textDecoration: 'none'}}>
+                                <Button
+                                    sx={{textTransform: 'capitalize', color: 'white'}}
+                                    fullWidth={true}
+                                    color="primary"
+                                    variant="contained"
+                                    disableElevation={true}>
+                                    Create a Club
+                                </Button>
+                            </Link>
                         </Grid>
                     </Grid>
 
@@ -113,7 +115,7 @@ const ClubsPage = () => {
                                 textDecoration: tab === 'admin' ? 'underline' : 'none',
                                 '&:hover': {
                                     color: 'text.secondary',
-                                    textDecoration:'underline',
+                                    textDecoration: 'underline',
                                     transition: 'all 300ms 50ms ease-in-out'
                                 }
                             }}>
@@ -129,7 +131,7 @@ const ClubsPage = () => {
                                 textDecoration: tab === 'member' ? 'underline' : 'none',
                                 '&:hover': {
                                     color: 'text.secondary',
-                                    textDecoration:'underline',
+                                    textDecoration: 'underline',
                                     transition: 'all 300ms 50ms ease-in-out'
                                 }
                             }}>
