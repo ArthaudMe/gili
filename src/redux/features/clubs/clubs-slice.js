@@ -2,9 +2,9 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {CLUBS_API} from "../../../api/clubs";
 import {clubs} from "./clubs-data";
 
-const getClubs = createAsyncThunk('clubs/getClubs', async ({token, query}, thunkAPI) => {
+const getClubs = createAsyncThunk('clubs/getClubs', async ({address}, thunkAPI) => {
     try {
-        const response = await CLUBS_API.getClubs(token, query);
+        const response = await CLUBS_API.getClubs(address);
         return response.data;
     }catch (e) {
         return thunkAPI.rejectWithValue(e.response.error.message);
@@ -49,6 +49,8 @@ const clubsSlice = createSlice({
         clubs: [...clubs],
         club: clubs[0],
         loading: false,
+        memberClubs: [],
+        adminClubs: [],
         error: ''
     },
     reducers: {},
@@ -102,6 +104,8 @@ const clubsSlice = createSlice({
         })
     }
 });
+
+
 
 export const selectClubs = state => state.clubs;
 export const CLUBS_ACTION_CREATORS = {getClub, getClubs, updateClub, createClub};

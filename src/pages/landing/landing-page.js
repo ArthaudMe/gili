@@ -1,5 +1,5 @@
 import Layout from "../../components/layout/layout";
-import {Box, Button, Container, Stack, Typography} from "@mui/material";
+import {Box, Button, Container, Grid, Stack, Typography} from "@mui/material";
 import React from "react";
 import {Link} from "react-router-dom";
 
@@ -22,13 +22,22 @@ const LandingPage = () => {
                         sx={{color: 'text.primary', mb: 4}}>
                         Create a club in 2 minutes to invest in tokens, NFTs and more
                     </Typography>
-                    <Stack direction="row" justifyContent="center">
-                        <Link to={`/club/new`} style={{textDecoration: 'none'}}>
-                            <Button variant="contained" size="large" sx={{textTransform: 'capitalize'}}>
-                                start your club
-                            </Button>
-                        </Link>
-                    </Stack>
+                    <Grid container={true} spacing={2} justifyContent="center">
+                        <Grid item={true} xs={12} md="auto">
+                            <Link to={`/club/new`} style={{textDecoration: 'none'}}>
+                                <Button fullWidth={true} variant="contained" size="large" sx={{textTransform: 'capitalize'}}>
+                                    start your club
+                                </Button>
+                            </Link>
+                        </Grid>
+                        <Grid item={true} xs={12} md="auto">
+                            <Link to={`/clubs`} style={{textDecoration: 'none'}}>
+                                <Button fullWidth={true} variant="outlined" size="large" sx={{textTransform: 'capitalize'}}>
+                                    view your clubs
+                                </Button>
+                            </Link>
+                        </Grid>
+                    </Grid>
                 </Container>
             </Box>
         </Layout>
