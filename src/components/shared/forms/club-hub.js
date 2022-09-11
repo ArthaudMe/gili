@@ -19,7 +19,7 @@ const ClubHub = () => {
                 backgroundColor: 'rgba(255, 255, 255, 0.10)',
                 backdropFilter: 'blur(5px)'
             }}>
-            <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6">
+            <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 {club.name} club hub
             </Typography>
             <CardContent sx={{paddingX: 5}}>
