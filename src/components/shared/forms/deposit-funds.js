@@ -6,15 +6,18 @@ import {UTILS} from "../../../utils/utils";
 import {useFormik} from "formik";
 import * as yup from "yup";
 import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
+import {selectSafe} from "../../../redux/features/safe/safe-slice";
 
 const DepositFunds = () => {
 
     const dispatch = useDispatch();
     const {club} = useSelector(selectClubs);
+    const {safe} = useSelector(selectSafe);
 
     const handleValidatePost = () => {
         dispatch(CREATE_CLUB_ACTION_CREATORS.next());
     }
+
 
     const formik = useFormik({
         validateOnBlur: true,
@@ -22,8 +25,8 @@ const DepositFunds = () => {
         validationSchema: yup.object().shape({
             deposit: yup.number().required('Deposit required')
         }),
-        onSubmit: (values, formikHelpers) => {
-            console.log(values, formikHelpers);
+        onSubmit: async (values, formikHelpers) => {
+            // await safe.signTransaction();
         },
         initialValues: {
             deposit: ''
@@ -113,9 +116,10 @@ const DepositFunds = () => {
                             <Button
                                 onClick={handleValidatePost}
                                 sx={{
-                                    textTransform: 'capitalize',
+                                    textTransform: 'none',
                                     py: 1.2
                                 }}
+                                color="secondary"
                                 type="submit"
                                 fullWidth={true}
                                 variant="contained"

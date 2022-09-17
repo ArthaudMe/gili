@@ -1,31 +1,36 @@
-import {Button, Card, CardContent, Divider, LinearProgress, Typography} from "@mui/material";
+import {Button, Card, CardContent, Divider, Grid, LinearProgress, Typography} from "@mui/material";
 import personalWalletIcon from "./../../../assets/images/img.png";
 import newWalletIcon from "./../../../assets/images/new-wallet.png";
 import {useDispatch} from "react-redux";
-import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
 import React, {useEffect} from "react";
 import {useConnectWallet} from "@web3-onboard/react";
+import {useSafeFactory} from "../../../hooks/use-safe-factory";
+import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
 
 const SafeForm = () => {
 
-    const dispatch = useDispatch();
-
     const [{connecting, wallet}, connect] = useConnectWallet();
+    const dispatch = useDispatch();
+    const {initializeFactory, loading} = useSafeFactory();
 
     const handleSafeConnect = async () => {
         await connect();
     }
 
     useEffect(() => {
-        if(wallet){
-            dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+        const init = async () => {
+            if (wallet) {
+                await initializeFactory(wallet.accounts[0].address);
+                dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+            }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        init();
     }, [wallet]);
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
             {connecting && <LinearProgress variant="query" color="secondary"/>}
+            {loading && <LinearProgress variant="query" color="secondary"/>}
             <Typography sx={{color: 'white', pt: 2}} variant="h6" align="center">
                 Create a SAFE
             </Typography>
@@ -38,36 +43,43 @@ const SafeForm = () => {
                     You must connect or create your personal wallet to create the club SAFE
                 </Typography>
 
-                <Button
-                    onClick={handleSafeConnect}
-                    sx={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        textTransform: 'capitalize',
-                        padding: 2,
-                        mb: 2,
-                        color: 'white'
-                    }}
-                    variant="text"
-                    startIcon={<img src={personalWalletIcon} alt="" style={{width: 30, height: 30}}/>}
-                    fullWidth={true}
-                    size="small">
-                    Connect your personal wallet
-                </Button>
-
-                <Button
-                    onClick={handleSafeConnect}
-                    sx={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        textTransform: 'capitalize',
-                        padding: 2,
-                        mb: 4,
-                        color: 'white'
-                    }}
-                    startIcon={<img src={newWalletIcon} alt="" style={{width: 30, height: 30}}/>}
-                    fullWidth={true}
-                    size="small">
-                    Create a new wallet
-                </Button>
+                <Grid container={true} justifyContent="center">
+                    <Grid item={true} xs={12} md={8}>
+                        <Button
+                            onClick={handleSafeConnect}
+                            sx={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                textTransform: 'capitalize',
+                                padding: 2,
+                                mb: 2,
+                                color: 'white',
+                                justifyContent: 'flex-start'
+                            }}
+                            variant="text"
+                            startIcon={<img src={personalWalletIcon} alt="" style={{width: 30, height: 30}}/>}
+                            fullWidth={true}
+                            size="small">
+                            Connect your personal wallet
+                        </Button>
+                    </Grid>
+                    <Grid item={true} xs={12} md={8}>
+                        <Button
+                            onClick={handleSafeConnect}
+                            sx={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                textTransform: 'capitalize',
+                                padding: 2,
+                                mb: 4,
+                                color: 'white',
+                                justifyContent: 'flex-start'
+                            }}
+                            startIcon={<img src={newWalletIcon} alt="" style={{width: 30, height: 30}}/>}
+                            fullWidth={true}
+                            size="small">
+                            Create a new wallet
+                        </Button>
+                    </Grid>
+                </Grid>
 
                 <Button
                     sx={{

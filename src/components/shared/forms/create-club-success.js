@@ -62,6 +62,7 @@ const CreateClubSuccess = () => {
                                 textTransform: 'capitalize',
                                 py: 1.2
                             }}
+                            color="secondary"
                             fullWidth={true}
                             variant="contained"
                             disableElevation={true}

@@ -94,11 +94,10 @@ const ClubHub = () => {
                         <Button
                             onClick={handleFundsDeposit}
                             sx={{
-                                textTransform: 'capitalize',
-                                py: 1.2,
-                                color: 'text.primary'
+                                textTransform: 'none',
+                                py: 1.2
                             }}
-                            color="primary"
+                            color="secondary"
                             fullWidth={true}
                             variant="contained"
                             disableElevation={true}

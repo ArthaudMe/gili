@@ -25,15 +25,13 @@ const LandingPage = () => {
                     <Grid container={true} spacing={2} justifyContent="center">
                         <Grid item={true} xs={12} md="auto">
                             <Link to={`/club/new`} style={{textDecoration: 'none'}}>
-                                <Button fullWidth={true} variant="contained" size="large" sx={{textTransform: 'capitalize'}}>
+                                <Button
+                                    fullWidth={true}
+                                    variant="contained"
+                                    size="large"
+                                    color="secondary"
+                                    sx={{textTransform: 'capitalize'}}>
                                     start your club
-                                </Button>
-                            </Link>
-                        </Grid>
-                        <Grid item={true} xs={12} md="auto">
-                            <Link to={`/clubs`} style={{textDecoration: 'none'}}>
-                                <Button fullWidth={true} variant="outlined" size="large" sx={{textTransform: 'capitalize'}}>
-                                    view your clubs
                                 </Button>
                             </Link>
                         </Grid>

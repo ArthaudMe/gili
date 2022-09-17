@@ -13,8 +13,6 @@ const ClubInvitationPage = () => {
     const {step} = useSelector(selectCreateClub);
     const {club, role} = useParams();
 
-    console.log(club, role);
-
     const dispatch = useDispatch();
 
     const renderForm = step => {

@@ -2,23 +2,23 @@ import {createTheme} from "@mui/material";
 
 const darkTheme = createTheme({
     palette: {
-        primary: {main: '#5552FF'},
-        secondary: {main: '#5552FF'},
+        primary: {main: '#ffffff'},
+        secondary: {main: '#6052FF'},
         action: {
-            active: '#5552FF'
+            active: '#6052FF'
         },
         background: {
             paper: '#24252e',
             default: '#141416'
         },
         text: {
-            primary: "#fefefe",
-            secondary: "#777a8b"
+            primary: "#ffffff",
+            secondary: "#ffffff"
         },
-        divider: '#fefefe'
+        divider: '#ffffff'
     },
     typography: {
-        fontFamily: 'Sora'
+        fontFamily: 'Inter'
     },
     shape: {
         borderRadius: 8

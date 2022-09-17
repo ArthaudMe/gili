@@ -73,7 +73,6 @@ const ClubInfoForm = () => {
                                     type="text"
                                     size="medium"
                                     fullWidth={true}
-                                    required={true}
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
                                     label="Club name"
@@ -89,7 +88,6 @@ const ClubInfoForm = () => {
                                     type="text"
                                     size="medium"
                                     fullWidth={true}
-                                    required={true}
                                     value={formik.values.token}
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
@@ -109,10 +107,9 @@ const ClubInfoForm = () => {
                                     type="number"
                                     size="medium"
                                     fullWidth={true}
-                                    required={true}
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
-                                    label="Club goal"
+                                    label="Fundraising goal"
                                     value={formik.values.goal}
                                     error={Boolean(formik.touched.goal && formik.errors.goal)}
                                     helperText={formik.touched.goal && formik.errors.goal}
@@ -122,20 +119,19 @@ const ClubInfoForm = () => {
                             </Grid>
                             <Grid item={true} xs={12} md={6}>
                                 <FormControl sx={{flex: 1}} variant="outlined" fullWidth={true}>
-                                    <InputLabel htmlFor="currency">Currency</InputLabel>
+                                    <InputLabel htmlFor="currency">Fundraising Currency</InputLabel>
                                     <Select
                                         type="text"
                                         size="medium"
                                         fullWidth={true}
-                                        required={true}
                                         value={formik.values.currency}
                                         onBlur={formik.handleBlur}
                                         onChange={formik.handleChange}
-                                        label="Currency"
+                                        label="Fundraising Currency"
                                         error={Boolean(formik.touched.currency && formik.errors.currency)}
-                                        placeholder="Currency"
+                                        placeholder="Fundraising Currency"
                                         name="currency">
-                                        <MenuItem value="Polygon">Polygon</MenuItem>
+                                        <MenuItem value="Matic">Matic</MenuItem>
                                         <MenuItem value="Ethereum">Ethereum</MenuItem>
                                     </Select>
                                     {Boolean(formik.touched.currency && formik.errors.currency) && (
@@ -157,11 +153,10 @@ const ClubInfoForm = () => {
                                             type="number"
                                             size="medium"
                                             fullWidth={true}
-                                            required={true}
                                             value={formik.values.duration.amount}
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
-                                            label="Duration"
+                                            label="Fundraising Duration"
                                             error={Boolean(formik.touched.duration?.amount && formik.errors.duration?.amount)}
                                             helperText={formik.touched.duration?.amount && formik.errors.duration?.amount}
                                             placeholder="Fund raising duration"
@@ -173,7 +168,6 @@ const ClubInfoForm = () => {
                                             <InputLabel htmlFor="unit">Unit</InputLabel>
                                             <Select
                                                 id="unit"
-                                                required={true}
                                                 onChange={formik.handleChange}
                                                 name="duration.unit"
                                                 fullWidth={true}
@@ -199,7 +193,6 @@ const ClubInfoForm = () => {
                                     type="number"
                                     size="medium"
                                     fullWidth={true}
-                                    required={true}
                                     value={formik.values.maximumMemberCount}
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
@@ -221,6 +214,7 @@ const ClubInfoForm = () => {
                                 type="submit"
                                 onClick={formik.handleSubmit}
                                 variant="contained" size="large"
+                                color="secondary"
                                 sx={{
                                     textTransform: 'capitalize',
                                     py: 1.2

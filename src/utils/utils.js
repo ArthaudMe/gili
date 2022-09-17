@@ -2,7 +2,7 @@ const selectCurrency = currency => {
     switch (currency.toLowerCase()) {
         case 'ethereum':
             return 'eth';
-        case 'polygon':
+        case 'matic':
             return 'MATIC';
         default:
             return 'eth';

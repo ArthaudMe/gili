@@ -1,49 +1,34 @@
-import {Button, Card, CardContent, Divider, Grid, Stack, Typography} from "@mui/material";
+import {Button, Card, CardContent, Grid, LinearProgress, Stack, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {CREATE_CLUB_ACTION_CREATORS, selectCreateClub} from "../../../redux/features/create-club/create-club-slice";
-import React, {useEffect} from "react";
-import {useSafeAppsSDK} from "@gnosis.pm/safe-apps-react-sdk";
-import {useWallets} from "@web3-onboard/react";
-import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
+import React from "react";
 import {UTILS} from "../../../utils/utils";
+import {useSafeFactory} from "../../../hooks/use-safe-factory";
 
 const CreateClubSummary = () => {
 
     const {club, gas} = useSelector(selectCreateClub);
-    const wallets = useWallets();
+
     const dispatch = useDispatch();
-    const {sdk, connected, safe} = useSafeAppsSDK();
 
-
-
-    useEffect(() => {
-        dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const {safeAddress, deploySafe, connected, loading} = useSafeFactory();
 
     const handleSignTransaction = async () => {
         try {
-            const txHash = await sdk.txs.send({
-                txs: [{to: safe.safeAddress, value: '10000000', data: wallets[0].accounts[0].address}],
-                params: {safeTxGas: '100000'}
-            });
-            dispatch(CREATE_CLUB_ACTION_CREATORS.next())
-            // CREATE CLUB IN DATABASE
-            // dispatch(CLUBS_ACTION_CREATORS.createClub({
-            //     data: {...club, wallet: {address: wallets[0].address}},
-            //     handleNext: dispatch(CREATE_CLUB_ACTION_CREATORS.next())}));
-            console.log(txHash);
+            const safe = await deploySafe();
+            console.log(safe, 'safe');
+            // dispatch(CREATE_CLUB_ACTION_CREATORS.next());
         } catch (e) {
-            console.log(e.message);
+            console.log(e.message, 'error');
         }
     }
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
+            {loading && <LinearProgress variant="query" color="secondary"/>}
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2}} variant="h6" align="center">
                 Finalise the creation of your club
             </Typography>
-            <Divider variant="fullWidth" sx={{my: 2}} light={true}/>
             <CardContent sx={{paddingX: 5}}>
                 <Stack direction="column" spacing={3} sx={{mb: 2}}>
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -91,7 +76,7 @@ const CreateClubSummary = () => {
                             SAFE address
                         </Typography>
                         <Typography sx={{color: 'text.primary'}} variant="body2" align="center">
-                            {`${safe.safeAddress.slice(0, 5)}...${safe.safeAddress.slice(safe.safeAddress.length - 5)}`}
+                            {`${safeAddress?.slice(0, 5)}...${safeAddress?.slice(safeAddress?.length - 5)}`}
                         </Typography>
                     </Stack>
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -110,20 +95,21 @@ const CreateClubSummary = () => {
                         </Typography>
                     </Grid>
                     {connected && (
-                        <Grid item={true} xs={12} md="auto">
-                            <Button
-                                onClick={handleSignTransaction}
-                                sx={{
-                                    textTransform: 'capitalize',
-                                    py: 1.2
-                                }}
-                                fullWidth={true}
-                                variant="contained"
-                                disableElevation={true}
-                                size="small">
-                                Sign the transaction
-                            </Button>
-                        </Grid>
+                    <Grid item={true} xs={12} md="auto">
+                        <Button
+                            onClick={handleSignTransaction}
+                            sx={{
+                                textTransform: 'capitalize',
+                                py: 1.2
+                            }}
+                            fullWidth={true}
+                            variant="contained"
+                            color="secondary"
+                            disableElevation={true}
+                            size="small">
+                            Sign the transaction
+                        </Button>
+                    </Grid>
                     )}
                 </Grid>
             </CardContent>
