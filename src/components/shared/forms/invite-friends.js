@@ -1,32 +1,45 @@
-import {Box, Button, Card, CardContent, Divider, Grid, Typography} from "@mui/material";
-import React, {useState} from "react";
+import {Box, Button, Card, CardContent, Grid, LinearProgress, Stack, Typography} from "@mui/material";
+import React, {useCallback, useState} from "react";
 import {useSnackbar} from "notistack";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
+import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../../redux/features/invitations/invitations-slice";
+import {useConnectWallet} from "@web3-onboard/react";
+import {ContentCopy} from "@mui/icons-material";
 
 const InviteFriends = () => {
     const {enqueueSnackbar} = useSnackbar();
     const [selectedRole, setSelectedRole] = useState('member');
     const {club: {name, _id}} = useSelector(selectClubs);
+    const [{wallet}] = useConnectWallet();
+    const {loading, invitation} = useSelector(selectInvitation);
+    const dispatch = useDispatch();
 
     const handleInvitationGenerate = () => {
-        window
-            .navigator
-            .clipboard
-            .writeText(
-                `You have been invited by ${name} to join their club. Follow the link https://gili.vercel.app/invitations/clubs/${_id}/${selectedRole} to join the club`)
+        dispatch(INVITATIONS_ACTION_CREATORS.createInvitation({
+            data: {
+                role: selectedRole,
+                club: _id,
+                inviter: wallet.accounts[0].address
+            }
+        }));
+    }
+
+    const handleInvitationCopy = useCallback(async () => {
+        window.navigator.clipboard.writeText(
+                `You have been invited by ${name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation?._id} to join the club`)
             .then(() => {
                 enqueueSnackbar('Invitation link copied', {variant: 'success'});
-            })
-    }
+            });
+    }, []);
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
-            <Typography sx={{color: 'white', pt: 2}} variant="h6" align="center">
+            {loading && <LinearProgress variant="query" color="secondary"/>}
+            <Typography sx={{color: 'white', py: 2}} variant="h6" align="center">
                 Invite your friends to join your club
             </Typography>
-            <Divider variant="fullWidth" sx={{my: 2}} light={true}/>
             <CardContent sx={{paddingX: 3}}>
                 <Box
                     onClick={() => setSelectedRole('admin')}
@@ -61,6 +74,7 @@ const InviteFriends = () => {
                         </Grid>
                     </Grid>
                 </Box>
+
                 <Box
                     onClick={() => setSelectedRole('member')}
                     sx={{
@@ -76,6 +90,16 @@ const InviteFriends = () => {
                     <Typography sx={{color: 'text.secondary', mb: 2}} variant="body2">
                         Members are investors in your club - they don’t play an active role managing the club.
                     </Typography>
+
+                    {invitation && (
+                        <Button
+                            sx={{mb: 2}}
+                            onClick={handleInvitationCopy}
+                            variant="text"
+                            startIcon={<ContentCopy color="secondary" />}>
+                            Copy Invitation URL
+                        </Button>
+                    )}
 
                     <Grid container={true} justifyContent="center" alignItems="center" spacing={2}>
                         <Grid item={true} xs={12} md="auto">

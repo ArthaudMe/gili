@@ -1,8 +1,14 @@
 import {Button, Card, CardContent, Divider, Grid, Typography} from "@mui/material";
 import React from "react";
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {selectInvitation} from "../../../redux/features/invitations/invitations-slice";
+import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
+import {UTILS} from "../../../utils/utils";
 
 const UserInvitationClubHub = () => {
+
+    const {club, member} = useSelector(selectClubs);
 
     return (
         <Card
@@ -11,7 +17,7 @@ const UserInvitationClubHub = () => {
                 backdropFilter: 'blur(5px)'
             }}>
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2}} variant="h6" align="center">
-                Geometry club hub
+                {club?.name} club hub
             </Typography>
             <Divider variant="fullWidth" sx={{my: 2}} light={true}/>
             <CardContent sx={{paddingX: 5}}>
@@ -24,7 +30,7 @@ const UserInvitationClubHub = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            2 GEO
+                            {member?.stake} GEO
                         </Typography>
                     </Grid>
                 </Grid>
@@ -36,7 +42,7 @@ const UserInvitationClubHub = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            66%
+                            {member?.ownership * 100}%
                         </Typography>
                     </Grid>
                 </Grid>
@@ -53,7 +59,7 @@ const UserInvitationClubHub = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            0.3 eth
+                            {`${club?.treasury} ${UTILS.selectCurrency(club?.currency)}`}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -65,7 +71,7 @@ const UserInvitationClubHub = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            100 eth
+                            {`${club?.goal} ${UTILS.selectCurrency(club?.currency)}`}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -77,13 +83,13 @@ const UserInvitationClubHub = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            0.3%
+                            {club?.minted}%
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Link to="/portfolio" style={{textDecoration: 'none'}}>
+                        <Link to={`/clubs/${club?._id}`} style={{textDecoration: 'none'}}>
                             <Button
                                 sx={{
                                     textTransform: 'capitalize',

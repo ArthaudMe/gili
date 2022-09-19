@@ -43,4 +43,12 @@ const createClub = (token, data) => {
     })
 }
 
-export const CLUBS_API = {getClubs, createClub, updateClub, getClub};
+const joinClub = (club, data) => {
+    return axios({
+        method: 'POST',
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${club}/join`,
+        data
+    })
+}
+
+export const CLUBS_API = {getClubs, createClub, updateClub, getClub, joinClub};

@@ -1,7 +1,7 @@
 import {Button, Card, CardContent, Grid, LinearProgress, Stack, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {CREATE_CLUB_ACTION_CREATORS, selectCreateClub} from "../../../redux/features/create-club/create-club-slice";
-import React from "react";
+import React, {useEffect} from "react";
 import {UTILS} from "../../../utils/utils";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 
@@ -17,11 +17,15 @@ const CreateClubSummary = () => {
         try {
             const safe = await deploySafe();
             console.log(safe, 'safe');
-            // dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+            dispatch(CREATE_CLUB_ACTION_CREATORS.next());
         } catch (e) {
             console.log(e.message, 'error');
         }
     }
+
+    useEffect(() => {
+        dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
+    }, []);
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>

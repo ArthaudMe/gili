@@ -1,18 +1,31 @@
-import {Button, Card, CardContent, Grid, Stack, TextField, Typography} from "@mui/material";
+import {Button, Card, CardContent, Grid, LinearProgress, Stack, TextField, Typography} from "@mui/material";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
-import React from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
 import {useFormik} from "formik";
 import * as yup from "yup";
 import {UTILS} from "../../../utils/utils";
+import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../../redux/features/invitations/invitations-slice";
+import {useSafeFactory} from "../../../hooks/use-safe-factory";
+import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
+import {useConnectWallet} from "@web3-onboard/react";
 
-const UserInviteDepositFunds = () => {
+const UserInviteDepositFunds = ({invitationID}) => {
 
     const dispatch = useDispatch();
-    const {club} = useSelector(selectClubs);
+    const {invitation, loading} = useSelector(selectInvitation);
+    const {safe, loading: safeLoading, connected} = useSafeFactory();
+    const [{wallet}] = useConnectWallet();
 
-    const handleValidatePost = () => {
+    const handleValidatePost = async (amount) => {
+        const owners = safe.getOwners();
+        await safe.createTransaction({
+            safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
+        });
+        dispatch(CLUBS_ACTION_CREATORS.joinClub({
+            data: {amount: amount, address: wallet.accounts[0].address},
+            invitation: invitationID
+        }));
         dispatch(CREATE_CLUB_ACTION_CREATORS.next());
     }
 
@@ -22,19 +35,32 @@ const UserInviteDepositFunds = () => {
         validationSchema: yup.object().shape({
             deposit: yup.number().required('Deposit required')
         }),
-        onSubmit: (values, formikHelpers) => {
-            console.log(values, formikHelpers);
+        onSubmit: async (values, formikHelpers) => {
+            await handleValidatePost(values);
+            formikHelpers.resetForm();
         },
         initialValues: {
             deposit: ''
         }
     });
+
+    useEffect(() => {
+        dispatch(INVITATIONS_ACTION_CREATORS.verifyInvitation({invitation: invitationID}));
+        //  react-hooks/exhaustive-deps
+    }, [invitationID]);
+
+    useEffect(() => {
+
+    }, []);
+
     return (
         <Card
             sx={{
                 backgroundColor: 'rgba(255, 255, 255, 0.10)',
                 backdropFilter: 'blur(5px)'
             }}>
+            {loading && <LinearProgress variant="query" color="secondary"/>}
+            {safeLoading && <LinearProgress variant="query" color="primary"/>}
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 Deposit funds to join club
             </Typography>
@@ -55,6 +81,7 @@ const UserInviteDepositFunds = () => {
                                     variant="outlined"
                                     placeholder="Amount"
                                     label="Deposit"
+                                    disabled={loading}
                                     value={formik.values.deposit}
                                     color="secondary"
                                     name="deposit"
@@ -63,7 +90,7 @@ const UserInviteDepositFunds = () => {
                                     helperText={formik.touched.deposit && formik.errors.deposit}
                                 />
                                 <Typography sx={{color: 'text.primary'}} variant="body1">
-                                    {UTILS.selectCurrency(club.currency)}
+                                    {UTILS.selectCurrency(invitation?.club?.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>
@@ -78,10 +105,10 @@ const UserInviteDepositFunds = () => {
 
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                                    {club?.treasury}
+                                    {invitation?.club?.treasury}
                                 </Typography>
                                 <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                                    {UTILS.selectCurrency(club?.currency)}
+                                    {UTILS.selectCurrency(invitation?.club?.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>
@@ -95,10 +122,10 @@ const UserInviteDepositFunds = () => {
                         <Grid item={true} xs={12} md="auto">
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                                    {club?.goal}
+                                    {invitation?.club?.goal}
                                 </Typography>
                                 <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                                    {UTILS.selectCurrency(club.currency)}
+                                    {UTILS.selectCurrency(invitation?.club.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>

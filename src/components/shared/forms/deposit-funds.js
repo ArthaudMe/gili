@@ -26,7 +26,11 @@ const DepositFunds = () => {
             deposit: yup.number().required('Deposit required')
         }),
         onSubmit: async (values, formikHelpers) => {
-            // await safe.signTransaction();
+            await safe.createTransaction({
+                safeTransactionData: {to: safe.getAddress(), data: '0x', value: values},
+                onlyCalls: true
+            });
+            formikHelpers.resetForm();
         },
         initialValues: {
             deposit: ''
@@ -106,7 +110,7 @@ const DepositFunds = () => {
                                     {club?.goal}
                                 </Typography>
                                 <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                                    {UTILS.selectCurrency(club.currency)}
+                                    {UTILS.selectCurrency(club?.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>

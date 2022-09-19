@@ -1,42 +1,44 @@
-import {createContext, useContext, useMemo, useState} from "react";
+import {createContext, useCallback, useContext, useMemo, useState} from "react";
 import Web3 from "web3";
 import Web3Adapter from "@gnosis.pm/safe-web3-lib";
-import {SafeFactory} from "@gnosis.pm/safe-core-sdk";
+import Safe, {SafeFactory} from "@gnosis.pm/safe-core-sdk";
 import {Buffer} from 'buffer';
+
 window.Buffer = window.Buffer || Buffer;
 
 const SafeFactoryContext = createContext(null);
-
-const provider = new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/7044fd6b60b94929a59819a4c6b1e82a`);
-const web3 = new Web3(provider);
-const safeDeploymentConfig = {
-    saltNonce: `${Math.floor(Math.random() * 1000)}`
-};
 
 const SafeFactoryProvider = ({children}) => {
 
     const [safeFactory, setSafeFactory] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [safe, setSafe] = useState(null);
     const [connected, setConnected] = useState(false);
     const [error, setError] = useState(null);
     const [safeAddress, setSafeAddress] = useState(null);
     const [ownerAddress, setOwnerAddress] = useState(null);
+    const [txHash, setTXHash] = useState(null);
 
-    const initializeFactory = async (ownerAddress) => {
+    const initializeFactory = useCallback(async (ownerAddress) => {
         try {
             const safeAccountConfig = {
                 owners: [ownerAddress],
                 threshold: 1,
             };
-            const ethAdapter = new Web3Adapter({
-                web3,
-                signerAddress: ownerAddress
-            });
+
+            const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
+            const web3 = new Web3(window.ethereum);
+            const web3Adapter = new Web3Adapter({web3, signerAddress: accounts[0]});
+
             setOwnerAddress(ownerAddress);
             setLoading(true);
             setConnected(false);
-            const safeFactory = await SafeFactory.create({ethAdapter});
+
+            const safeFactory = await SafeFactory.create({ethAdapter: web3Adapter, isL1SafeMasterCopy: true});
             setSafeFactory(safeFactory);
+            const safeDeploymentConfig = {
+                saltNonce: `${Math.floor(Math.random() * 1000)}`
+            };
             const safeAddress = await safeFactory.predictSafeAddress({
                 safeAccountConfig,
                 safeDeploymentConfig
@@ -48,25 +50,46 @@ const SafeFactoryProvider = ({children}) => {
         } catch (e) {
             setError(e.message);
         }
-    }
+    }, []);
 
-    const deploySafe = async () => {
+    const deploySafe = useCallback(async () => {
         try {
             const safeAccountConfig = {
                 owners: [ownerAddress],
                 threshold: 1,
             }
             setLoading(true);
+            const safeDeploymentConfig = {
+                saltNonce: `${Math.floor(Math.random() * 1000)}`
+            };
             const safe = await safeFactory.deploySafe({
                 safeAccountConfig,
-                safeDeploymentConfig
+                safeDeploymentConfig,
+                callback: setTXHash
             });
             setLoading(false);
+            setSafe(safe);
             return safe;
         } catch (e) {
             console.log(e.message, 'error use safe factory');
         }
-    }
+    }, [ownerAddress, safeFactory]);
+
+    const connectSafe = useCallback(async (safeAddress) => {
+        try {
+            const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
+            const web3 = new Web3(window.ethereum);
+            const web3Adapter = new Web3Adapter({web3, signerAddress: accounts[0]});
+            setLoading(true);
+            setConnected(false);
+            const safe = await Safe.create({ethAdapter: web3Adapter, safeAddress});
+            setSafe(safe);
+            setConnected(true);
+            setLoading(false);
+        }catch (e) {
+            setError(e.message);
+        }
+    }, []);
 
     const contextValue = useMemo(() => ({
         initializeFactory,
@@ -75,8 +98,11 @@ const SafeFactoryProvider = ({children}) => {
         error,
         connected,
         loading,
-        safeFactory
-    }), [initializeFactory, safeAddress, deploySafe, error, connected, loading, safeFactory]);
+        safeFactory,
+        safe,
+        txHash,
+        connectSafe
+    }), [initializeFactory, safeAddress, deploySafe, error, connected, loading, safeFactory, safe, txHash]);
 
     return (
         <SafeFactoryContext.Provider value={contextValue}>

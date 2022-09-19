@@ -43,6 +43,19 @@ const createClub = createAsyncThunk(
     }
 });
 
+
+const joinClub = createAsyncThunk(
+    'clubs/joinClub',
+    async ({club, data}, thunkAPI) => {
+        try {
+            const response = await CLUBS_API.createClub(club, data);
+            return response.data;
+        }catch (e) {
+            return thunkAPI.rejectWithValue(e.response.error.message);
+        }
+    });
+
+
 const clubsSlice = createSlice({
     name: 'clubs',
     initialState: {
@@ -51,7 +64,8 @@ const clubsSlice = createSlice({
         loading: false,
         memberClubs: [],
         adminClubs: [],
-        error: ''
+        error: '',
+        member: null
     },
     reducers: {},
     extraReducers: builder => {
@@ -101,6 +115,17 @@ const clubsSlice = createSlice({
         }).addCase(createClub.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
+        }).addCase(joinClub.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        }).addCase(joinClub.fulfilled, (state, action) => {
+            state.loading = false;
+            state.error = null;
+            state.club = action.payload.data;
+            state.member = action.payload.member;
+        }).addCase(joinClub.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
         })
     }
 });
@@ -108,5 +133,5 @@ const clubsSlice = createSlice({
 
 
 export const selectClubs = state => state.clubs;
-export const CLUBS_ACTION_CREATORS = {getClub, getClubs, updateClub, createClub};
+export const CLUBS_ACTION_CREATORS = {getClub, getClubs, updateClub, createClub, joinClub};
 export default clubsSlice.reducer;

@@ -2,10 +2,13 @@ import {Button, Card, CardContent, Grid, Link, Typography} from "@mui/material";
 import React from "react";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
 import {useDispatch} from "react-redux";
+import {useSafeFactory} from "../../../hooks/use-safe-factory";
 
 const CreateClubSuccess = () => {
 
     const dispatch = useDispatch();
+
+    const {safe, txHash} = useSafeFactory();
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
@@ -20,9 +23,9 @@ const CreateClubSuccess = () => {
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Link href={`https://app.gili.club/0x42fhdgd534`} target="_blank">
+                        <Link href={`https://app.gili.club/${safe.getAddress()}`} target="_blank">
                             <Typography sx={{color: 'text.primary'}} variant="body1">
-                                app.gili.club/0x42fhdgd534
+                                {`app.gili.club /${safe.getAddress()}`}
                             </Typography>
                         </Link>
                     </Grid>
@@ -35,7 +38,7 @@ const CreateClubSuccess = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.primary'}} variant="body1">
-                            0x42fhdgd534
+                            {safe.getAddress()}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -46,9 +49,9 @@ const CreateClubSuccess = () => {
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Link href={`https://etherscan.com/02349294`} target="_blank">
+                        <Link href={`https://etherscan.com/${txHash}`} target="_blank">
                             <Typography sx={{color: 'text.primary'}} variant="body1">
-                                etherscan.com/02349294
+                                etherscan.com/${txHash}
                             </Typography>
                         </Link>
                     </Grid>

@@ -11,20 +11,21 @@ import {useParams} from "react-router";
 const ClubInvitationPage = () => {
 
     const {step} = useSelector(selectCreateClub);
-    const {club, role} = useParams();
+    const {invitationID} = useParams();
 
     const dispatch = useDispatch();
 
     const renderForm = step => {
         switch (step) {
             case 1:
-                return <UserInviteDepositFunds/>;
+                return <UserInviteDepositFunds invitation={invitationID}/>;
             case 2:
                 return <UserInvitationClubHub/>;
             default:
                 return <UserInviteDepositFunds/>;
         }
     }
+
     return (
         <AuthLayout>
             <Box sx={{display: 'relative'}}>

@@ -8,10 +8,11 @@ import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
 const ClubHub = () => {
 
     const dispatch = useDispatch();
-    const handleFundsDeposit = () => {
-        dispatch(CREATE_CLUB_ACTION_CREATORS.next())
-    }
     const {club} = useSelector(selectClubs);
+
+    const handleFundsDeposit = async () => {
+        dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+    }
 
     return (
         <Card

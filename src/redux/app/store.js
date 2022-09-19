@@ -2,7 +2,7 @@ import {configureStore} from "@reduxjs/toolkit";
 import uiReducer from "./../features/ui/ui-slice";
 import createClubReducer from "./../features/create-club/create-club-slice";
 import clubsReducer from "./../features/clubs/clubs-slice";
-import clubInvitationsReducer from "./../features/club-invitations/club-invitations-slice";
+import invitationsReducer from "./../features/invitations/invitations-slice";
 import transactionsReducer from "./../features/transactions/transactions-slice";
 import tokensReducer from "./../features/tokens/tokens-slice";
 import investmentsReducer from "./../features/investments/investments-slice";
@@ -14,7 +14,7 @@ const store = configureStore({
         ui: uiReducer,
         createClub: createClubReducer,
         clubs: clubsReducer,
-        clubInvitation: clubInvitationsReducer,
+        invitation: invitationsReducer,
         transactions:transactionsReducer,
         tokens: tokensReducer,
         investments: investmentsReducer,
