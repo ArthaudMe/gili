@@ -1,4 +1,4 @@
-import {Box, Button, Card, CardContent, Grid, LinearProgress, Stack, Typography} from "@mui/material";
+import {Box, Button, Card, CardContent, Grid, LinearProgress, Typography} from "@mui/material";
 import React, {useCallback, useState} from "react";
 import {useSnackbar} from "notistack";
 import {useDispatch, useSelector} from "react-redux";
@@ -28,10 +28,11 @@ const InviteFriends = () => {
 
     const handleInvitationCopy = useCallback(async () => {
         window.navigator.clipboard.writeText(
-                `You have been invited by ${name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation?._id} to join the club`)
+            `You have been invited by ${name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation?._id} to join the club`)
             .then(() => {
                 enqueueSnackbar('Invitation link copied', {variant: 'success'});
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -96,7 +97,7 @@ const InviteFriends = () => {
                             sx={{mb: 2}}
                             onClick={handleInvitationCopy}
                             variant="text"
-                            startIcon={<ContentCopy color="secondary" />}>
+                            startIcon={<ContentCopy color="secondary"/>}>
                             Copy Invitation URL
                         </Button>
                     )}

@@ -1,7 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {MEMBERS_API} from "../../../api/members";
-import {LinearProgress} from "@mui/material";
-import React from "react";
 
 
 const getMembers = createAsyncThunk('members/getMembers', async ({club}, thunkAPI) => {
@@ -9,8 +7,8 @@ const getMembers = createAsyncThunk('members/getMembers', async ({club}, thunkAP
         const response = await MEMBERS_API.getMembers(club);
         return response.data;
     } catch (e) {
-       const {message} = e.response.data;
-       return thunkAPI.rejectWithValue(message);
+        const {message} = e.response.data;
+        return thunkAPI.rejectWithValue(message);
     }
 });
 
@@ -18,14 +16,14 @@ const getMembers = createAsyncThunk('members/getMembers', async ({club}, thunkAP
 const getCurrentMember = createAsyncThunk(
     'members/getCurrentMember',
     async ({club, member}, thunkAPI) => {
-    try {
-        const response = await MEMBERS_API.getCurrentMember(club, member);
-        return response.data;
-    } catch (e) {
-        const {message} = e.response.data;
-        return thunkAPI.rejectWithValue(message);
-    }
-});
+        try {
+            const response = await MEMBERS_API.getCurrentMember(club, member);
+            return response.data;
+        } catch (e) {
+            const {message} = e.response.data;
+            return thunkAPI.rejectWithValue(message);
+        }
+    });
 
 
 const membersSlice = createSlice({

@@ -47,7 +47,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
 
     useEffect(() => {
         dispatch(INVITATIONS_ACTION_CREATORS.verifyInvitation({invitation: invitationID}));
-        //  react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [invitationID]);
 
     useEffect(() => {
@@ -57,7 +57,8 @@ const UserInviteDepositFunds = ({invitationID}) => {
         if (!safe) {
             connect().then(response => console.log(response));
         }
-    }, [safe]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [safe, connectSafe]);
 
     return (
         <Card

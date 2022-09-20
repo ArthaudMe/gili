@@ -1,14 +1,21 @@
 import {Button, Card, CardContent, Grid, Link, Typography} from "@mui/material";
-import React from "react";
+import React, {useEffect} from "react";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
+import {CLUBS_ACTION_CREATORS, selectClubs} from "../../../redux/features/clubs/clubs-slice";
 
 const CreateClubSuccess = () => {
 
     const dispatch = useDispatch();
 
     const {safe, txHash} = useSafeFactory();
+    const {club} = useSelector(selectClubs);
+
+    useEffect(() => {
+        dispatch(CLUBS_ACTION_CREATORS.getClubBySafe({address: safe.getAddress()}));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [safe]);
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
@@ -23,9 +30,9 @@ const CreateClubSuccess = () => {
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Link href={`https://app.gili.club/${safe.getAddress()}`} target="_blank">
+                        <Link href={`https://gili.vercel.app/clubs/${club?._id}`} target="_blank">
                             <Typography sx={{color: 'text.primary'}} variant="body1">
-                                {`app.gili.club /${safe.getAddress()}`}
+                                {`https://gili.vercel.app/clubs/${club?._id}`}
                             </Typography>
                         </Link>
                     </Grid>
@@ -51,7 +58,7 @@ const CreateClubSuccess = () => {
                     <Grid item={true} xs={12} md="auto">
                         <Link href={`https://etherscan.com/${txHash}`} target="_blank">
                             <Typography sx={{color: 'text.primary'}} variant="body1">
-                                etherscan.com/${txHash}
+                                etherscan.com/{txHash}
                             </Typography>
                         </Link>
                     </Grid>

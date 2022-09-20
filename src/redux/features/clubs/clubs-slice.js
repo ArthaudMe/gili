@@ -1,12 +1,11 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {CLUBS_API} from "../../../api/clubs";
-import {clubs} from "./clubs-data";
 
 const getClubs = createAsyncThunk('clubs/getClubs', async ({address}, thunkAPI) => {
     try {
         const response = await CLUBS_API.getClubs(address);
         return response.data;
-    }catch (e) {
+    } catch (e) {
         return thunkAPI.rejectWithValue(e.response.error.message);
     }
 });
@@ -15,7 +14,16 @@ const getClub = createAsyncThunk('clubs/getClub', async ({clubID}, thunkAPI) => 
     try {
         const response = await CLUBS_API.getClub(clubID);
         return response.data;
-    }catch (e) {
+    } catch (e) {
+        return thunkAPI.rejectWithValue(e.response.error.message);
+    }
+});
+
+const getClubBySafe = createAsyncThunk('clubs/getClubBySafe', async ({address}, thunkAPI) => {
+    try {
+        const response = await CLUBS_API.getClubBySafe(address);
+        return response.data;
+    } catch (e) {
         return thunkAPI.rejectWithValue(e.response.error.message);
     }
 });
@@ -25,7 +33,7 @@ const updateClub = createAsyncThunk('clubs/updateClub', async ({token, data, id}
     try {
         const response = await CLUBS_API.updateClub(token, data, id);
         return response.data;
-    }catch (e) {
+    } catch (e) {
         return thunkAPI.rejectWithValue(e.response.error.message);
     }
 });
@@ -34,14 +42,14 @@ const updateClub = createAsyncThunk('clubs/updateClub', async ({token, data, id}
 const createClub = createAsyncThunk(
     'clubs/createClub',
     async ({token, data, handleNext}, thunkAPI) => {
-    try {
-        const response = await CLUBS_API.createClub(token, data);
-        handleNext();
-        return response.data;
-    }catch (e) {
-        return thunkAPI.rejectWithValue(e.response.error.message);
-    }
-});
+        try {
+            const response = await CLUBS_API.createClub(token, data);
+            handleNext();
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.response.error.message);
+        }
+    });
 
 
 const joinClub = createAsyncThunk(
@@ -50,7 +58,7 @@ const joinClub = createAsyncThunk(
         try {
             const response = await CLUBS_API.joinClub(club, data);
             return response.data;
-        }catch (e) {
+        } catch (e) {
             return thunkAPI.rejectWithValue(e.response.error.message);
         }
     });
@@ -97,7 +105,7 @@ const clubsSlice = createSlice({
             state.loading = false;
             state.error = null;
             state.clubs = [...state.clubs.map(club => {
-                if(club._id === action.payload._id){
+                if (club._id === action.payload._id) {
                     return action.payload;
                 }
                 return club;
@@ -131,7 +139,6 @@ const clubsSlice = createSlice({
 });
 
 
-
 export const selectClubs = state => state.clubs;
-export const CLUBS_ACTION_CREATORS = {getClub, getClubs, updateClub, createClub, joinClub};
+export const CLUBS_ACTION_CREATORS = {getClub, getClubs, updateClub, createClub, joinClub, getClubBySafe};
 export default clubsSlice.reducer;

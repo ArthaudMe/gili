@@ -18,6 +18,13 @@ const getClub = (id) => {
     });
 }
 
+const getClubBySafe = (address) => {
+    return axios({
+        method: 'GET',
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${address}/safe`
+    });
+}
+
 const updateClub = (token, data, id) => {
     return axios({
         method: 'PUT',
@@ -48,4 +55,4 @@ const joinClub = (club, data) => {
     })
 }
 
-export const CLUBS_API = {getClubs, createClub, updateClub, getClub, joinClub};
+export const CLUBS_API = {getClubs, createClub, updateClub, getClub, joinClub, getClubBySafe};

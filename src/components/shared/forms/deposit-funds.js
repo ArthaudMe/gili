@@ -1,4 +1,4 @@
-import {Button, Card, CardContent, Grid, Stack, TextField, Typography} from "@mui/material";
+import {Button, Card, CardContent, Grid, LinearProgress, Stack, TextField, Typography} from "@mui/material";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -6,7 +6,6 @@ import {UTILS} from "../../../utils/utils";
 import {useFormik} from "formik";
 import * as yup from "yup";
 import {CLUBS_ACTION_CREATORS, selectClubs} from "../../../redux/features/clubs/clubs-slice";
-import {selectSafe} from "../../../redux/features/safe/safe-slice";
 import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../../redux/features/invitations/invitations-slice";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {useConnectWallet} from "@web3-onboard/react";
@@ -17,6 +16,7 @@ const DepositFunds = () => {
     const {invitation, loading} = useSelector(selectInvitation);
     const {safe, loading: safeLoading, connectSafe} = useSafeFactory();
     const [{wallet}] = useConnectWallet();
+    const {club} = useSelector(selectClubs);
 
     const handleValidatePost = async (amount) => {
         const owners = safe.getOwners();
@@ -47,9 +47,9 @@ const DepositFunds = () => {
     });
 
     useEffect(() => {
-        dispatch(INVITATIONS_ACTION_CREATORS.verifyInvitation({invitation: invitationID}));
-        //  react-hooks/exhaustive-deps
-    }, [invitationID]);
+        dispatch(INVITATIONS_ACTION_CREATORS.verifyInvitation({invitation: invitation?._id}));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [invitation?._id]);
 
     useEffect(() => {
         const connect = async () => {
@@ -58,7 +58,13 @@ const DepositFunds = () => {
         if (!safe) {
             connect();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [safe]);
+
+    useEffect(() => {
+        dispatch(CLUBS_ACTION_CREATORS.getClubBySafe({address: safe.getAddress()}));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [safe.getAddress()]);
 
     return (
         <Card
@@ -66,6 +72,8 @@ const DepositFunds = () => {
                 backgroundColor: 'rgba(255, 255, 255, 0.10)',
                 backdropFilter: 'blur(5px)'
             }}>
+            {loading & <LinearProgress variant="query" color="secondary"/>}
+            {safeLoading & <LinearProgress variant="query" color="secondary"/>}
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 Deposit funds to join club
             </Typography>
@@ -133,7 +141,7 @@ const DepositFunds = () => {
                                     {club?.goal}
                                 </Typography>
                                 <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                                    {UTILS.selectCurrency(club?.currency)}
+                                    {club && UTILS.selectCurrency(club?.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>
