@@ -18,7 +18,7 @@ const ClubInvitationPage = () => {
     const renderForm = step => {
         switch (step) {
             case 1:
-                return <UserInviteDepositFunds invitation={invitationID}/>;
+                return <UserInviteDepositFunds invitationID={invitationID}/>;
             case 2:
                 return <UserInvitationClubHub/>;
             default:

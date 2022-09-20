@@ -102,7 +102,7 @@ const SafeFactoryProvider = ({children}) => {
         safe,
         txHash,
         connectSafe
-    }), [initializeFactory, safeAddress, deploySafe, error, connected, loading, safeFactory, safe, txHash]);
+    }), [initializeFactory, safeAddress, deploySafe, error, connected, loading, safeFactory, safe, txHash, connectSafe]);
 
     return (
         <SafeFactoryContext.Provider value={contextValue}>

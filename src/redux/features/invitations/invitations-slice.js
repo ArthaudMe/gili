@@ -7,7 +7,7 @@ const createInvitation = createAsyncThunk(
     async ({data}, thunkAPI) => {
     try {
         const response = await axios({
-            url: `${CONSTANTS.BASE_SERVER_URL}/invitations`,
+            url: `${CONSTANTS.BASE_SERVER_URL}/user/invitations`,
             data
         });
         return response.data;
@@ -22,7 +22,7 @@ const verifyInvitation = createAsyncThunk(
     async ({invitation}, thunkAPI) => {
     try {
         const response = await axios({
-            url: `${CONSTANTS.BASE_SERVER_URL}/invitations/${invitation}/verify`,
+            url: `${CONSTANTS.BASE_SERVER_URL}/user/invitations/${invitation}/verify`,
             method: 'GET'
         });
         return response.data;

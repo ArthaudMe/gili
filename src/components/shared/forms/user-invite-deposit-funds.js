@@ -14,7 +14,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
 
     const dispatch = useDispatch();
     const {invitation, loading} = useSelector(selectInvitation);
-    const {safe, loading: safeLoading, connected} = useSafeFactory();
+    const {safe, loading: safeLoading, connected, connectSafe} = useSafeFactory();
     const [{wallet}] = useConnectWallet();
 
     const handleValidatePost = async (amount) => {
@@ -50,8 +50,13 @@ const UserInviteDepositFunds = ({invitationID}) => {
     }, [invitationID]);
 
     useEffect(() => {
-
-    }, []);
+        const connect = async () => {
+            await connectSafe();
+        }
+        if(!safe){
+            connect();
+        }
+    }, [safe]);
 
     return (
         <Card
@@ -90,7 +95,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
                                     helperText={formik.touched.deposit && formik.errors.deposit}
                                 />
                                 <Typography sx={{color: 'text.primary'}} variant="body1">
-                                    {UTILS.selectCurrency(invitation?.club?.currency)}
+                                    {invitation && invitation.club && invitation.club.currency && UTILS.selectCurrency(invitation?.club?.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>
@@ -108,7 +113,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
                                     {invitation?.club?.treasury}
                                 </Typography>
                                 <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                                    {UTILS.selectCurrency(invitation?.club?.currency)}
+                                    {invitation && invitation.club && invitation.club.currency && UTILS.selectCurrency(invitation?.club?.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>
@@ -125,7 +130,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
                                     {invitation?.club?.goal}
                                 </Typography>
                                 <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                                    {UTILS.selectCurrency(invitation?.club.currency)}
+                                    {invitation && invitation.club && invitation.club.currency && UTILS.selectCurrency(invitation?.club.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>
@@ -138,6 +143,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
                                     textTransform: 'capitalize',
                                     py: 1.2
                                 }}
+                                color="secondary"
                                 type="submit"
                                 fullWidth={true}
                                 variant="contained"
