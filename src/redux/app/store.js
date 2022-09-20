@@ -8,6 +8,7 @@ import tokensReducer from "./../features/tokens/tokens-slice";
 import investmentsReducer from "./../features/investments/investments-slice";
 import collectiblesReducer from "./../features/collectibles/collectibles-slice";
 import safeReducer from "./../features/safe/safe-slice";
+import membersReducer from "./../features/members/members-slice";
 
 const store = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
         tokens: tokensReducer,
         investments: investmentsReducer,
         collectibles: collectiblesReducer,
+        members: membersReducer,
         safe:safeReducer
     },
     preloadedState: {},

@@ -1,22 +1,35 @@
 import AuthLayout from "../../components/layout/auth-layout";
 import React, {useEffect} from "react";
-import {Box, Button, Card, CardContent, Container, Grid, Stack, Typography} from "@mui/material";
-import {useSelector} from "react-redux";
-import {selectClubs} from "../../redux/features/clubs/clubs-slice";
+import {
+    Alert,
+    AlertTitle,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Container,
+    Grid,
+    LinearProgress,
+    Stack,
+    Typography
+} from "@mui/material";
+import {useDispatch, useSelector} from "react-redux";
+import {CLUBS_ACTION_CREATORS, selectClubs} from "../../redux/features/clubs/clubs-slice";
 import {useParams} from "react-router";
 import {KeyboardArrowLeft} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 
 const ClubGovernanceRulesPage = () => {
 
-    const {club} = useSelector(selectClubs);
+    const {club, loading, error} = useSelector(selectClubs);
     const {clubID} = useParams();
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
     useEffect(() => {
-        console.log(clubID);
+        dispatch(CLUBS_ACTION_CREATORS.getClub({clubID}));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [clubID]);
 
     return (
         <AuthLayout>
@@ -29,7 +42,11 @@ const ClubGovernanceRulesPage = () => {
             }}>
                 <Container maxWidth="md">
                     <Card sx={{mb: 4, backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} elevation={1}>
+                        {loading && <LinearProgress variant="query" color="secondary"/>}
                         <CardContent>
+                            {error && (
+                                <Alert sx={{mb: 2}} severity="error"><AlertTitle>{error}</AlertTitle></Alert>
+                            )}
                             <Typography variant="h6" sx={{color: 'text.primary', mb: 2}} align="center">
                                 {`${club?.name} governance rules`}
                             </Typography>

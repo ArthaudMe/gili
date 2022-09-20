@@ -1,23 +1,35 @@
 import {Button, Card, CardContent, Grid, Stack, TextField, Typography} from "@mui/material";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
-import React from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {UTILS} from "../../../utils/utils";
 import {useFormik} from "formik";
 import * as yup from "yup";
-import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
+import {CLUBS_ACTION_CREATORS, selectClubs} from "../../../redux/features/clubs/clubs-slice";
 import {selectSafe} from "../../../redux/features/safe/safe-slice";
+import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../../redux/features/invitations/invitations-slice";
+import {useSafeFactory} from "../../../hooks/use-safe-factory";
+import {useConnectWallet} from "@web3-onboard/react";
 
 const DepositFunds = () => {
 
     const dispatch = useDispatch();
-    const {club} = useSelector(selectClubs);
-    const {safe} = useSelector(selectSafe);
+    const {invitation, loading} = useSelector(selectInvitation);
+    const {safe, loading: safeLoading, connectSafe} = useSafeFactory();
+    const [{wallet}] = useConnectWallet();
 
-    const handleValidatePost = () => {
+    const handleValidatePost = async (amount) => {
+        const owners = safe.getOwners();
+        await safe.createTransaction({
+            safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
+        });
+
+        dispatch(CLUBS_ACTION_CREATORS.joinClub({
+            data: {amount: amount, address: wallet.accounts[0].address},
+            invitation: invitation?._id
+        }));
         dispatch(CREATE_CLUB_ACTION_CREATORS.next());
     }
-
 
     const formik = useFormik({
         validateOnBlur: true,
@@ -26,16 +38,27 @@ const DepositFunds = () => {
             deposit: yup.number().required('Deposit required')
         }),
         onSubmit: async (values, formikHelpers) => {
-            await safe.createTransaction({
-                safeTransactionData: {to: safe.getAddress(), data: '0x', value: values},
-                onlyCalls: true
-            });
+            await handleValidatePost(values);
             formikHelpers.resetForm();
         },
         initialValues: {
             deposit: ''
         }
     });
+
+    useEffect(() => {
+        dispatch(INVITATIONS_ACTION_CREATORS.verifyInvitation({invitation: invitationID}));
+        //  react-hooks/exhaustive-deps
+    }, [invitationID]);
+
+    useEffect(() => {
+        const connect = async () => {
+            await connectSafe();
+        }
+        if (!safe) {
+            connect();
+        }
+    }, [safe]);
 
     return (
         <Card

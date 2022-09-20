@@ -15,15 +15,15 @@ function App() {
 
     return (
         <Routes>
-            <Route element={<LandingPage/>} path="/"/>
-            <Route element={<ClubsPage/>} path="/clubs"/>
-            <Route element={<ClubProfilePage/>} path="/clubs/:clubID"/>
-            <Route element={<ClubSettingsPage/>} path="/clubs/:clubID/settings"/>
-            <Route element={<InviteMemberPage/>} path="/clubs/:clubID/invitations"/>
-            <Route element={<ClubDepositFundsPage/>} path="/clubs/:clubID/funds"/>
-            <Route element={<ClubGovernanceRulesPage/>} path="/clubs/:clubID/rules"/>
-            <Route element={<ClubInvitationPage/>} path="/invitations/:invitationID"/>
-            <Route element={<CreateClubPage/>} path="/club/new"/>
+            <Route element={<LandingPage/>} exact={true} path="/"/>
+            <Route element={<ClubsPage/>} exact={true} path="/clubs"/>
+            <Route element={<ClubProfilePage/>} exact={true} path="/clubs/:clubID"/>
+            <Route element={<ClubSettingsPage/>} exact={true} path="/clubs/:clubID/settings"/>
+            <Route element={<InviteMemberPage/>} exact={true} path="/clubs/:clubID/invitations"/>
+            <Route element={<ClubDepositFundsPage/>} exact={true} path="/clubs/:clubID/funds"/>
+            <Route element={<ClubGovernanceRulesPage/>} exact={true} path="/clubs/:clubID/rules"/>
+            <Route element={<ClubInvitationPage/>} exact={true} path="/invitations/:invitationID"/>
+            <Route element={<CreateClubPage/>} exact={true} path="/club/new"/>
         </Routes>
     );
 }

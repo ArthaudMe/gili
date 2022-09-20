@@ -14,7 +14,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
 
     const dispatch = useDispatch();
     const {invitation, loading} = useSelector(selectInvitation);
-    const {safe, loading: safeLoading, connected, connectSafe} = useSafeFactory();
+    const {safe, loading: safeLoading, connectSafe} = useSafeFactory();
     const [{wallet}] = useConnectWallet();
 
     const handleValidatePost = async (amount) => {
@@ -22,6 +22,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
         await safe.createTransaction({
             safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
         });
+
         dispatch(CLUBS_ACTION_CREATORS.joinClub({
             data: {amount: amount, address: wallet.accounts[0].address},
             invitation: invitationID
@@ -53,8 +54,8 @@ const UserInviteDepositFunds = ({invitationID}) => {
         const connect = async () => {
             await connectSafe();
         }
-        if(!safe){
-            connect();
+        if (!safe) {
+            connect().then(response => console.log(response));
         }
     }, [safe]);
 

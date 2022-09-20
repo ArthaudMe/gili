@@ -122,7 +122,6 @@ const InviteFriends = () => {
                     <Grid item={true} xs={12} md="auto">
                         <Link to={`/clubs/${_id}`} style={{textDecoration: 'none'}}>
                             <Button
-                                onClick={handleInvitationGenerate}
                                 sx={{
                                     textTransform: 'capitalize',
                                     py: 1.2

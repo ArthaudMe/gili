@@ -8,7 +8,8 @@ const createInvitation = createAsyncThunk(
     try {
         const response = await axios({
             url: `${CONSTANTS.BASE_SERVER_URL}/user/invitations`,
-            data
+            data,
+            method: 'POST'
         });
         return response.data;
     }catch (e) {

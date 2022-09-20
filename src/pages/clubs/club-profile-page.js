@@ -1,6 +1,6 @@
 import AuthLayout from "../../components/layout/auth-layout";
-import {useSelector} from "react-redux";
-import {selectClubs} from "../../redux/features/clubs/clubs-slice";
+import {useDispatch, useSelector} from "react-redux";
+import {CLUBS_ACTION_CREATORS, selectClubs} from "../../redux/features/clubs/clubs-slice";
 import {
     Alert,
     AlertTitle,
@@ -26,14 +26,20 @@ import {selectTransactions} from "../../redux/features/transactions/transactions
 import {selectTokens} from "../../redux/features/tokens/tokens-slice";
 import {selectCollectibles} from "../../redux/features/collectibles/collectibles-slice";
 import {selectInvestments} from "../../redux/features/investments/investments-slice";
+import {MEMBERS_ACTION_CREATORS, selectMembers} from "../../redux/features/members/members-slice";
+import {UTILS} from "../../utils/utils";
+import {useConnectWallet} from "@web3-onboard/react";
 
 const ClubProfilePage = () => {
 
     const {club, loading, error} = useSelector(selectClubs);
+    const {members, memberLoading, memberError, member} = useSelector(selectMembers);
     const {transactions} = useSelector(selectTransactions);
     const {tokens} = useSelector(selectTokens);
     const {investments} = useSelector(selectInvestments);
     const {collectibles} = useSelector(selectCollectibles);
+    const [{wallet}] = useConnectWallet();
+    const dispatch = useDispatch();
 
     const {clubID} = useParams();
     const [index, setIndex] = useState("assets");
@@ -52,7 +58,7 @@ const ClubProfilePage = () => {
                         investments={investments}
                     />);
             case 'members':
-                return <MembersTab members={club.members}/>;
+                return <MembersTab members={members}/>;
             case 'activity':
                 return <Activity transactions={transactions}/>;
             default:
@@ -66,17 +72,31 @@ const ClubProfilePage = () => {
     }
 
     useEffect(() => {
-        console.log(clubID);
+        dispatch(CLUBS_ACTION_CREATORS.getClub({clubID}));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [clubID]);
+
+    useEffect(() => {
+        dispatch(MEMBERS_ACTION_CREATORS.getMembers({club: clubID}));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [clubID]);
+
+    useEffect(() => {
+        dispatch(MEMBERS_ACTION_CREATORS.getCurrentMember({club: clubID, member: wallet.accounts[0].address}));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [clubID, wallet.accounts[0].address]);
 
     return (
         <AuthLayout>
             {loading && <LinearProgress variant="query" color="secondary"/>}
+            {memberLoading && <LinearProgress variant="query" color="primary"/>}
             <Box sx={{py: 4}}>
                 <Container maxWidth="md">
                     {error && (
-                        <Alert severity="error"><AlertTitle>{error}</AlertTitle></Alert>
+                        <Alert sx={{mb: 2}} severity="error"><AlertTitle>{error}</AlertTitle></Alert>
+                    )}
+                    {memberError && (
+                        <Alert sx={{mb: 2}} severity="error"><AlertTitle>{memberError}</AlertTitle></Alert>
                     )}
                     <Box sx={{mb: 2}}>
                         <Typography align="center" variant="h6" sx={{mb: 4}}>{`${club?.name} portfolio`}</Typography>
@@ -91,7 +111,7 @@ const ClubProfilePage = () => {
                                     </Grid>
                                     <Grid item={true} xs={12} md="auto">
                                         <Typography variant="body1" sx={{color: 'text.primary'}}>
-                                            2 GEO (50% of circulating supply)
+                                            {member?.stake} GEO ({member?.ownership}% of circulating supply)
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -104,7 +124,7 @@ const ClubProfilePage = () => {
                                     </Grid>
                                     <Grid item={true} xs={12} md="auto">
                                         <Typography variant="body1" sx={{color: 'text.primary'}}>
-                                            4% of GEO total supply
+                                            {club?.minted}% of {club?.token} total supply
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -117,7 +137,7 @@ const ClubProfilePage = () => {
                                     </Grid>
                                     <Grid item={true} xs={12} md="auto">
                                         <Typography variant="body1" sx={{color: 'text.primary'}}>
-                                            100 eth
+                                            {club?.goal} {club && UTILS.selectCurrency(club?.currency)}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -130,7 +150,7 @@ const ClubProfilePage = () => {
                                     </Grid>
                                     <Grid item={true} xs={12} md="auto">
                                         <Typography variant="body1" sx={{color: 'text.primary'}}>
-                                            4 eth
+                                            {`${club?.treasury} ${club && UTILS.selectCurrency(club?.currency)}`}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -184,7 +204,7 @@ const ClubProfilePage = () => {
                     </Box>
 
                     <Box sx={{mb: 2}}>
-                        <Tabs value={index} onChange={handleTabChange} variant="scrollable">
+                        <Tabs value={index} onChange={(event, value) => handleTabChange(value)} variant="scrollable">
                             <Tab
                                 sx={{
                                     textTransform: 'capitalize',

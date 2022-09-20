@@ -11,9 +11,9 @@ const getClubs = createAsyncThunk('clubs/getClubs', async ({address}, thunkAPI) 
     }
 });
 
-const getClub = createAsyncThunk('clubs/getClub', async ({token, id}, thunkAPI) => {
+const getClub = createAsyncThunk('clubs/getClub', async ({clubID}, thunkAPI) => {
     try {
-        const response = await CLUBS_API.getClubs(token, id);
+        const response = await CLUBS_API.getClub(clubID);
         return response.data;
     }catch (e) {
         return thunkAPI.rejectWithValue(e.response.error.message);
@@ -48,7 +48,7 @@ const joinClub = createAsyncThunk(
     'clubs/joinClub',
     async ({club, data}, thunkAPI) => {
         try {
-            const response = await CLUBS_API.createClub(club, data);
+            const response = await CLUBS_API.joinClub(club, data);
             return response.data;
         }catch (e) {
             return thunkAPI.rejectWithValue(e.response.error.message);
@@ -59,8 +59,8 @@ const joinClub = createAsyncThunk(
 const clubsSlice = createSlice({
     name: 'clubs',
     initialState: {
-        clubs: [...clubs],
-        club: clubs[0],
+        clubs: [],
+        club: null,
         loading: false,
         memberClubs: [],
         adminClubs: [],

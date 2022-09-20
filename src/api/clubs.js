@@ -11,14 +11,11 @@ const getClubs = (token, query) => {
     })
 }
 
-const getClub = (token, id) => {
+const getClub = (id) => {
     return axios({
         method: 'GET',
-        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${id}`,
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${id}`
+    });
 }
 
 const updateClub = (token, data, id) => {
