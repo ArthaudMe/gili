@@ -11,16 +11,16 @@ import {ContentCopy} from "@mui/icons-material";
 const InviteFriends = () => {
     const {enqueueSnackbar} = useSnackbar();
     const [selectedRole, setSelectedRole] = useState('member');
-    const {club: {name, _id}} = useSelector(selectClubs);
+    const {club} = useSelector(selectClubs);
     const [{wallet}] = useConnectWallet();
-    const {loading, invitation} = useSelector(selectInvitation);
+    const {invitationLoading, invitation} = useSelector(selectInvitation);
     const dispatch = useDispatch();
 
     const handleInvitationGenerate = () => {
         dispatch(INVITATIONS_ACTION_CREATORS.createInvitation({
             data: {
                 role: selectedRole,
-                club: _id,
+                club: club?._id,
                 inviter: wallet.accounts[0].address
             }
         }));
@@ -28,7 +28,7 @@ const InviteFriends = () => {
 
     const handleInvitationCopy = useCallback(async () => {
         window.navigator.clipboard.writeText(
-            `You have been invited by ${name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation?._id} to join the club`)
+            `You have been invited by ${club?.name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation?._id} to join the club`)
             .then(() => {
                 enqueueSnackbar('Invitation link copied', {variant: 'success'});
             });
@@ -37,7 +37,7 @@ const InviteFriends = () => {
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
-            {loading && <LinearProgress variant="query" color="secondary"/>}
+            {invitationLoading && <LinearProgress variant="query" color="secondary"/>}
             <Typography sx={{color: 'white', py: 2}} variant="h6" align="center">
                 Invite your friends to join your club
             </Typography>
@@ -121,7 +121,7 @@ const InviteFriends = () => {
                 </Box>
                 <Grid container={true} justifyContent="center" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
-                        <Link to={`/clubs/${_id}`} style={{textDecoration: 'none'}}>
+                        <Link to={`/clubs/${club?._id}`} style={{textDecoration: 'none'}}>
                             <Button
                                 sx={{
                                     textTransform: 'capitalize',

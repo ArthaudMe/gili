@@ -1,4 +1,15 @@
-import {Button, Card, CardContent, Grid, LinearProgress, Stack, TextField, Typography} from "@mui/material";
+import {
+    Alert,
+    AlertTitle,
+    Button,
+    Card,
+    CardContent,
+    Grid,
+    LinearProgress,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,21 +24,21 @@ import {useConnectWallet} from "@web3-onboard/react";
 const UserInviteDepositFunds = ({invitationID}) => {
 
     const dispatch = useDispatch();
-    const {invitation, loading} = useSelector(selectInvitation);
-    const {safe, loading: safeLoading, connectSafe} = useSafeFactory();
+    const {invitation, invitationLoading, invitationError} = useSelector(selectInvitation);
+    const {safe, loading, connectSafe, error} = useSafeFactory();
     const [{wallet}] = useConnectWallet();
 
     const handleValidatePost = async (amount) => {
         const owners = safe.getOwners();
-        await safe.createTransaction({
+        const tx = await safe.createTransaction({
             safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
         });
-
+        console.log(tx);
         dispatch(CLUBS_ACTION_CREATORS.joinClub({
             data: {amount: amount, address: wallet.accounts[0].address},
-            invitation: invitationID
+            invitation: invitationID,
+            callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
         }));
-        dispatch(CREATE_CLUB_ACTION_CREATORS.next());
     }
 
     const formik = useFormik({
@@ -66,12 +77,20 @@ const UserInviteDepositFunds = ({invitationID}) => {
                 backgroundColor: 'rgba(255, 255, 255, 0.10)',
                 backdropFilter: 'blur(5px)'
             }}>
-            {loading && <LinearProgress variant="query" color="secondary"/>}
-            {safeLoading && <LinearProgress variant="query" color="primary"/>}
+            {invitationLoading && <LinearProgress variant="query" color="secondary"/>}
+            {loading && <LinearProgress variant="query" color="primary"/>}
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 Deposit funds to join club
             </Typography>
             <CardContent sx={{paddingX: 5}}>
+                {invitationError && (
+                    <Alert severity="error" sx={{mb: 2}}><AlertTitle>{invitationError}</AlertTitle></Alert>
+                )}
+
+                {error && (
+                    <Alert severity="error" sx={{mb: 2}}><AlertTitle>{error}</AlertTitle></Alert>
+                )}
+
                 <form onSubmit={formik.handleSubmit}>
                     <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                         <Grid item={true} xs={12} md="auto">
@@ -132,7 +151,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
                                     {invitation?.club?.goal}
                                 </Typography>
                                 <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                                    {invitation && invitation.club && invitation.club.currency && UTILS.selectCurrency(invitation?.club.currency)}
+                                    {invitation && invitation.club && invitation.club.currency && UTILS.selectCurrency(invitation?.club?.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>
@@ -145,6 +164,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
                                     textTransform: 'capitalize',
                                     py: 1.2
                                 }}
+                                disabled={Boolean(error || invitationError || loading || invitationLoading)}
                                 color="secondary"
                                 type="submit"
                                 fullWidth={true}

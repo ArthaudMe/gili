@@ -25,15 +25,12 @@ const getClubBySafe = (address) => {
     });
 }
 
-const updateClub = (token, data, id) => {
+const updateClub = (data, club) => {
     return axios({
         method: 'PUT',
-        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${id}`,
-        headers: {
-            Authorization: `Bearer ${token}`
-        },
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${club}`,
         data
-    })
+    });
 }
 
 const createClub = (token, data) => {
@@ -55,4 +52,12 @@ const joinClub = (club, data) => {
     })
 }
 
-export const CLUBS_API = {getClubs, createClub, updateClub, getClub, joinClub, getClubBySafe};
+const depositFunds = (address, club, amount) => {
+    return axios({
+        method: 'PUT',
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${club}/deposit`,
+        data: {amount}
+    })
+}
+
+export const CLUBS_API = {getClubs, createClub, updateClub, getClub, joinClub, getClubBySafe, depositFunds};

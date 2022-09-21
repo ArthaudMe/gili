@@ -159,20 +159,23 @@ const ClubProfilePage = () => {
                     </Box>
                     <Box sx={{mb: 4}}>
                         <Grid container={true} spacing={2} justifyContent="space-between">
-                            <Grid item={true} xs={12} md="auto">
-                                <Link to={`/clubs/${club?._id}/settings`} style={{textDecoration: 'none'}}>
-                                    <Button
-                                        size="small"
-                                        variant="text"
-                                        sx={{
-                                            textDecoration: 'underline',
-                                            color: 'text.secondary',
-                                            textTransform: 'capitalize'
-                                        }}>
-                                        Modify Settings
-                                    </Button>
-                                </Link>
-                            </Grid>
+                            {member?.role === 'Admin' && (
+                                <Grid item={true} xs={12} md="auto">
+                                    <Link to={`/clubs/${club?._id}/settings`} style={{textDecoration: 'none'}}>
+                                        <Button
+                                            size="small"
+                                            variant="text"
+                                            sx={{
+                                                textDecoration: 'underline',
+                                                color: 'text.secondary',
+                                                textTransform: 'capitalize'
+                                            }}>
+                                            Modify Settings
+                                        </Button>
+                                    </Link>
+                                </Grid>
+                            )}
+
                             <Grid item={true} xs={12} md="auto">
                                 <Link to={`/clubs/${club?._id}/funds`} style={{textDecoration: 'none'}}>
                                     <Button
@@ -186,20 +189,23 @@ const ClubProfilePage = () => {
                                     </Button>
                                 </Link>
                             </Grid>
-                            <Grid item={true} xs={12} md="auto">
-                                <Link to={`/clubs/${club?._id}/rules`} style={{textDecoration: 'none'}}>
-                                    <Button
-                                        size="small"
-                                        variant="text"
-                                        sx={{
-                                            textDecoration: 'underline',
-                                            color: 'text.secondary',
-                                            textTransform: 'capitalize'
-                                        }}>
-                                        Set up governance rules
-                                    </Button>
-                                </Link>
-                            </Grid>
+
+                            {member?.role === 'Admin' && (
+                                <Grid item={true} xs={12} md="auto">
+                                    <Link to={`/clubs/${club?._id}/rules`} style={{textDecoration: 'none'}}>
+                                        <Button
+                                            size="small"
+                                            variant="text"
+                                            sx={{
+                                                textDecoration: 'underline',
+                                                color: 'text.secondary',
+                                                textTransform: 'capitalize'
+                                            }}>
+                                            Set up governance rules
+                                        </Button>
+                                    </Link>
+                                </Grid>
+                            )}
                         </Grid>
                     </Box>
 
@@ -213,18 +219,18 @@ const ClubProfilePage = () => {
                             <Tab
                                 sx={{
                                     textTransform: 'capitalize',
-                                    color: index === 'assets' ? 'text.primary' : 'text.secondary'
+                                    color: index === 'members' ? 'text.primary' : 'text.secondary'
                                 }} value="members" label="Members"/>
                             <Tab
                                 sx={{
                                     textTransform: 'capitalize',
-                                    color: index === 'assets' ? 'text.primary' : 'text.secondary'
+                                    color: index === 'activity' ? 'text.primary' : 'text.secondary'
                                 }} value="activity" label="Activity"/>
                         </Tabs>
                     </Box>
                     <Divider variant="fullWidth" sx={{my: 2}}/>
                     <Box>
-                        {club && transactions && renderTabContent(index)}
+                        {club && transactions && members && renderTabContent(index)}
                     </Box>
                 </Container>
             </Box>

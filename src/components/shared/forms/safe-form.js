@@ -31,7 +31,7 @@ const SafeForm = () => {
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
             {connecting && <LinearProgress variant="query" color="secondary"/>}
-            {loading && <LinearProgress variant="query" color="secondary"/>}
+            {loading && <LinearProgress variant="query" color="primary"/>}
             <Typography sx={{color: 'white', pt: 2}} variant="h6" align="center">
                 Create a SAFE
             </Typography>

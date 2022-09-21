@@ -10,6 +10,18 @@ const getClubs = createAsyncThunk('clubs/getClubs', async ({address}, thunkAPI) 
     }
 });
 
+
+const depositFunds = createAsyncThunk(
+    'clubs/depositFunds',
+    async ({address, club, amount}, thunkAPI) => {
+    try {
+        const response = await CLUBS_API.depositFunds(address, club, amount);
+        return response.data;
+    } catch (e) {
+        return thunkAPI.rejectWithValue(e.response.error.message);
+    }
+});
+
 const getClub = createAsyncThunk('clubs/getClub', async ({clubID}, thunkAPI) => {
     try {
         const response = await CLUBS_API.getClub(clubID);
@@ -29,9 +41,11 @@ const getClubBySafe = createAsyncThunk('clubs/getClubBySafe', async ({address}, 
 });
 
 
-const updateClub = createAsyncThunk('clubs/updateClub', async ({token, data, id}, thunkAPI) => {
+const updateClub = createAsyncThunk(
+    'clubs/updateClub',
+    async ({data, club, resetForm}, thunkAPI) => {
     try {
-        const response = await CLUBS_API.updateClub(token, data, id);
+        const response = await CLUBS_API.updateClub(data, club);
         return response.data;
     } catch (e) {
         return thunkAPI.rejectWithValue(e.response.error.message);
@@ -54,9 +68,12 @@ const createClub = createAsyncThunk(
 
 const joinClub = createAsyncThunk(
     'clubs/joinClub',
-    async ({club, data}, thunkAPI) => {
+    async ({club, data, callback}, thunkAPI) => {
         try {
             const response = await CLUBS_API.joinClub(club, data);
+            if(callback){
+                callback();
+            }
             return response.data;
         } catch (e) {
             return thunkAPI.rejectWithValue(e.response.error.message);
@@ -73,7 +90,8 @@ const clubsSlice = createSlice({
         memberClubs: [],
         adminClubs: [],
         error: '',
-        member: null
+        member: null,
+        message: null
     },
     reducers: {},
     extraReducers: builder => {
@@ -134,11 +152,23 @@ const clubsSlice = createSlice({
         }).addCase(joinClub.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
+        }).addCase(depositFunds.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        }).addCase(depositFunds.fulfilled, (state, action) => {
+            state.loading = false;
+            state.error = null;
+            state.club = action.payload.data;
+            state.member = action.payload.member;
+            state.message = action.payload.message;
+        }).addCase(depositFunds.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
         })
     }
 });
 
 
 export const selectClubs = state => state.clubs;
-export const CLUBS_ACTION_CREATORS = {getClub, getClubs, updateClub, createClub, joinClub, getClubBySafe};
+export const CLUBS_ACTION_CREATORS = {getClub, getClubs, updateClub, createClub, joinClub, getClubBySafe, depositFunds};
 export default clubsSlice.reducer;

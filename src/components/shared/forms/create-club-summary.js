@@ -16,7 +16,6 @@ const CreateClubSummary = () => {
     const handleSignTransaction = async () => {
         try {
             const safe = await deploySafe();
-            console.log(safe, 'safe');
             dispatch(CREATE_CLUB_ACTION_CREATORS.next());
         } catch (e) {
             console.log(e.message, 'error');
@@ -86,7 +85,7 @@ const CreateClubSummary = () => {
                     </Stack>
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
                         <Typography sx={{color: 'text.primary'}} variant="body2" align="center">
-                            Network
+                            Currency
                         </Typography>
                         <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
                             {club?.currency}

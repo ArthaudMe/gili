@@ -36,8 +36,8 @@ const verifyInvitation = createAsyncThunk(
 const invitationsSlice = createSlice({
     name: 'invitations',
     initialState: {
-        loading: false,
-        error: null,
+        invitationLoading: false,
+        invitationError: null,
         invitation: null
     },
     reducers: {
@@ -63,20 +63,20 @@ const invitationsSlice = createSlice({
     },
     extraReducers: builder => {
         builder.addCase(createInvitation.pending, (state) => {
-            state.loading = true;
+            state.invitationLoading = true;
         }).addCase(createInvitation.fulfilled, (state, action) => {
-            state.loading = false;
+            state.invitationLoading = false;
         }).addCase(createInvitation.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
+            state.invitationLoading = false;
+            state.invitationError = action.payload;
         }).addCase(verifyInvitation.pending, (state) => {
-            state.loading = true;
+            state.invitationLoading = true;
         }).addCase(verifyInvitation.fulfilled, (state, action) => {
-            state.loading = false;
+            state.invitationLoading = false;
             state.invitation = action.payload.data;
         }).addCase(verifyInvitation.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
+            state.invitationLoading = false;
+            state.invitationError = action.payload;
         });
     }
 });

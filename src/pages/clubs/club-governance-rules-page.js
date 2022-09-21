@@ -18,10 +18,11 @@ import {CLUBS_ACTION_CREATORS, selectClubs} from "../../redux/features/clubs/clu
 import {useParams} from "react-router";
 import {KeyboardArrowLeft} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
+import {CREATE_CLUB_ACTION_CREATORS} from "../../redux/features/create-club/create-club-slice";
 
 const ClubGovernanceRulesPage = () => {
 
-    const {club, loading, error} = useSelector(selectClubs);
+    const {club, loading, error, gas} = useSelector(selectClubs);
     const {clubID} = useParams();
     const dispatch = useDispatch();
 
@@ -31,6 +32,10 @@ const ClubGovernanceRulesPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [clubID]);
 
+    useEffect(() => {
+        dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <AuthLayout>
             <Box sx={{
@@ -93,8 +98,8 @@ const ClubGovernanceRulesPage = () => {
                                             </Typography>
                                         </Grid>
                                         <Grid item={true} xs={12} md="auto">
-                                            <Typography variant="body1" sx={{color: 'text.primary'}}>
-                                                0.23 matic
+                                            <Typography sx={{color: 'text.primary'}} variant="body1">
+                                                {gas && `${gas.maxPrice} ${gas.unit}`}
                                             </Typography>
                                         </Grid>
                                      </Grid>

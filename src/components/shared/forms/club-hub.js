@@ -45,14 +45,9 @@ const ClubHub = () => {
                     </Grid>
 
                     <Grid item={true} xs={12} md="auto">
-                        <Stack direction="row" spacing={0}>
-                            <Typography sx={{color: 'text.primary'}} variant="body1">
-                                {club?.minted}
-                            </Typography>
-                            <Typography sx={{color: 'text.primary'}} variant="body1">
-                                %
-                            </Typography>
-                        </Stack>
+                        <Typography sx={{color: 'text.primary'}} variant="body1">
+                            {club?.minted}%
+                        </Typography>
                     </Grid>
                 </Grid>
                 <Grid sx={{mb: 3}} container={true} justifyContent="space-between" spacing={2}>
@@ -67,7 +62,7 @@ const ClubHub = () => {
                                 {club?.goal}
                             </Typography>
                             <Typography sx={{color: 'text.primary'}} variant="body1">
-                                {UTILS.selectCurrency(club.currency)}
+                                {club && UTILS.selectCurrency(club?.currency)}
                             </Typography>
                         </Stack>
                     </Grid>
@@ -85,7 +80,7 @@ const ClubHub = () => {
                                 {club?.treasury}
                             </Typography>
                             <Typography sx={{color: 'text.primary'}} variant="body1">
-                                {UTILS.selectCurrency(club.currency)}
+                                {club && UTILS.selectCurrency(club.currency)}
                             </Typography>
                         </Stack>
                     </Grid>

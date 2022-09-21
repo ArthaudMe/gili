@@ -1,4 +1,4 @@
-import {Button, Card, CardContent, Grid, Link, Typography} from "@mui/material";
+import {Button, Card, CardContent, Grid, Link, Typography, LinearProgress} from "@mui/material";
 import React, {useEffect} from "react";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,7 +10,7 @@ const CreateClubSuccess = () => {
     const dispatch = useDispatch();
 
     const {safe, txHash} = useSafeFactory();
-    const {club} = useSelector(selectClubs);
+    const {club, loading} = useSelector(selectClubs);
 
     useEffect(() => {
         dispatch(CLUBS_ACTION_CREATORS.getClubBySafe({address: safe.getAddress()}));
@@ -19,6 +19,7 @@ const CreateClubSuccess = () => {
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
+            {loading && <LinearProgress variant="query" color="secondary"/> }
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 Congrats, you’ve created a new club!
             </Typography>
