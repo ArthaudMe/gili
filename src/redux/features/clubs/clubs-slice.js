@@ -55,10 +55,12 @@ const updateClub = createAsyncThunk(
 
 const createClub = createAsyncThunk(
     'clubs/createClub',
-    async ({data, handleNext}, thunkAPI) => {
+    async ({data, callback}, thunkAPI) => {
         try {
             const response = await CLUBS_API.createClub(data);
-            handleNext();
+            if(callback){
+                callback();
+            }
             return response.data;
         } catch (e) {
             return thunkAPI.rejectWithValue(e.response.error.message);
@@ -114,6 +116,16 @@ const clubsSlice = createSlice({
             state.error = null;
             state.club = action.payload.data;
         }).addCase(getClub.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        }).addCase(getClubBySafe.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        }).addCase(getClubBySafe.fulfilled, (state, action) => {
+            state.loading = false;
+            state.error = null;
+            state.club = action.payload.data;
+        }).addCase(getClubBySafe.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         }).addCase(updateClub.pending, (state) => {

@@ -17,11 +17,6 @@ const CreateClubSummary = () => {
     const [{wallet}] = useConnectWallet();
     const {safeAddress, deploySafe, connected, loading} = useSafeFactory();
 
-    const handleNext = useCallback(() => {
-        dispatch(CREATE_CLUB_ACTION_CREATORS.next());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const handleSignTransaction = async () => {
         try {
             const safe = await deploySafe();
@@ -31,7 +26,7 @@ const CreateClubSummary = () => {
                         ...club,
                         createdBy: wallet.accounts[0].address,
                         safeAddress
-                    }, handleNext
+                    }, callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next())
                 }))
             }
         } catch (e) {
