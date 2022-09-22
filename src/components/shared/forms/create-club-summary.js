@@ -15,7 +15,7 @@ const CreateClubSummary = () => {
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
     const [{wallet}] = useConnectWallet();
-    const {safeAddress, deploySafe, connected, loading} = useSafeFactory();
+    const {safeAddress, deploySafe, connected, loading, setLoading} = useSafeFactory();
 
     const handleSignTransaction = async () => {
         try {
@@ -31,6 +31,7 @@ const CreateClubSummary = () => {
             }
         } catch (e) {
             enqueueSnackbar(e.message, {variant: 'error'});
+            setLoading(false);
             console.log(e.message, 'error');
         }
     }
