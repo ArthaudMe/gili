@@ -12,11 +12,6 @@ const CreateClubSuccess = () => {
     const {safe, txHash} = useSafeFactory();
     const {club, loading} = useSelector(selectClubs);
 
-    useEffect(() => {
-        dispatch(CLUBS_ACTION_CREATORS.getClubBySafe({address: safe.getAddress()}));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [safe]);
-
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
             {loading && <LinearProgress variant="query" color="secondary"/> }

@@ -59,6 +59,7 @@ const createClub = createAsyncThunk(
         try {
             const response = await CLUBS_API.createClub(data);
             if(callback){
+                console.log('callback')
                 callback();
             }
             return response.data;
@@ -150,6 +151,7 @@ const clubsSlice = createSlice({
             state.loading = false;
             state.error = null;
             state.clubs = [action.payload.data, ...state.clubs];
+            state.club = action.payload.data;
         }).addCase(createClub.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
