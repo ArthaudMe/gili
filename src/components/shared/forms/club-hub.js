@@ -21,7 +21,7 @@ const ClubHub = () => {
                 backdropFilter: 'blur(5px)'
             }}>
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
-                {club.name} club hub
+                {club?.name} club hub
             </Typography>
             <CardContent sx={{paddingX: 5}}>
                 <Grid sx={{mb: 3}} container={true} justifyContent="space-between" spacing={2}>
@@ -62,7 +62,7 @@ const ClubHub = () => {
                                 {club?.goal}
                             </Typography>
                             <Typography sx={{color: 'text.primary'}} variant="body1">
-                                {club && UTILS.selectCurrency(club?.currency)}
+                                {club && UTILS.selectCurrency(club.currency)}
                             </Typography>
                         </Stack>
                     </Grid>
