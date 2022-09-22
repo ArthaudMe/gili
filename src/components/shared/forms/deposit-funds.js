@@ -13,7 +13,7 @@ import {useSnackbar} from "notistack";
 const DepositFunds = () => {
 
     const dispatch = useDispatch();
-    const {safe} = useSafeFactory();
+    const {safe, setLoading, loading: safeLoading} = useSafeFactory();
     const [{wallet}] = useConnectWallet();
     const {club, loading} = useSelector(selectClubs);
     const {enqueueSnackbar} = useSnackbar();
@@ -24,15 +24,18 @@ const DepositFunds = () => {
             const tx = await safe.createTransaction({
                 safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
             });
+            console.log(tx);
             if (tx) {
+                console.log(tx, 'inside if');
                 dispatch(CLUBS_ACTION_CREATORS.joinClub({
                     data: {amount: amount, address: wallet.accounts[0].address},
                     club: club?._id,
-                    callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
+                    callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next())
                 }));
             }
         }catch (e) {
             console.log(e.message);
+            setLoading(false);
             enqueueSnackbar(e.message, {variant: 'error'});
         }
     }
@@ -59,7 +62,8 @@ const DepositFunds = () => {
                 backgroundColor: 'rgba(255, 255, 255, 0.10)',
                 backdropFilter: 'blur(5px)'
             }}>
-            {loading && <LinearProgress variant="query" color="error"/>}
+            {loading && <LinearProgress variant="query" color="secondary"/>}
+            {safeLoading && <LinearProgress variant="query" color="primary"/>}
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 Deposit funds to join club
             </Typography>

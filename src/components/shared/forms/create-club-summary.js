@@ -1,7 +1,7 @@
 import {Button, Card, CardContent, Grid, LinearProgress, Stack, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {CREATE_CLUB_ACTION_CREATORS, selectCreateClub} from "../../../redux/features/create-club/create-club-slice";
-import React, {useCallback, useEffect} from "react";
+import React, {useEffect} from "react";
 import {UTILS} from "../../../utils/utils";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
@@ -17,6 +17,10 @@ const CreateClubSummary = () => {
     const [{wallet}] = useConnectWallet();
     const {safeAddress, deploySafe, connected, loading, setLoading} = useSafeFactory();
 
+    const showMessage = (message, options) => {
+        enqueueSnackbar(message, options);
+    }
+
     const handleSignTransaction = async () => {
         try {
             const safe = await deploySafe();
@@ -26,8 +30,10 @@ const CreateClubSummary = () => {
                         ...club,
                         createdBy: wallet.accounts[0].address,
                         safeAddress
-                    }, callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next())
-                }))
+                    },
+                    callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next()),
+                    showMessage
+                }));
             }
         } catch (e) {
             enqueueSnackbar(e.message, {variant: 'error'});

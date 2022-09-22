@@ -55,13 +55,13 @@ const updateClub = createAsyncThunk(
 
 const createClub = createAsyncThunk(
     'clubs/createClub',
-    async ({data, callback}, thunkAPI) => {
+    async ({data, callback, showMessage}, thunkAPI) => {
         try {
             const response = await CLUBS_API.createClub(data);
             if(callback){
-                console.log('callback')
                 callback();
             }
+            showMessage(response.data.message, {variant: 'success'});
             return response.data;
         } catch (e) {
             return thunkAPI.rejectWithValue(e.response.error.message);
