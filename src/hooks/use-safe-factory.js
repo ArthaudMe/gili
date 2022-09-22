@@ -72,6 +72,7 @@ const SafeFactoryProvider = ({children}) => {
             return safe;
         } catch (e) {
             console.log(e.message, 'error use safe factory');
+            setLoading(false);
         }
     }, [ownerAddress, safeFactory]);
 
@@ -88,6 +89,7 @@ const SafeFactoryProvider = ({children}) => {
             setLoading(false);
         }catch (e) {
             setError(e.message);
+            setLoading(false);
         }
     }, []);
 
