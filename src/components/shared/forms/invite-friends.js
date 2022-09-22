@@ -10,7 +10,7 @@ import {ContentCopy} from "@mui/icons-material";
 
 const InviteFriends = () => {
     const {enqueueSnackbar} = useSnackbar();
-    const [selectedRole, setSelectedRole] = useState('member');
+    const [selectedRole, setSelectedRole] = useState('Member');
     const {club} = useSelector(selectClubs);
     const [{wallet}] = useConnectWallet();
     const {invitationLoading, invitation} = useSelector(selectInvitation);
@@ -43,12 +43,12 @@ const InviteFriends = () => {
             </Typography>
             <CardContent sx={{paddingX: 3}}>
                 <Box
-                    onClick={() => setSelectedRole('admin')}
+                    onClick={() => setSelectedRole('Admin')}
                     sx={{
                         cursor: 'pointer',
                         padding: 4,
                         borderRadius: 1,
-                        backgroundColor: selectedRole === 'admin' ? 'rgba(255, 255, 255, 0.1)' : false
+                        backgroundColor: selectedRole === 'Admin' ? 'rgba(255, 255, 255, 0.1)' : false
                     }}>
                     <Typography sx={{color: 'text.primary', fontWeight: 'bold', mb: 1}} variant="body1">
                         Admin
@@ -78,13 +78,13 @@ const InviteFriends = () => {
                 </Box>
 
                 <Box
-                    onClick={() => setSelectedRole('member')}
+                    onClick={() => setSelectedRole('Member')}
                     sx={{
                         cursor: 'pointer',
                         padding: 4,
                         borderRadius: 1,
                         mb: 4,
-                        backgroundColor: selectedRole === 'member' ? 'rgba(255, 255, 255, 0.1)' : false
+                        backgroundColor: selectedRole === 'Member' ? 'rgba(255, 255, 255, 0.1)' : false
                     }}>
                     <Typography sx={{color: 'text.primary', fontWeight: 'bold', mb: 1}} variant="body1">
                         Members

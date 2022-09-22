@@ -20,7 +20,7 @@ const DepositFunds = () => {
 
     const handleValidatePost = async (amount) => {
         try {
-            const owners = safe.getOwners();
+            const owners = await safe.getOwners();
             const tx = await safe.createTransaction({
                 safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
             });
@@ -47,7 +47,7 @@ const DepositFunds = () => {
             deposit: yup.number().required('Deposit required')
         }),
         onSubmit: async (values, formikHelpers) => {
-            await handleValidatePost(values);
+            await handleValidatePost(values.amount);
             formikHelpers.resetForm();
         },
         initialValues: {
