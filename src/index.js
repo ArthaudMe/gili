@@ -33,7 +33,12 @@ const web3Onboard = init({
             label: 'Ethereum',
             rpcUrl: `https://mainnet.infura.io/v3/${INFURA_ID}`
         },
-
+        {
+            id: '0x89',
+            token: 'MATIC',
+            label: 'Polygon',
+            rpcUrl: 'https://matic-mainnet.chainstacklabs.com'
+        },
         {
             label: 'Gnosis',
             id: '0x64',
