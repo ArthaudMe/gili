@@ -20,18 +20,23 @@ const createClubSlice = createSlice({
         loading: false,
         error: null,
         club: {
-            name: '',
-            goal: '',
-            duration: {
-                amount: '',
-                unit: ''
-            },
-            token: '',
-            currency: '',
-            maximumMemberCount: ''
+            "_id": "632c8461ea12c80269ec8ed9",
+            "name": "STAN",
+            "token": "st",
+            "createdBy": "0x24bfafee350b76b4c73422a8f54ada445d938cd0",
+            "goal": 1,
+            "duration": {"amount": "11", "unit": "day"},
+            "currency": "Ethereum",
+            "maximumMemberCount": 12,
+            "treasury": 0.0001,
+            "minted": 0.0001,
+            "safeAddress": "0x2b97bb03F186A5eC54c13640CFFd6c342843D9AD",
+            "status": "Active",
+            "createdAt": 1663861857045,
+            "updatedAt": 1663862268067
         },
         gas: '',
-        step: 1
+        step: 5
     },
     reducers: {
         next: (state) => {

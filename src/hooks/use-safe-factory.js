@@ -89,6 +89,7 @@ const SafeFactoryProvider = ({children}) => {
             setLoading(false);
         }catch (e) {
             setError(e.message);
+            console.log(e.message, 'connect safe')
             setLoading(false);
         }
     }, []);

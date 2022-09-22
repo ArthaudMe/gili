@@ -58,7 +58,7 @@ const createClub = createAsyncThunk(
     async ({data, callback, showMessage}, thunkAPI) => {
         try {
             const response = await CLUBS_API.createClub(data);
-            if(callback){
+            if (callback) {
                 callback();
             }
             showMessage(response.data.message, {variant: 'success'});
@@ -71,14 +71,14 @@ const createClub = createAsyncThunk(
 
 const joinClub = createAsyncThunk(
     'clubs/joinClub',
-    async ({club, data, callback}, thunkAPI) => {
+    async ({club, data, callback, showMessage}, thunkAPI) => {
         try {
             const response = await CLUBS_API.joinClub(club, data);
-            if (callback) {
-                callback();
-            }
+            callback();
+            showMessage(response.data.message, {variant: 'success'});
             return response.data;
         } catch (e) {
+            showMessage(e.response.data.message, {variant: 'error'});
             return thunkAPI.rejectWithValue(e.response.error.message);
         }
     });
@@ -88,7 +88,22 @@ const clubsSlice = createSlice({
     name: 'clubs',
     initialState: {
         clubs: [],
-        club: null,
+        club: {
+            "_id": "632c8461ea12c80269ec8ed9",
+            "name": "STAN",
+            "token": "st",
+            "createdBy": "0x24bfafee350b76b4c73422a8f54ada445d938cd0",
+            "goal": 1,
+            "duration": {"amount": "11", "unit": "day"},
+            "currency": "Ethereum",
+            "maximumMemberCount": 12,
+            "treasury": 0.0001,
+            "minted": 0.0001,
+            "safeAddress": "0x2b97bb03F186A5eC54c13640CFFd6c342843D9AD",
+            "status": "Active",
+            "createdAt": 1663861857045,
+            "updatedAt": 1663862268067
+        },
         loading: false,
         memberClubs: [],
         adminClubs: [],

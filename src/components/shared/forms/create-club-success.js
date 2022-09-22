@@ -1,9 +1,9 @@
-import {Button, Card, CardContent, Grid, Link, Typography, LinearProgress} from "@mui/material";
-import React, {useEffect} from "react";
+import {Button, Card, CardContent, Grid, LinearProgress, Link, Typography} from "@mui/material";
+import React from "react";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
-import {CLUBS_ACTION_CREATORS, selectClubs} from "../../../redux/features/clubs/clubs-slice";
+import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
 
 const CreateClubSuccess = () => {
 
@@ -14,7 +14,7 @@ const CreateClubSuccess = () => {
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
-            {loading && <LinearProgress variant="query" color="secondary"/> }
+            {loading && <LinearProgress variant="query" color="secondary"/>}
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 Congrats, you’ve created a new club!
             </Typography>

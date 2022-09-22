@@ -18,6 +18,10 @@ const DepositFunds = () => {
     const {club, loading} = useSelector(selectClubs);
     const {enqueueSnackbar} = useSnackbar();
 
+    const showMessage = (message, options) => {
+        enqueueSnackbar(message, options);
+    }
+
     const handleValidatePost = async (amount) => {
         try {
             const owners = await safe.getOwners();
@@ -28,12 +32,13 @@ const DepositFunds = () => {
             if (tx) {
                 console.log(tx, 'inside if');
                 dispatch(CLUBS_ACTION_CREATORS.joinClub({
-                    data: {amount: amount, address: wallet.accounts[0].address},
+                    data: {amount, address: wallet.accounts[0].address},
                     club: club?._id,
-                    callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next())
+                    callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next()),
+                    showMessage
                 }));
             }
-        }catch (e) {
+        } catch (e) {
             console.log(e.message);
             setLoading(false);
             enqueueSnackbar(e.message, {variant: 'error'});
@@ -47,14 +52,13 @@ const DepositFunds = () => {
             deposit: yup.number().required('Deposit required')
         }),
         onSubmit: async (values, formikHelpers) => {
-            await handleValidatePost(values.amount);
+            await handleValidatePost(values.deposit);
             formikHelpers.resetForm();
         },
         initialValues: {
             deposit: ''
         }
     });
-
 
     return (
         <Card
@@ -89,11 +93,7 @@ const DepositFunds = () => {
                                     color="secondary"
                                     size="small"
                                     error={Boolean(formik.touched.deposit && formik.errors.deposit)}
-                                    helperText={
-                                        <Typography variant="body2" color="error">
-                                            {formik.touched.deposit && formik.errors.deposit}
-                                        </Typography>
-                                    }
+                                    helperText={formik.touched.deposit && formik.errors.deposit}
                                 />
                                 <Typography sx={{color: 'text.primary'}} variant="body1">
                                     {club && UTILS.selectCurrency(club.currency)}
@@ -139,14 +139,14 @@ const DepositFunds = () => {
                     <Grid container={true} justifyContent="center" alignItems="center" spacing={2}>
                         <Grid item={true} xs={12} md={6}>
                             <Button
-                                onClick={handleValidatePost}
+                                onClick={formik.handleSubmit}
                                 sx={{
                                     textTransform: 'none',
                                     py: 1.2
                                 }}
                                 color="secondary"
-                                type="submit"
                                 fullWidth={true}
+                                type="submit"
                                 variant="contained"
                                 disableElevation={true}
                                 size="small">

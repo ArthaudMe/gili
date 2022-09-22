@@ -4,16 +4,18 @@ import {CONSTANTS} from "../../../utils/constants";
 
 const createInvitation = createAsyncThunk(
     'invitations/createInvitation',
-    async ({data}, thunkAPI) => {
+    async ({data, showMessage}, thunkAPI) => {
     try {
         const response = await axios({
             url: `${CONSTANTS.BASE_SERVER_URL}/user/invitations`,
             data,
             method: 'POST'
         });
+        showMessage(response.data.message, {variant: 'success'});
         return response.data;
     }catch (e) {
         const {message} = e.response.data;
+        showMessage(message, {variant: 'success'});
         return thunkAPI.rejectWithValue(message);
     }
 });
@@ -66,6 +68,7 @@ const invitationsSlice = createSlice({
             state.invitationLoading = true;
         }).addCase(createInvitation.fulfilled, (state, action) => {
             state.invitationLoading = false;
+            state.invitation = action.payload.data;
         }).addCase(createInvitation.rejected, (state, action) => {
             state.invitationLoading = false;
             state.invitationError = action.payload;

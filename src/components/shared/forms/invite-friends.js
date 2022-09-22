@@ -16,13 +16,17 @@ const InviteFriends = () => {
     const {invitationLoading, invitation} = useSelector(selectInvitation);
     const dispatch = useDispatch();
 
+    const showMessage = (message, options) => {
+        enqueueSnackbar(message, options);
+    }
     const handleInvitationGenerate = () => {
         dispatch(INVITATIONS_ACTION_CREATORS.createInvitation({
             data: {
                 role: selectedRole,
                 club: club?._id,
                 inviter: wallet.accounts[0].address
-            }
+            },
+            showMessage
         }));
     }
 
@@ -68,6 +72,7 @@ const InviteFriends = () => {
                                 }}
                                 disabled={invitationLoading}
                                 fullWidth={true}
+                                color="secondary"
                                 variant="contained"
                                 disableElevation={true}
                                 size="small">
@@ -93,16 +98,6 @@ const InviteFriends = () => {
                         Members are investors in your club - they don’t play an active role managing the club.
                     </Typography>
 
-                    {invitation && (
-                        <Button
-                            sx={{mb: 2}}
-                            onClick={handleInvitationCopy}
-                            variant="text"
-                            startIcon={<ContentCopy color="secondary"/>}>
-                            Copy Invitation URL
-                        </Button>
-                    )}
-
                     <Grid container={true} justifyContent="center" alignItems="center" spacing={2}>
                         <Grid item={true} xs={12} md="auto">
                             <Button
@@ -114,6 +109,7 @@ const InviteFriends = () => {
                                 disabled={invitationLoading}
                                 fullWidth={true}
                                 variant="contained"
+                                color="secondary"
                                 disableElevation={true}
                                 size="small">
                                 Generate a link to invite members
@@ -121,6 +117,17 @@ const InviteFriends = () => {
                         </Grid>
                     </Grid>
                 </Box>
+                {invitation && (
+                    <Button
+                        fullWidth={true}
+                        sx={{mb: 2, textTransform: 'none'}}
+                        onClick={handleInvitationCopy}
+                        variant="text"
+                        color="primary"
+                        startIcon={<ContentCopy color="primary"/>}>
+                        Copy Invitation URL
+                    </Button>
+                )}
                 <Grid container={true} justifyContent="center" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
                         <Link to={`/clubs/${club?._id}`} style={{textDecoration: 'none'}}>
@@ -130,6 +137,7 @@ const InviteFriends = () => {
                                     py: 1.2
                                 }}
                                 fullWidth={true}
+                                color="secondary"
                                 variant="contained"
                                 disableElevation={true}
                                 size="small">
