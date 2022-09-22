@@ -42,6 +42,7 @@ const ClubSettingsPage = () => {
 
     useEffect(() => {
         dispatch(CLUBS_ACTION_CREATORS.getClub({clubID}));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [clubID]);
 
     const formik = useFormik({

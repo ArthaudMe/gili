@@ -8,24 +8,33 @@ import * as yup from "yup";
 import {CLUBS_ACTION_CREATORS, selectClubs} from "../../../redux/features/clubs/clubs-slice";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {useConnectWallet} from "@web3-onboard/react";
+import {useSnackbar} from "notistack";
 
 const DepositFunds = () => {
 
     const dispatch = useDispatch();
     const {safe} = useSafeFactory();
     const [{wallet}] = useConnectWallet();
-    const {club} = useSelector(selectClubs);
+    const {club, loading} = useSelector(selectClubs);
+    const {enqueueSnackbar} = useSnackbar();
 
     const handleValidatePost = async (amount) => {
-        const owners = safe.getOwners();
-        await safe.createTransaction({
-            safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
-        });
-
-        dispatch(CLUBS_ACTION_CREATORS.joinClub({
-            data: {amount: amount, address: wallet.accounts[0].address}
-        }));
-        dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+        try {
+            const owners = safe.getOwners();
+            const tx = await safe.createTransaction({
+                safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
+            });
+            if (tx) {
+                dispatch(CLUBS_ACTION_CREATORS.joinClub({
+                    data: {amount: amount, address: wallet.accounts[0].address},
+                    club: club?._id,
+                    callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
+                }));
+            }
+        }catch (e) {
+            console.log(e.message);
+            enqueueSnackbar(e.message, {variant: 'error'});
+        }
     }
 
     const formik = useFormik({
@@ -50,6 +59,7 @@ const DepositFunds = () => {
                 backgroundColor: 'rgba(255, 255, 255, 0.10)',
                 backdropFilter: 'blur(5px)'
             }}>
+            {loading && <LinearProgress variant="query" color="error"/>}
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 Deposit funds to join club
             </Typography>
@@ -82,7 +92,7 @@ const DepositFunds = () => {
                                     }
                                 />
                                 <Typography sx={{color: 'text.primary'}} variant="body1">
-                                    {UTILS.selectCurrency(club.currency)}
+                                    {club && UTILS.selectCurrency(club.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>
@@ -100,7 +110,7 @@ const DepositFunds = () => {
                                     {club?.treasury}
                                 </Typography>
                                 <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                                    {UTILS.selectCurrency(club?.currency)}
+                                    {club && UTILS.selectCurrency(club?.currency)}
                                 </Typography>
                             </Stack>
                         </Grid>

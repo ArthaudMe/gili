@@ -14,13 +14,13 @@ const getClubs = createAsyncThunk('clubs/getClubs', async ({address}, thunkAPI) 
 const depositFunds = createAsyncThunk(
     'clubs/depositFunds',
     async ({address, club, amount}, thunkAPI) => {
-    try {
-        const response = await CLUBS_API.depositFunds(address, club, amount);
-        return response.data;
-    } catch (e) {
-        return thunkAPI.rejectWithValue(e.response.error.message);
-    }
-});
+        try {
+            const response = await CLUBS_API.depositFunds(address, club, amount);
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.response.error.message);
+        }
+    });
 
 const getClub = createAsyncThunk('clubs/getClub', async ({clubID}, thunkAPI) => {
     try {
@@ -44,20 +44,20 @@ const getClubBySafe = createAsyncThunk('clubs/getClubBySafe', async ({address}, 
 const updateClub = createAsyncThunk(
     'clubs/updateClub',
     async ({data, club, resetForm}, thunkAPI) => {
-    try {
-        const response = await CLUBS_API.updateClub(data, club);
-        return response.data;
-    } catch (e) {
-        return thunkAPI.rejectWithValue(e.response.error.message);
-    }
-});
+        try {
+            const response = await CLUBS_API.updateClub(data, club);
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.response.error.message);
+        }
+    });
 
 
 const createClub = createAsyncThunk(
     'clubs/createClub',
-    async ({token, data, handleNext}, thunkAPI) => {
+    async ({data, handleNext}, thunkAPI) => {
         try {
-            const response = await CLUBS_API.createClub(token, data);
+            const response = await CLUBS_API.createClub(data);
             handleNext();
             return response.data;
         } catch (e) {
@@ -71,7 +71,7 @@ const joinClub = createAsyncThunk(
     async ({club, data, callback}, thunkAPI) => {
         try {
             const response = await CLUBS_API.joinClub(club, data);
-            if(callback){
+            if (callback) {
                 callback();
             }
             return response.data;

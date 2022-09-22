@@ -2,7 +2,6 @@ import {Button, Card, CardContent, Divider, Grid, Typography} from "@mui/materia
 import React from "react";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {selectInvitation} from "../../../redux/features/invitations/invitations-slice";
 import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
 import {UTILS} from "../../../utils/utils";
 
@@ -42,7 +41,7 @@ const UserInvitationClubHub = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            {member?.ownership * 100}%
+                            {Number.parseFloat(`${member?.ownership * 100}`).toFixed(2)}%
                         </Typography>
                     </Grid>
                 </Grid>
@@ -59,7 +58,7 @@ const UserInvitationClubHub = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            {`${club?.treasury} ${UTILS.selectCurrency(club?.currency)}`}
+                            {`${club?.treasury} ${club && UTILS.selectCurrency(club?.currency)}`}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -71,7 +70,7 @@ const UserInvitationClubHub = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            {`${club?.goal} ${UTILS.selectCurrency(club?.currency)}`}
+                            {`${club?.goal} ${club && UTILS.selectCurrency(club?.currency)}`}
                         </Typography>
                     </Grid>
                 </Grid>

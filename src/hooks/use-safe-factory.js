@@ -52,7 +52,7 @@ const SafeFactoryProvider = ({children}) => {
         }
     }, []);
 
-    const deploySafe = useCallback(async () => {
+    const deploySafe = useCallback(async (callback) => {
         try {
             const safeAccountConfig = {
                 owners: [ownerAddress],
@@ -69,6 +69,7 @@ const SafeFactoryProvider = ({children}) => {
             });
             setLoading(false);
             setSafe(safe);
+            callback();
             return safe;
         } catch (e) {
             console.log(e.message, 'error use safe factory');

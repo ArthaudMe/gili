@@ -1,23 +1,41 @@
 import {Button, Card, CardContent, Grid, LinearProgress, Stack, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {CREATE_CLUB_ACTION_CREATORS, selectCreateClub} from "../../../redux/features/create-club/create-club-slice";
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import {UTILS} from "../../../utils/utils";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
+import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
+import {useSnackbar} from "notistack";
+import {useConnectWallet} from "@web3-onboard/react";
 
 const CreateClubSummary = () => {
 
     const {club, gas} = useSelector(selectCreateClub);
 
     const dispatch = useDispatch();
-
+    const {enqueueSnackbar} = useSnackbar();
+    const [{wallet}] = useConnectWallet();
     const {safeAddress, deploySafe, connected, loading} = useSafeFactory();
+
+    const handleNext = useCallback(() => {
+        dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleSignTransaction = async () => {
         try {
             const safe = await deploySafe();
-            dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+            if (safe) {
+                dispatch(CLUBS_ACTION_CREATORS.createClub({
+                    data: {
+                        ...club,
+                        createdBy: wallet.accounts[0].address,
+                        safeAddress
+                    }, handleNext
+                }))
+            }
         } catch (e) {
+            enqueueSnackbar(e.message, {variant: 'error'});
             console.log(e.message, 'error');
         }
     }
@@ -99,21 +117,21 @@ const CreateClubSummary = () => {
                         </Typography>
                     </Grid>
                     {connected && (
-                    <Grid item={true} xs={12} md="auto">
-                        <Button
-                            onClick={handleSignTransaction}
-                            sx={{
-                                textTransform: 'capitalize',
-                                py: 1.2
-                            }}
-                            fullWidth={true}
-                            variant="contained"
-                            color="secondary"
-                            disableElevation={true}
-                            size="small">
-                            Sign the transaction
-                        </Button>
-                    </Grid>
+                        <Grid item={true} xs={12} md="auto">
+                            <Button
+                                onClick={handleSignTransaction}
+                                sx={{
+                                    textTransform: 'capitalize',
+                                    py: 1.2
+                                }}
+                                fullWidth={true}
+                                variant="contained"
+                                color="secondary"
+                                disableElevation={true}
+                                size="small">
+                                Sign the transaction
+                            </Button>
+                        </Grid>
                     )}
                 </Grid>
             </CardContent>

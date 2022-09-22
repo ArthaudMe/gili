@@ -33,13 +33,10 @@ const updateClub = (data, club) => {
     });
 }
 
-const createClub = (token, data) => {
+const createClub = (data) => {
     return axios({
         method: 'POST',
         url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs`,
-        headers: {
-            Authorization: `Bearer ${token}`
-        },
         data
     })
 }

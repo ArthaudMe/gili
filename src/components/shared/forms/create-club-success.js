@@ -46,7 +46,7 @@ const CreateClubSuccess = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.primary'}} variant="body1">
-                            {safe.getAddress()}
+                            {safe?.getAddress()}
                         </Typography>
                     </Grid>
                 </Grid>

@@ -20,6 +20,7 @@ import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../../redux/feat
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
 import {useConnectWallet} from "@web3-onboard/react";
+import {useSnackbar} from "notistack";
 
 const UserInviteDepositFunds = ({invitationID}) => {
 
@@ -27,18 +28,25 @@ const UserInviteDepositFunds = ({invitationID}) => {
     const {invitation, invitationLoading, invitationError} = useSelector(selectInvitation);
     const {safe, loading, connectSafe, error} = useSafeFactory();
     const [{wallet}] = useConnectWallet();
+    const {enqueueSnackbar} = useSnackbar();
+
 
     const handleValidatePost = async (amount) => {
-        const owners = safe.getOwners();
-        const tx = await safe.createTransaction({
-            safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
-        });
-        console.log(tx);
-        dispatch(CLUBS_ACTION_CREATORS.joinClub({
-            data: {amount: amount, address: wallet.accounts[0].address},
-            invitation: invitationID,
-            callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
-        }));
+        try {
+            const owners = safe.getOwners();
+            const tx = await safe.createTransaction({
+                safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
+            });
+            if(tx) {
+                dispatch(CLUBS_ACTION_CREATORS.joinClub({
+                    data: {amount: amount, address: wallet.accounts[0].address},
+                    invitation: invitationID,
+                    callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
+                }));
+            }
+        }catch (e) {
+            enqueueSnackbar(e.message, {variant: 'error'});
+        }
     }
 
     const formik = useFormik({
