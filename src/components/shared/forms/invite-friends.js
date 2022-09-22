@@ -66,6 +66,7 @@ const InviteFriends = () => {
                                     textTransform: 'capitalize',
                                     py: 1.2
                                 }}
+                                disabled={invitationLoading}
                                 fullWidth={true}
                                 variant="contained"
                                 disableElevation={true}
@@ -110,6 +111,7 @@ const InviteFriends = () => {
                                     textTransform: 'capitalize',
                                     py: 1.2
                                 }}
+                                disabled={invitationLoading}
                                 fullWidth={true}
                                 variant="contained"
                                 disableElevation={true}
