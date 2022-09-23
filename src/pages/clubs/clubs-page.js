@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 import {useConnectWallet} from "@web3-onboard/react";
 import {Link} from "react-router-dom";
-import {AUTH_ACTION_CREATORS, selectAuth} from "../../redux/features/auth/auth-slice";
+import {selectAuth} from "../../redux/features/auth/auth-slice";
 
 const ClubsPage = () => {
     const {clubs, loading, error} = useSelector(selectClubs);
@@ -31,7 +31,7 @@ const ClubsPage = () => {
     const [memberClubs, setMemberClubs] = useState([]);
     const [adminClubs, setAdminClubs] = useState([]);
     const {address} = useSelector(selectAuth);
-    const [{wallet}, connect] = useConnectWallet();
+    const [{wallet}] = useConnectWallet();
 
     const dispatch = useDispatch();
 
@@ -61,8 +61,7 @@ const ClubsPage = () => {
         }
         setMemberClubs(memberClubs);
         setAdminClubs(adminClubs);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [address, clubs]);
+    }, [address, clubs, wallet.accounts]);
 
     const getOwnership = members => {
         let ownership = 0;
@@ -73,12 +72,6 @@ const ClubsPage = () => {
         });
         return ownership;
     }
-
-    useEffect(() => {
-        if (!address) {
-            dispatch(AUTH_ACTION_CREATORS.connect({connect}));
-        }
-    }, [wallet]);
 
     return (
         <AuthLayout>

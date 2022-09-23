@@ -5,7 +5,8 @@ const Member = ({member}) => {
 
     return (
         <React.Fragment>
-            <TableCell></TableCell>
+            <TableCell>{member.address}</TableCell>
+            <TableCell align="center">{member.holding}</TableCell>
         </React.Fragment>
     )
 }

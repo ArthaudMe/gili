@@ -10,7 +10,7 @@ const Admin = ({admin}) => {
     return (
         <React.Fragment>
             <TableCell>{admin.address}</TableCell>
-            <TableCell>{calculateHolding(admin)}%</TableCell>
+            <TableCell align="center">{calculateHolding(admin)}%</TableCell>
         </React.Fragment>
     )
 }

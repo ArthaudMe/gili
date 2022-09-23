@@ -25,7 +25,7 @@ const DepositFunds = () => {
     const handleValidatePost = async (amount) => {
         try {
             const tx = await safe.createTransaction({
-                safeTransactionData: {value: amount, data: '0x', to: wallet.accounts[0].address},
+                safeTransactionData: {value: amount * 1000000000000000000, data: '0x', to: wallet.accounts[0].address},
                 onlyCalls: true,
                 options: {refundReceiver: wallet.accounts[0].address}
             });

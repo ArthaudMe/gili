@@ -23,10 +23,21 @@ const MembersTab = ({members}) => {
     return (
         <Stack direction="column" spacing={4}>
             <Box>
-                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
+                <Typography
+                    variant="body1"
+                    sx={{
+                        color: 'text.primary',
+                        mb: 2,
+                        textDecoration: 'underline'
+                    }}>
                     Admins
                 </Typography>
-                <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>
+                <TableContainer
+                    sx={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                        backdropFilter: 'blur(5px)'
+                    }}
+                    component={Paper} elevation={1}>
                     <Table size="small">
                         <TableHead>
                             <TableRow>
@@ -48,17 +59,31 @@ const MembersTab = ({members}) => {
                         alignItems: "center",
                         borderRadius: 1
                     }}>
-                        <Typography variant="body2" sx={{color: 'text.primary'}} align="center">
+                        <Typography
+                            variant="body2"
+                            sx={{color: 'text.primary'}}
+                            align="center">
                             No admins available
                         </Typography>
                     </Box>
                 )}
             </Box>
             <Box>
-                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
+                <Typography
+                    variant="body1"
+                    sx={{
+                        color: 'text.primary',
+                        mb: 2,
+                        textDecoration: 'underline'
+                    }}>
                     Members
                 </Typography>
-                <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>
+                <TableContainer
+                    sx={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                        backdropFilter: 'blur(5px)'
+                    }}
+                    component={Paper} elevation={1}>
                     <Table size="small">
                         <TableHead>
                             <TableRow>
