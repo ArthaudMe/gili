@@ -52,30 +52,25 @@ const invitationsSlice = createSlice({
             if (state.step > 1) {
                 state.step -= 1;
             }
-        },
-        saveClub: (state, action) => {
-            state.club = action.payload
-        },
-        saveWallet: (state, action) => {
-            state.wallet = action.payload
-        },
-        saveNetwork: (state, action) => {
-            state.selectedNetwork = action.payload
         }
     },
     extraReducers: builder => {
         builder.addCase(createInvitation.pending, (state) => {
             state.invitationLoading = true;
+            state.invitationError = null;
         }).addCase(createInvitation.fulfilled, (state, action) => {
+            state.invitationError = null;
             state.invitationLoading = false;
             state.invitation = action.payload.data;
         }).addCase(createInvitation.rejected, (state, action) => {
             state.invitationLoading = false;
             state.invitationError = action.payload;
         }).addCase(verifyInvitation.pending, (state) => {
+            state.invitationError = null;
             state.invitationLoading = true;
         }).addCase(verifyInvitation.fulfilled, (state, action) => {
             state.invitationLoading = false;
+            state.invitationError = null;
             state.invitation = action.payload.data;
         }).addCase(verifyInvitation.rejected, (state, action) => {
             state.invitationLoading = false;

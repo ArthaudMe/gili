@@ -1,5 +1,5 @@
 import {Box, Button, Card, CardContent, Grid, LinearProgress, Typography} from "@mui/material";
-import React, {useCallback, useState} from "react";
+import React, {useState} from "react";
 import {useSnackbar} from "notistack";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
@@ -30,14 +30,13 @@ const InviteFriends = () => {
         }));
     }
 
-    const handleInvitationCopy = useCallback(async () => {
+    const handleInvitationCopy = async () => {
         window.navigator.clipboard.writeText(
-            `You have been invited by ${club?.name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation?._id} to join the club`)
+            `You have been invited by ${club?.name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation._id} to join the club`)
             .then(() => {
                 enqueueSnackbar('Invitation link copied', {variant: 'success'});
             });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    };
 
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
@@ -129,7 +128,7 @@ const InviteFriends = () => {
                     </Button>
                 )}
                 <Grid container={true} justifyContent="center" alignItems="center" spacing={2}>
-                    <Grid item={true} xs={12} md="auto">
+                    <Grid item={true} xs={12} md={4}>
                         <Link to={`/clubs/${club?._id}`} style={{textDecoration: 'none'}}>
                             <Button
                                 sx={{

@@ -1,5 +1,5 @@
 import AuthLayout from "../../components/layout/auth-layout";
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {
     Alert, AlertTitle,
     Box,
@@ -15,22 +15,28 @@ import {
 import {Link} from "react-router-dom";
 import {useSnackbar} from "notistack";
 import {useDispatch, useSelector} from "react-redux";
-import {selectClubs} from "../../redux/features/clubs/clubs-slice";
+import {CLUBS_ACTION_CREATORS, selectClubs} from "../../redux/features/clubs/clubs-slice";
 import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../redux/features/invitations/invitations-slice";
 import {useConnectWallet} from "@web3-onboard/react";
 import {ContentCopy} from "@mui/icons-material";
 import {useParams} from "react-router";
+import {AUTH_ACTION_CREATORS, selectAuth} from "../../redux/features/auth/auth-slice";
 
 const InviteMemberPage = () => {
 
     const {enqueueSnackbar} = useSnackbar();
-    const [selectedRole, setSelectedRole] = useState('member');
+    const [selectedRole, setSelectedRole] = useState('Member');
     const {club} = useSelector(selectClubs);
     const {clubID} = useParams();
-    const [{wallet}] = useConnectWallet();
+    const [{wallet}, connect] = useConnectWallet();
     const {invitationLoading, invitationError, invitation} = useSelector(selectInvitation);
     const dispatch = useDispatch();
 
+    const {address} = useSelector(selectAuth);
+
+    const showMessage = (message, options) => {
+        enqueueSnackbar(message, options);
+    }
 
     const handleInvitationGenerate = () => {
         dispatch(INVITATIONS_ACTION_CREATORS.createInvitation({
@@ -38,20 +44,27 @@ const InviteMemberPage = () => {
                 role: selectedRole,
                 club: clubID,
                 inviter: wallet.accounts[0].address
-            }
+            },
+            showMessage
         }));
     }
 
-    const handleInvitationCopy = useCallback(async () => {
+    const handleInvitationCopy =  () => {
         window.navigator.clipboard.writeText(
-            `You have been invited by ${club?.name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation?._id} to join the club`)
+            `You have been invited by ${club?.name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation._id} to join the club`)
             .then(() => {
                 enqueueSnackbar('Invitation link copied', {variant: 'success'});
             });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }
+
+    useEffect(() => {
+        dispatch(AUTH_ACTION_CREATORS.connect({connect}));
+    }, [address]);
 
 
+    useEffect(() => {
+        dispatch(CLUBS_ACTION_CREATORS.getClub({clubID}));
+    }, [clubID]);
     return (
         <AuthLayout>
             <Box sx={{py: 4, minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -68,12 +81,12 @@ const InviteMemberPage = () => {
                                 <Alert severity="error" sx={{mb: 2}}><AlertTitle>{invitationError}</AlertTitle></Alert>
                             )}
                             <Box
-                                onClick={() => setSelectedRole('admin')}
+                                onClick={() => setSelectedRole('Admin')}
                                 sx={{
                                     cursor: 'pointer',
                                     padding: 4,
                                     borderRadius: 1,
-                                    backgroundColor: selectedRole === 'admin' ? 'rgba(255, 255, 255, 0.1)' : false
+                                    backgroundColor: selectedRole === 'Admin' ? 'rgba(255, 255, 255, 0.1)' : false
                                 }}>
                                 <Typography sx={{color: 'text.primary', fontWeight: 'bold', mb: 1}} variant="body1">
                                     Admin
@@ -94,6 +107,7 @@ const InviteMemberPage = () => {
                                             }}
                                             fullWidth={true}
                                             variant="contained"
+                                            color="secondary"
                                             disableElevation={true}
                                             size="small">
                                             Generate a link to invite admins
@@ -102,13 +116,13 @@ const InviteMemberPage = () => {
                                 </Grid>
                             </Box>
                             <Box
-                                onClick={() => setSelectedRole('member')}
+                                onClick={() => setSelectedRole('Member')}
                                 sx={{
                                     cursor: 'pointer',
                                     padding: 4,
                                     borderRadius: 1,
                                     mb: 4,
-                                    backgroundColor: selectedRole === 'member' ? 'rgba(255, 255, 255, 0.1)' : false
+                                    backgroundColor: selectedRole === 'Member' ? 'rgba(255, 255, 255, 0.1)' : false
                                 }}>
                                 <Typography sx={{color: 'text.primary', fontWeight: 'bold', mb: 1}} variant="body1">
                                     Members
@@ -126,6 +140,7 @@ const InviteMemberPage = () => {
                                                 textTransform: 'capitalize',
                                                 py: 1.2
                                             }}
+                                            color="secondary"
                                             fullWidth={true}
                                             variant="contained"
                                             disableElevation={true}
@@ -138,27 +153,27 @@ const InviteMemberPage = () => {
 
                             {invitation && (
                                 <Button
-                                    sx={{mb: 2}}
+                                    sx={{mb: 2, textTransform: 'none'}}
+                                    fullWidth={true}
                                     onClick={handleInvitationCopy}
                                     variant="text"
+                                    size="large"
                                     startIcon={<ContentCopy color="secondary"/>}>
                                     Copy Invitation URL
                                 </Button>
                             )}
 
                             <Grid container={true} justifyContent="center" alignItems="center" spacing={2}>
-                                <Grid item={true} xs={12} md="auto">
-                                    <Link to={`/clubs/${club?._id}`} style={{textDecoration: 'none'}}>
+                                <Grid item={true} xs={12} md={4}>
+                                    <Link to={`/clubs/${clubID}`} style={{textDecoration: 'none'}}>
                                         <Button
                                             onClick={handleInvitationGenerate}
-                                            sx={{
-                                                textTransform: 'capitalize',
-                                                py: 1.2
-                                            }}
+                                            sx={{textTransform: 'capitalize'}}
+                                            color="secondary"
                                             fullWidth={true}
                                             variant="contained"
                                             disableElevation={true}
-                                            size="small">
+                                            size="large">
                                             Portfolio
                                         </Button>
                                     </Link>

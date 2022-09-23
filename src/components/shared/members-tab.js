@@ -19,6 +19,7 @@ const MembersTab = ({members}) => {
     const filterByRole = (members, role) => {
         return members.filter(member => member.role === role);
     }
+
     return (
         <Stack direction="column" spacing={4}>
             <Box>
@@ -34,11 +35,11 @@ const MembersTab = ({members}) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <Admins admins={filterByRole(members, 'admin')}/>
+                            <Admins admins={filterByRole(members, 'Admin')}/>
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {filterByRole(members, 'admin').length === 0 && (
+                {filterByRole(members, 'Admin').length === 0 && (
                     <Box sx={{
                         padding: 4,
                         backgroundColor: 'rgba(245, 245, 245, 0.2)',
@@ -66,11 +67,11 @@ const MembersTab = ({members}) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <Members members={filterByRole(members, 'user')}/>
+                            <Members members={filterByRole(members, 'Member')}/>
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {filterByRole(members, 'user').length === 0 && (
+                {filterByRole(members, 'Member').length === 0 && (
                     <Box sx={{
                         padding: 4,
                         backgroundColor: 'rgba(245, 245, 245, 0.2)',

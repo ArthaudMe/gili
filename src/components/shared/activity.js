@@ -25,8 +25,12 @@ const Activity = ({transactions}) => {
                 <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
                     Pending transactions
                 </Typography>
-                <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}
-                                component={Paper} elevation={1}>
+                <TableContainer
+                    sx={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                        backdropFilter: 'blur(5px)'
+                    }}
+                    component={Paper} elevation={1}>
                     <Table size="small">
                         <TableHead>
                             <TableRow>

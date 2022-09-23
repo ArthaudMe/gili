@@ -23,24 +23,24 @@ import {
 } from "@mui/material";
 import {useConnectWallet} from "@web3-onboard/react";
 import {Link} from "react-router-dom";
+import {AUTH_ACTION_CREATORS, selectAuth} from "../../redux/features/auth/auth-slice";
 
 const ClubsPage = () => {
     const {clubs, loading, error} = useSelector(selectClubs);
     const [tab, setTab] = useState('admin');
     const [memberClubs, setMemberClubs] = useState([]);
     const [adminClubs, setAdminClubs] = useState([]);
-    const [{wallet}] = useConnectWallet();
+    const {address} = useSelector(selectAuth);
+    const [{wallet}, connect] = useConnectWallet();
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (wallet) {
-            if (wallet.accounts[0] && wallet.accounts[0].address) {
-                dispatch(CLUBS_ACTION_CREATORS.getClubs({address: wallet.accounts[0].address}));
-            }
+        if (address) {
+            dispatch(CLUBS_ACTION_CREATORS.getClubs({address}));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [address]);
 
     useEffect(() => {
         const memberClubs = [];
@@ -50,9 +50,9 @@ const ClubsPage = () => {
             clubs.forEach(club => {
                 club.members.forEach(member => {
                     if (member.address === wallet.accounts[0].address) {
-                        if (member.role === 'member') {
+                        if (member.role === 'Member') {
                             memberClubs.push(club);
-                        } else if (member.role === 'admin') {
+                        } else if (member.role === 'Admin') {
                             adminClubs.push(club);
                         }
                     }
@@ -62,7 +62,7 @@ const ClubsPage = () => {
         setMemberClubs(memberClubs);
         setAdminClubs(adminClubs);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [address, clubs]);
 
     const getOwnership = members => {
         let ownership = 0;
@@ -73,6 +73,12 @@ const ClubsPage = () => {
         });
         return ownership;
     }
+
+    useEffect(() => {
+        if (!address) {
+            dispatch(AUTH_ACTION_CREATORS.connect({connect}));
+        }
+    }, [wallet]);
 
     return (
         <AuthLayout>
@@ -91,9 +97,9 @@ const ClubsPage = () => {
                         <Grid item={true} xs={12} md="auto">
                             <Link to={`/club/new`} style={{textDecoration: 'none'}}>
                                 <Button
-                                    sx={{textTransform: 'capitalize', color: 'white'}}
+                                    sx={{textTransform: 'capitalize'}}
                                     fullWidth={true}
-                                    color="primary"
+                                    color="secondary"
                                     variant="contained"
                                     disableElevation={true}>
                                     Create a Club
@@ -191,10 +197,18 @@ const ClubsPage = () => {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {adminClubs && adminClubs.map((club) => {
+                                                {adminClubs.map((club) => {
                                                     return (
+
                                                         <TableRow key={club._id}>
-                                                            <TableCell>{club.name}</TableCell>
+
+                                                            <TableCell>
+                                                                <Link
+                                                                    to={`/clubs/${club._id}`}
+                                                                    style={{textDecoration: 'none', color: 'white'}}>
+                                                                    {club.name}
+                                                                </Link>
+                                                            </TableCell>
                                                             <TableCell>{club.status}</TableCell>
                                                             <TableCell>{club.treasury}</TableCell>
                                                             <TableCell>{club.members.length}</TableCell>

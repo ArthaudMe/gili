@@ -1,13 +1,10 @@
 import axios from "axios";
 import {CONSTANTS} from "../utils/constants";
 
-const getClubs = (token, query) => {
+const getClubs = (address) => {
     return axios({
         method: 'GET',
-        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs?${query}`,
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/members/${address}/clubs`
     })
 }
 

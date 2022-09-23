@@ -1,12 +1,24 @@
 import Layout from "../../components/layout/layout";
-import {Box, Button, Container, Grid, Typography} from "@mui/material";
-import React from "react";
+import {Box, Button, Container, Grid, LinearProgress, Typography} from "@mui/material";
+import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
+import {useConnectWallet} from "@web3-onboard/react";
 
 const LandingPage = () => {
 
+    const [{wallet, connecting}, connect] = useConnectWallet();
+
+    const handleConnect = async () => {
+        await connect();
+    }
+
+    useEffect(() => {
+        handleConnect();
+    }, [wallet]);
+
     return (
         <Layout>
+            {connecting && <LinearProgress variant="query" color="secondary"/>}
             <Box
                 sx={{minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', paddingY: 4}}>
                 <Container maxWidth="sm">

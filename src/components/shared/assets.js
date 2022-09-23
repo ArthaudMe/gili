@@ -37,7 +37,7 @@ const Assets = ({tokens, collectibles, investments}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {tokens.length === 0 && (
+                {tokens?.length === 0 && (
                     <Box sx={{
                         padding: 4,
                         backgroundColor: 'rgba(245, 245, 245, 0.2)',
@@ -70,7 +70,7 @@ const Assets = ({tokens, collectibles, investments}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {investments.length === 0 && (
+                {investments?.length === 0 && (
                     <Box sx={{
                         padding: 4,
                         backgroundColor: 'rgba(245, 245, 245, 0.2)',
@@ -102,7 +102,7 @@ const Assets = ({tokens, collectibles, investments}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {collectibles.length === 0 && (
+                {collectibles?.length === 0 && (
                     <Box sx={{
                         padding: 4,
                         backgroundColor: 'rgba(245, 245, 245, 0.2)',

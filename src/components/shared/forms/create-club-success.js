@@ -52,9 +52,9 @@ const CreateClubSuccess = () => {
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Link href={`https://etherscan.com/${txHash}`} target="_blank">
+                        <Link href={`https://goerli.etherscan.io/tx/${txHash}`} target="_blank">
                             <Typography sx={{color: 'text.primary'}} variant="body1">
-                                etherscan.com/{txHash}
+                                https://goerli.etherscan.io/tx/{txHash}
                             </Typography>
                         </Link>
                     </Grid>

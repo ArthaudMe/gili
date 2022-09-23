@@ -21,7 +21,6 @@ import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import Assets from "../../components/shared/assets";
 import MembersTab from "../../components/shared/members-tab";
-import Activity from "../../components/shared/activity";
 import {selectTransactions} from "../../redux/features/transactions/transactions-slice";
 import {selectTokens} from "../../redux/features/tokens/tokens-slice";
 import {selectCollectibles} from "../../redux/features/collectibles/collectibles-slice";
@@ -29,6 +28,7 @@ import {selectInvestments} from "../../redux/features/investments/investments-sl
 import {MEMBERS_ACTION_CREATORS, selectMembers} from "../../redux/features/members/members-slice";
 import {UTILS} from "../../utils/utils";
 import {useConnectWallet} from "@web3-onboard/react";
+import {AUTH_ACTION_CREATORS, selectAuth} from "../../redux/features/auth/auth-slice";
 
 const ClubProfilePage = () => {
 
@@ -38,8 +38,9 @@ const ClubProfilePage = () => {
     const {tokens} = useSelector(selectTokens);
     const {investments} = useSelector(selectInvestments);
     const {collectibles} = useSelector(selectCollectibles);
-    const [{wallet}] = useConnectWallet();
+    const [{wallet}, connect] = useConnectWallet();
     const dispatch = useDispatch();
+    const {address} = useSelector(selectAuth);
 
     const {clubID} = useParams();
     const [index, setIndex] = useState("assets");
@@ -51,23 +52,24 @@ const ClubProfilePage = () => {
     const renderTabContent = tab => {
         switch (tab) {
             case 'assets':
-                return (
+                return null
+                    /*
                     <Assets
                         tokens={tokens}
                         collectibles={collectibles}
                         investments={investments}
-                    />);
+                    /> */;
             case 'members':
-                return <MembersTab members={members}/>;
+                return <MembersTab members={club.members}/>;
             case 'activity':
-                return <Activity transactions={transactions}/>;
+                return null /*<Activity transactions={transactions}/>*/;
             default:
-                return (
-                    <Assets
+                return null
+                    /*<Assets
                         tokens={club.tokens}
                         collectibles={club.collectibles}
                         investments={club.investments}
-                    />);
+                    />*/;
         }
     }
 
@@ -82,10 +84,19 @@ const ClubProfilePage = () => {
     }, [clubID]);
 
     useEffect(() => {
-        dispatch(MEMBERS_ACTION_CREATORS.getCurrentMember({club: clubID, member: wallet.accounts[0].address}));
+        if(address){
+            dispatch(MEMBERS_ACTION_CREATORS.getCurrentMember({club: clubID, member: address}));
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [clubID, wallet.accounts[0].address]);
+    }, [clubID, address]);
 
+    useEffect(() => {
+        if(!address){
+            dispatch(AUTH_ACTION_CREATORS.connect({connect}));
+        }
+    }, [address]);
+
+    console.log(index)
     return (
         <AuthLayout>
             {loading && <LinearProgress variant="query" color="secondary"/>}
@@ -210,18 +221,21 @@ const ClubProfilePage = () => {
                     </Box>
 
                     <Box sx={{mb: 2}}>
-                        <Tabs value={index} onChange={(event, value) => handleTabChange(value)} variant="scrollable">
+                        <Tabs value={index} variant="scrollable">
                             <Tab
+                                onClick={() => setIndex('assets')}
                                 sx={{
                                     textTransform: 'capitalize',
                                     color: index === 'assets' ? 'text.primary' : 'text.secondary'
                                 }} value="assets" label="Assets"/>
                             <Tab
+                                onClick={() => setIndex('members')}
                                 sx={{
                                     textTransform: 'capitalize',
                                     color: index === 'members' ? 'text.primary' : 'text.secondary'
                                 }} value="members" label="Members"/>
                             <Tab
+                                onClick={() => setIndex('activity')}
                                 sx={{
                                     textTransform: 'capitalize',
                                     color: index === 'activity' ? 'text.primary' : 'text.secondary'
@@ -230,7 +244,7 @@ const ClubProfilePage = () => {
                     </Box>
                     <Divider variant="fullWidth" sx={{my: 2}}/>
                     <Box>
-                        {club && transactions && members && renderTabContent(index)}
+                        {club && renderTabContent(index)}
                     </Box>
                 </Container>
             </Box>

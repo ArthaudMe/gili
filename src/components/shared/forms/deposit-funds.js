@@ -24,13 +24,13 @@ const DepositFunds = () => {
 
     const handleValidatePost = async (amount) => {
         try {
-            const owners = await safe.getOwners();
+            // const owners = await safe.getOwners();
             const tx = await safe.createTransaction({
-                safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
+                safeTransactionData: {value: `${amount}`, data: '0x', to: wallet.accounts[0].address},
+                onlyCalls: true,
+                options: {refundReceiver: wallet.accounts[0].address}
             });
-            console.log(tx);
             if (tx) {
-                console.log(tx, 'inside if');
                 dispatch(CLUBS_ACTION_CREATORS.joinClub({
                     data: {amount, address: wallet.accounts[0].address},
                     club: club?._id,

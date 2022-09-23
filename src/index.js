@@ -60,7 +60,7 @@ const web3Onboard = init({
         {
             label: 'Ethereum Goerli  testnet',
             id: '0x5',
-            rpcUrl: `https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
+            rpcUrl: `https://eth-goerli.g.alchemy.com/v2/oSgugno5wNBZN7UpN282anMAcJMtmTjo`,
             token: 'ETH'
         },
         {
