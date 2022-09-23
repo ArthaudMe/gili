@@ -19,7 +19,17 @@ const createClubSlice = createSlice({
     initialState: {
         loading: false,
         error: null,
-        club: null,
+        club: {
+            name: '',
+            goal: '',
+            duration: {
+                amount: '',
+                unit: ''
+            },
+            token: '',
+            currency: '',
+            maximumMemberCount: ''
+        },
         gas: '',
         step: 1
     },
