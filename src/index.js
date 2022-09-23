@@ -44,6 +44,30 @@ const web3Onboard = init({
             id: '0x64',
             rpcUrl: `https://mainnet.infura.io/v3/7044fd6b60b94929a59819a4c6b1e82a`,
             token: 'GNO'
+        },
+        {
+            label: 'Ethereum Ropsten  testnet',
+            id: '0x3',
+            rpcUrl: `https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
+            token: 'ETH'
+        },
+        {
+            label: 'Ethereum Rinkbey  testnet',
+            id: '0x4',
+            rpcUrl: `https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
+            token: 'ETH'
+        },
+        {
+            label: 'Ethereum Goerli  testnet',
+            id: '0x5',
+            rpcUrl: `https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
+            token: 'ETH'
+        },
+        {
+            label: 'Ethereum Kovan testnet',
+            id: '0x6',
+            rpcUrl: `https://kovan.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
+            token: 'ETH'
         }
     ],
     apiKey: '435d3332-ad33-4dd1-98bf-7edd3e210a60',
