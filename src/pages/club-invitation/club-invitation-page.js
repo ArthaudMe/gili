@@ -7,7 +7,7 @@ import React, {useEffect} from "react";
 import UserInviteDepositFunds from "../../components/shared/forms/user-invite-deposit-funds";
 import UserInvitationClubHub from "../../components/shared/forms/user-invitation-club-hub";
 import {useParams} from "react-router";
-import {AUTH_ACTION_CREATORS, selectAuth} from "../../redux/features/auth/auth-slice";
+import {AUTH_ACTION_CREATORS} from "../../redux/features/auth/auth-slice";
 import {useConnectWallet} from "@web3-onboard/react";
 
 const ClubInvitationPage = () => {
@@ -15,7 +15,6 @@ const ClubInvitationPage = () => {
     const {step} = useSelector(selectCreateClub);
     const {invitationID} = useParams();
     const [connect] = useConnectWallet();
-    const {address} = useSelector(selectAuth);
 
     const dispatch = useDispatch();
 
@@ -31,10 +30,9 @@ const ClubInvitationPage = () => {
     }
 
     useEffect(() => {
-        if(!address){
-            dispatch(AUTH_ACTION_CREATORS.connect({connect}));
-        }
-    }, [address]);
+        dispatch(AUTH_ACTION_CREATORS.connect({connect}));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <AuthLayout>

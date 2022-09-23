@@ -78,10 +78,6 @@ const ClubSettingsPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log(club);
-
-    console.log(formik.values)
-
     useEffect(() => {
         if(!address){
             dispatch(AUTH_ACTION_CREATORS.connect({connect}));

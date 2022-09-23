@@ -6,7 +6,7 @@ const Investments = ({investments}) => {
 
     return (
         <TableRow hover={true}>
-            {investments.map((investment, index) => {
+            {investments?.map((investment, index) => {
                 return (
                     <React.Fragment key={investment._id}>
                         <Investment index={index} investment={investment}/>

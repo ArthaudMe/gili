@@ -24,13 +24,16 @@ const DepositFunds = () => {
 
     const handleValidatePost = async (amount) => {
         try {
-            // const owners = await safe.getOwners();
             const tx = await safe.createTransaction({
-                safeTransactionData: {value: `${amount}`, data: '0x', to: wallet.accounts[0].address},
+                safeTransactionData: {value: amount, data: '0x', to: wallet.accounts[0].address},
                 onlyCalls: true,
                 options: {refundReceiver: wallet.accounts[0].address}
             });
             if (tx) {
+                const txHash = await safe.getTransactionHash(tx);
+                const safeTX = await safe.signTransaction(tx);
+                await safe.approveTransactionHash(txHash);
+                await safe.executeTransaction(safeTX);
                 dispatch(CLUBS_ACTION_CREATORS.joinClub({
                     data: {amount, address: wallet.accounts[0].address},
                     club: club?._id,

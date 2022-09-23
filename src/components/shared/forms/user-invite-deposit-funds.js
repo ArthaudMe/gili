@@ -21,13 +21,14 @@ import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
 import {useConnectWallet} from "@web3-onboard/react";
 import {useSnackbar} from "notistack";
+import {AUTH_ACTION_CREATORS} from "../../../redux/features/auth/auth-slice";
 
 const UserInviteDepositFunds = ({invitationID}) => {
 
     const dispatch = useDispatch();
     const {invitation, invitationLoading, invitationError} = useSelector(selectInvitation);
     const {safe, loading, connectSafe, error} = useSafeFactory();
-    const [{wallet}] = useConnectWallet();
+    const [{wallet}, connect] = useConnectWallet();
     const {enqueueSnackbar} = useSnackbar();
 
 
@@ -78,6 +79,12 @@ const UserInviteDepositFunds = ({invitationID}) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [safe, connectSafe]);
+
+
+    useEffect(() => {
+        dispatch(AUTH_ACTION_CREATORS.connect({connect}));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Card

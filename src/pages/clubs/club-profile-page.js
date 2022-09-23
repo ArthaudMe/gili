@@ -29,11 +29,12 @@ import {MEMBERS_ACTION_CREATORS, selectMembers} from "../../redux/features/membe
 import {UTILS} from "../../utils/utils";
 import {useConnectWallet} from "@web3-onboard/react";
 import {AUTH_ACTION_CREATORS, selectAuth} from "../../redux/features/auth/auth-slice";
+import Activity from "../../components/shared/activity";
 
 const ClubProfilePage = () => {
 
     const {club, loading, error} = useSelector(selectClubs);
-    const {members, memberLoading, memberError, member} = useSelector(selectMembers);
+    const {memberLoading, memberError, member} = useSelector(selectMembers);
     const {transactions} = useSelector(selectTransactions);
     const {tokens} = useSelector(selectTokens);
     const {investments} = useSelector(selectInvestments);
@@ -45,33 +46,33 @@ const ClubProfilePage = () => {
     const {clubID} = useParams();
     const [index, setIndex] = useState("assets");
 
-    const handleTabChange = (event, value) => {
-        setIndex(value);
-    }
-
     const renderTabContent = tab => {
         switch (tab) {
             case 'assets':
-                return null
-                    /*
+                return (
                     <Assets
                         tokens={tokens}
                         collectibles={collectibles}
                         investments={investments}
-                    /> */;
+                    />
+                )
             case 'members':
                 return <MembersTab members={club.members}/>;
             case 'activity':
-                return null /*<Activity transactions={transactions}/>*/;
+                return <Activity transactions={transactions}/>;
             default:
-                return null
-                    /*<Assets
+                return (
+                    <Assets
                         tokens={club.tokens}
                         collectibles={club.collectibles}
                         investments={club.investments}
-                    />*/;
+                    />);
         }
     }
+
+    useEffect(() => {
+        dispatch(AUTH_ACTION_CREATORS.connect({connect}));
+    }, [address, connect, dispatch]);
 
     useEffect(() => {
         dispatch(CLUBS_ACTION_CREATORS.getClub({clubID}));
@@ -84,19 +85,9 @@ const ClubProfilePage = () => {
     }, [clubID]);
 
     useEffect(() => {
-        if(address){
-            dispatch(MEMBERS_ACTION_CREATORS.getCurrentMember({club: clubID, member: address}));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [clubID, address]);
+        dispatch(MEMBERS_ACTION_CREATORS.getCurrentMember({club: clubID, member: wallet.accounts[0].address}));
+    }, [clubID, dispatch, wallet.accounts]);
 
-    useEffect(() => {
-        if(!address){
-            dispatch(AUTH_ACTION_CREATORS.connect({connect}));
-        }
-    }, [address]);
-
-    console.log(index)
     return (
         <AuthLayout>
             {loading && <LinearProgress variant="query" color="secondary"/>}
@@ -122,7 +113,8 @@ const ClubProfilePage = () => {
                                     </Grid>
                                     <Grid item={true} xs={12} md="auto">
                                         <Typography variant="body1" sx={{color: 'text.primary'}}>
-                                            {member?.stake} GEO ({member?.ownership}% of circulating supply)
+                                            {member?.stake} {club && UTILS.selectCurrency(club.currency)} ({member?.ownership}%
+                                            of circulating supply)
                                         </Typography>
                                     </Grid>
                                 </Grid>

@@ -6,7 +6,7 @@ const Collectibles = ({collectibles}) => {
 
     return (
         <TableRow hover={true}>
-            {collectibles.map((collectible, index) => {
+            {collectibles?.map((collectible, index) => {
                 return (
                     <React.Fragment key={collectible._id}>
                         <Collectible index={index} collectible={collectible}/>

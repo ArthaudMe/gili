@@ -6,7 +6,7 @@ const Tokens = ({tokens}) => {
 
     return (
         <TableRow hover={true}>
-            {tokens.map((token, index) => {
+            {tokens?.map((token, index) => {
                 return (<Token index={index} key={token._id} token={token}/>)
             })}
         </TableRow>

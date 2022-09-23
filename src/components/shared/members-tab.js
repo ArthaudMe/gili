@@ -31,7 +31,7 @@ const MembersTab = ({members}) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Address</TableCell>
-                                <TableCell>Holding</TableCell>
+                                <TableCell align="center">Holding</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -63,7 +63,7 @@ const MembersTab = ({members}) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Address</TableCell>
-                                <TableCell>Holding</TableCell>
+                                <TableCell align="center">Holding</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

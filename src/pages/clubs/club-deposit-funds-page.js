@@ -40,8 +40,14 @@ const ClubDepositFundsPage = () => {
         const tx = await safe.createTransaction({
             safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
         });
-        console.log(tx);
-        dispatch(CLUBS_ACTION_CREATORS.depositFunds({club: clubID, amount, address: wallet.accounts[0].address}));
+        if(tx){
+            const txHash = await safe.getTransactionHash(tx);
+            const safeTX = await safe.signTransaction(tx);
+            const txResult = await safe.approveTransactionHash(txHash);
+            const hash = await safe.executeTransaction(safeTX);
+            console.log(hash, txResult);
+            dispatch(CLUBS_ACTION_CREATORS.depositFunds({club: clubID, amount, address: wallet.accounts[0].address}));
+        }
     }
 
     const formik = useFormik({
@@ -51,7 +57,7 @@ const ClubDepositFundsPage = () => {
             deposit: yup.number().required('Deposit required')
         }),
         onSubmit: async (values, formikHelpers) => {
-            await handleValidatePost(values);
+            await handleValidatePost(values.deposit);
             formikHelpers.resetForm();
         },
         initialValues: {
@@ -152,22 +158,24 @@ const ClubDepositFundsPage = () => {
                                         </Stack>
                                     </Grid>
                                 </Grid>
-                                <Grid item={true} xs={12} md={6}>
-                                    <Button
-                                        onClick={handleValidatePost}
-                                        sx={{
-                                            textTransform: 'capitalize',
-                                            py: 1.2
-                                        }}
-                                        disabled={Boolean(error || loading)}
-                                        color="secondary"
-                                        type="submit"
-                                        fullWidth={true}
-                                        variant="contained"
-                                        disableElevation={true}
-                                        size="small">
-                                        Deposit funds
-                                    </Button>
+                                <Grid container={true} justifyContent="center">
+                                    <Grid item={true} xs={12} md={6}>
+                                        <Button
+                                            onClick={handleValidatePost}
+                                            sx={{
+                                                textTransform: 'capitalize',
+                                                py: 1.2
+                                            }}
+                                            disabled={Boolean(error || loading)}
+                                            color="secondary"
+                                            type="submit"
+                                            fullWidth={true}
+                                            variant="contained"
+                                            disableElevation={true}
+                                            size="small">
+                                            Deposit funds
+                                        </Button>
+                                    </Grid>
                                 </Grid>
                             </form>
                         </CardContent>
@@ -181,12 +189,6 @@ const ClubDepositFundsPage = () => {
                                 size="small" startIcon={<KeyboardArrowLeft/>}>
                                 Back
                             </Button>
-                        </Grid>
-                        <Grid item={true} xs={12} md="auto">
-                            <Typography variant="body2" sx={{color: 'text.primary'}}>
-                                We recommend setting up your governance rules once in order to save on gas
-                                costs.
-                            </Typography>
                         </Grid>
                     </Grid>
                 </Container>
