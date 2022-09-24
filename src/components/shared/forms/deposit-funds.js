@@ -9,6 +9,7 @@ import {CLUBS_ACTION_CREATORS, selectClubs} from "../../../redux/features/clubs/
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {useConnectWallet} from "@web3-onboard/react";
 import {useSnackbar} from "notistack";
+import web3 from "web3";
 
 const DepositFunds = () => {
 
@@ -25,17 +26,17 @@ const DepositFunds = () => {
     const handleValidatePost = async (amount) => {
         try {
             const tx = await safe.createTransaction({
-                safeTransactionData: {value: amount, data: '0x', to: wallet.accounts[0].address},
+                safeTransactionData: {value: `${amount}`, data: '0x', to: wallet.accounts[0].address},
                 onlyCalls: true,
                 options: {refundReceiver: wallet.accounts[0].address}
             });
             if (tx) {
                 const txHash = await safe.getTransactionHash(tx);
-                const safeTX = await safe.signTransaction(tx);
-                await safe.approveTransactionHash(txHash);
-                await safe.executeTransaction(safeTX);
+                // const safeTX = await safe.signTransaction(tx);
+                // await safe.approveTransactionHash(txHash);
+                // await safe.executeTransaction(safeTX);
                 dispatch(CLUBS_ACTION_CREATORS.joinClub({
-                    data: {amount, address: wallet.accounts[0].address},
+                    data: {amount: web3.utils.fromWei(`${amount}`, 'ether'), address: wallet.accounts[0].address},
                     club: club?._id,
                     callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next()),
                     showMessage
@@ -89,7 +90,7 @@ const DepositFunds = () => {
                                     onBlur={formik.handleBlur}
                                     required={true}
                                     variant="outlined"
-                                    placeholder="Amount"
+                                    placeholder="Enter amount in wei"
                                     label="Deposit"
                                     name="deposit"
                                     value={formik.values.deposit}

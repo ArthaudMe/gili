@@ -24,6 +24,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {CLUBS_ACTION_CREATORS, selectClubs} from "../../redux/features/clubs/clubs-slice";
 import {useParams} from "react-router";
 import {useConnectWallet} from "@web3-onboard/react";
+import web3 from "web3";
+
 
 const ClubDepositFundsPage = () => {
 
@@ -42,11 +44,11 @@ const ClubDepositFundsPage = () => {
         });
         if(tx){
             const txHash = await safe.getTransactionHash(tx);
-            const safeTX = await safe.signTransaction(tx);
-            const txResult = await safe.approveTransactionHash(txHash);
-            const hash = await safe.executeTransaction(safeTX);
-            console.log(hash, txResult);
-            dispatch(CLUBS_ACTION_CREATORS.depositFunds({club: clubID, amount, address: wallet.accounts[0].address}));
+            // const safeTX = await safe.signTransaction(tx);
+            // const txResult = await safe.approveTransactionHash(txHash);
+            // const hash = await safe.executeTransaction(safeTX);
+            // console.log(hash, txResult);
+            dispatch(CLUBS_ACTION_CREATORS.depositFunds({club: clubID, amount: web3.utils.fromWei(`${amount}`, 'ether'), address: wallet.accounts[0].address}));
         }
     }
 
@@ -105,7 +107,7 @@ const ClubDepositFundsPage = () => {
                                                 onBlur={formik.handleBlur}
                                                 required={true}
                                                 variant="outlined"
-                                                placeholder="Amount"
+                                                placeholder="Amount in wei"
                                                 label="Deposit"
                                                 disabled={loading}
                                                 value={formik.values.deposit}
