@@ -36,9 +36,7 @@ const ClubsPage = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (address) {
-            dispatch(CLUBS_ACTION_CREATORS.getClubs({address}));
-        }
+        dispatch(CLUBS_ACTION_CREATORS.getClubs({address}));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [address]);
 

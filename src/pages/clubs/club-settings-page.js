@@ -1,5 +1,5 @@
 import AuthLayout from "../../components/layout/auth-layout";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {
     Alert,
     AlertTitle,
@@ -29,14 +29,12 @@ import * as yup from "yup";
 import {UTILS} from "../../utils/utils";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../redux/features/create-club/create-club-slice";
 import {useConnectWallet} from "@web3-onboard/react";
-import {AUTH_ACTION_CREATORS, selectAuth} from "../../redux/features/auth/auth-slice";
 
 const ClubSettingsPage = () => {
 
     const {club, loading, gas, error} = useSelector(selectClubs);
     const {clubID} = useParams();
-    const [{wallet}, connect] = useConnectWallet();
-    const {address} = useSelector(selectAuth);
+    const [{wallet}] = useConnectWallet();
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -77,13 +75,6 @@ const ClubSettingsPage = () => {
         dispatch(CREATE_CLUB_ACTION_CREATORS.getGas());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    useEffect(() => {
-        if(!address){
-            dispatch(AUTH_ACTION_CREATORS.connect({connect}));
-        }
-    }, [address]);
-
 
     return (
         <AuthLayout>

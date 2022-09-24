@@ -28,7 +28,6 @@ import {selectInvestments} from "../../redux/features/investments/investments-sl
 import {MEMBERS_ACTION_CREATORS, selectMembers} from "../../redux/features/members/members-slice";
 import {UTILS} from "../../utils/utils";
 import {useConnectWallet} from "@web3-onboard/react";
-import {AUTH_ACTION_CREATORS, selectAuth} from "../../redux/features/auth/auth-slice";
 import Activity from "../../components/shared/activity";
 
 const ClubProfilePage = () => {
@@ -39,9 +38,8 @@ const ClubProfilePage = () => {
     const {tokens} = useSelector(selectTokens);
     const {investments} = useSelector(selectInvestments);
     const {collectibles} = useSelector(selectCollectibles);
-    const [{wallet}, connect] = useConnectWallet();
+    const [{wallet}] = useConnectWallet();
     const dispatch = useDispatch();
-    const {address} = useSelector(selectAuth);
 
     const {clubID} = useParams();
     const [index, setIndex] = useState("assets");
@@ -69,10 +67,6 @@ const ClubProfilePage = () => {
                     />);
         }
     }
-
-    useEffect(() => {
-        dispatch(AUTH_ACTION_CREATORS.connect({connect}));
-    }, [address, connect, dispatch]);
 
     useEffect(() => {
         dispatch(CLUBS_ACTION_CREATORS.getClub({clubID}));

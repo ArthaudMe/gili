@@ -1,7 +1,8 @@
 import AuthLayout from "../../components/layout/auth-layout";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
-    Alert, AlertTitle,
+    Alert,
+    AlertTitle,
     Box,
     Button,
     Card,
@@ -20,7 +21,7 @@ import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../redux/feature
 import {useConnectWallet} from "@web3-onboard/react";
 import {ContentCopy} from "@mui/icons-material";
 import {useParams} from "react-router";
-import {AUTH_ACTION_CREATORS, selectAuth} from "../../redux/features/auth/auth-slice";
+import {selectAuth} from "../../redux/features/auth/auth-slice";
 
 const InviteMemberPage = () => {
 
@@ -28,11 +29,9 @@ const InviteMemberPage = () => {
     const [selectedRole, setSelectedRole] = useState('Member');
     const {club} = useSelector(selectClubs);
     const {clubID} = useParams();
-    const [{wallet}, connect] = useConnectWallet();
+    const [{wallet}] = useConnectWallet();
     const {invitationLoading, invitationError, invitation} = useSelector(selectInvitation);
     const dispatch = useDispatch();
-
-    const {address} = useSelector(selectAuth);
 
     const showMessage = (message, options) => {
         enqueueSnackbar(message, options);
@@ -49,18 +48,13 @@ const InviteMemberPage = () => {
         }));
     }
 
-    const handleInvitationCopy =  () => {
+    const handleInvitationCopy = () => {
         window.navigator.clipboard.writeText(
             `You have been invited by ${club?.name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation._id} to join the club`)
             .then(() => {
                 enqueueSnackbar('Invitation link copied', {variant: 'success'});
             });
     }
-
-    useEffect(() => {
-        dispatch(AUTH_ACTION_CREATORS.connect({connect}));
-    }, [address]);
-
 
     useEffect(() => {
         dispatch(CLUBS_ACTION_CREATORS.getClub({clubID}));
