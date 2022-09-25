@@ -3,18 +3,15 @@ import {Box, Button, Container} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {CREATE_CLUB_ACTION_CREATORS, selectCreateClub} from "../../redux/features/create-club/create-club-slice";
 import {West} from "@mui/icons-material";
-import React, {useEffect} from "react";
+import React from "react";
 import UserInviteDepositFunds from "../../components/shared/forms/user-invite-deposit-funds";
 import UserInvitationClubHub from "../../components/shared/forms/user-invitation-club-hub";
 import {useParams} from "react-router";
-import {AUTH_ACTION_CREATORS} from "../../redux/features/auth/auth-slice";
-import {useConnectWallet} from "@web3-onboard/react";
 
 const ClubInvitationPage = () => {
 
     const {step} = useSelector(selectCreateClub);
     const {invitationID} = useParams();
-    const [connect] = useConnectWallet();
 
     const dispatch = useDispatch();
 
@@ -29,16 +26,11 @@ const ClubInvitationPage = () => {
         }
     }
 
-    useEffect(() => {
-        dispatch(AUTH_ACTION_CREATORS.connect({connect}));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
         <AuthLayout>
             <Box sx={{display: 'relative'}}>
                 <Box sx={{minHeight: '100vh', justifyContent: 'center', alignItems: 'center', py: {xs: 4, lg: 0}}}>
-                    <Container sx={{minHeight: '100vh'}}>
+                    <Container maxWidth="lg">
                         <Box
                             sx={{
                                 minHeight: '100vh',

@@ -38,9 +38,8 @@ const ClubDepositFundsPage = () => {
     const dispatch = useDispatch();
 
     const handleValidatePost = async (amount) => {
-        const owners = safe.getOwners();
         const tx = await safe.createTransaction({
-            safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
+            safeTransactionData: {value: `${amount}`, data: '0x', to: safe.getAddress()}
         });
         if(tx){
             const txHash = await safe.getTransactionHash(tx);

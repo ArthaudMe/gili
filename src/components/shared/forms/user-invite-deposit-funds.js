@@ -21,7 +21,7 @@ import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
 import {useConnectWallet} from "@web3-onboard/react";
 import {useSnackbar} from "notistack";
-import {AUTH_ACTION_CREATORS} from "../../../redux/features/auth/auth-slice";
+import web3 from "web3";
 
 const UserInviteDepositFunds = ({invitationID}) => {
 
@@ -31,21 +31,22 @@ const UserInviteDepositFunds = ({invitationID}) => {
     const [{wallet}, connect] = useConnectWallet();
     const {enqueueSnackbar} = useSnackbar();
 
-
     const handleValidatePost = async (amount) => {
         try {
-            const owners = safe.getOwners();
+            await connectSafe(invitation.club.safeAddress);
             const tx = await safe.createTransaction({
-                safeTransactionData: {value: `${amount}`, data: '0x', to: owners[0]}
+                safeTransactionData: {
+                    value: web3.utils.toWei(amount, 'ether').toString(),
+                    data: '0x', to: safe?.getAddress()}
             });
-            if(tx) {
+            if (tx) {
                 dispatch(CLUBS_ACTION_CREATORS.joinClub({
                     data: {amount: amount, address: wallet.accounts[0].address},
                     invitation: invitationID,
                     callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
                 }));
             }
-        }catch (e) {
+        } catch (e) {
             enqueueSnackbar(e.message, {variant: 'error'});
         }
     }
@@ -57,7 +58,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
             deposit: yup.number().required('Deposit required')
         }),
         onSubmit: async (values, formikHelpers) => {
-            await handleValidatePost(values);
+            await handleValidatePost(values.deposit);
             formikHelpers.resetForm();
         },
         initialValues: {
@@ -66,25 +67,17 @@ const UserInviteDepositFunds = ({invitationID}) => {
     });
 
     useEffect(() => {
-        dispatch(INVITATIONS_ACTION_CREATORS.verifyInvitation({invitation: invitationID}));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const connectWallet = async () => {
+            await connect();
+        }
+        connectWallet();
+    }, [connect, dispatch]);
+
+    useEffect(() => {
+        dispatch(INVITATIONS_ACTION_CREATORS.verifyInvitation(
+            {invitation: invitationID})
+        );
     }, [invitationID]);
-
-    useEffect(() => {
-        const connect = async () => {
-            await connectSafe();
-        }
-        if (!safe) {
-            connect().then(response => console.log(response));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [safe, connectSafe]);
-
-
-    useEffect(() => {
-        dispatch(AUTH_ACTION_CREATORS.connect({connect}));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <Card
@@ -97,7 +90,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 Deposit funds to join club
             </Typography>
-            <CardContent sx={{paddingX: 5}}>
+            <CardContent>
                 {invitationError && (
                     <Alert severity="error" sx={{mb: 2}}><AlertTitle>{invitationError}</AlertTitle></Alert>
                 )}

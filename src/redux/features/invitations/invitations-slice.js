@@ -5,35 +5,40 @@ import {CONSTANTS} from "../../../utils/constants";
 const createInvitation = createAsyncThunk(
     'invitations/createInvitation',
     async ({data, showMessage}, thunkAPI) => {
-    try {
-        const response = await axios({
-            url: `${CONSTANTS.BASE_SERVER_URL}/user/invitations`,
-            data,
-            method: 'POST'
-        });
-        showMessage(response.data.message, {variant: 'success'});
-        return response.data;
-    }catch (e) {
-        const {message} = e.response.data;
-        showMessage(message, {variant: 'success'});
-        return thunkAPI.rejectWithValue(message);
-    }
-});
+        try {
+            const response = await axios({
+                url: `${CONSTANTS.BASE_SERVER_URL}/user/invitations`,
+                data,
+                method: 'POST'
+            });
+            showMessage(response.data.message, {variant: 'success'});
+            return response.data;
+        } catch (e) {
+            const {message} = e.response.data;
+            showMessage(message, {variant: 'success'});
+            return thunkAPI.rejectWithValue(message);
+        }
+    });
 
 const verifyInvitation = createAsyncThunk(
     'invitations/verifyInvitation',
-    async ({invitation}, thunkAPI) => {
-    try {
-        const response = await axios({
-            url: `${CONSTANTS.BASE_SERVER_URL}/user/invitations/${invitation}/verify`,
-            method: 'GET'
-        });
-        return response.data;
-    }catch (e) {
-        const {message} = e.response.data;
-        return thunkAPI.rejectWithValue(message);
-    }
-});
+    async ({invitation, showMessage, connectSafe}, thunkAPI) => {
+        try {
+            const response = await axios({
+                url: `${CONSTANTS.BASE_SERVER_URL}/user/invitations/${invitation}/verify`,
+                method: 'GET'
+            });
+            // showMessage(response.data.message, {variant: 'success'});
+            // await connectSafe(response.data.club.safeAddress);
+            console.log('called connect safe')
+            return response.data;
+        } catch (e) {
+            const {message} = e.response.data;
+            console.log(e.message, 'error from verify invitation');
+            showMessage(message, {variant: 'error'});
+            return thunkAPI.rejectWithValue(message);
+        }
+    });
 
 const invitationsSlice = createSlice({
     name: 'invitations',

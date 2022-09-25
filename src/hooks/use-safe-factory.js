@@ -3,6 +3,8 @@ import Web3 from "web3";
 import Web3Adapter from "@gnosis.pm/safe-web3-lib";
 import Safe, {SafeFactory} from "@gnosis.pm/safe-core-sdk";
 import {Buffer} from 'buffer';
+import {ethers} from 'ethers'
+import EthersAdapter from '@gnosis.pm/safe-ethers-lib';
 
 window.Buffer = window.Buffer || Buffer;
 
@@ -78,18 +80,25 @@ const SafeFactoryProvider = ({children}) => {
 
     const connectSafe = useCallback(async (safeAddress) => {
         try {
+            const web3Provider = new Web3.providers.HttpProvider(
+                'https://mainnet.infura.io/v3/7044fd6b60b94929a59819a4c6b1e82a'
+            );
+            const provider = new ethers.providers.Web3Provider(web3Provider);
             const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
-            const web3 = new Web3(window.ethereum);
-            const web3Adapter = new Web3Adapter({web3, signerAddress: accounts[0]});
+            const safeOwner = provider.getSigner(accounts[0]);
+            const ethAdapter = new EthersAdapter({
+                ethers,
+                signer: safeOwner
+            });
             setLoading(true);
             setConnected(false);
-            const safe = await Safe.create({ethAdapter: web3Adapter, safeAddress});
+            const safe = await Safe.create({ethAdapter, safeAddress, isL1SafeMasterCopy: true});
             setSafe(safe);
             setConnected(true);
             setLoading(false);
-        }catch (e) {
+        } catch (e) {
             setError(e.message);
-            console.log(e.message, 'connect safe')
+            console.log(e.message, 'connect safe error')
             setLoading(false);
         }
     }, []);
@@ -104,9 +113,9 @@ const SafeFactoryProvider = ({children}) => {
         safeFactory,
         safe,
         txHash,
-        connectSafe,
-        setLoading
-    }), [initializeFactory, safeAddress, deploySafe, error, connected, loading, safeFactory, safe, txHash, connectSafe, setLoading]);
+        setLoading,
+        connectSafe
+    }), [initializeFactory, safeAddress, deploySafe, error, connected, loading, safeFactory, safe, txHash, setLoading, connectSafe]);
 
     return (
         <SafeFactoryContext.Provider value={contextValue}>
