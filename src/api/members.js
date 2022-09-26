@@ -18,7 +18,7 @@ const getCurrentMember = async (club, member) => {
 const addMember = async (club, member) => {
     return axios({
         method: 'POST',
-        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${club}/members`,
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${club}/member/add`,
         data: member
     });
 }
