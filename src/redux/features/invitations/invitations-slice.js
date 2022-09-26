@@ -28,9 +28,6 @@ const verifyInvitation = createAsyncThunk(
                 url: `${CONSTANTS.BASE_SERVER_URL}/user/invitations/${invitation}/verify`,
                 method: 'GET'
             });
-            // showMessage(response.data.message, {variant: 'success'});
-            // await connectSafe(response.data.club.safeAddress);
-            console.log('called connect safe')
             return response.data;
         } catch (e) {
             const {message} = e.response.data;

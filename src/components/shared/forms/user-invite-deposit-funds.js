@@ -41,7 +41,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
             });
             if (tx) {
                 dispatch(CLUBS_ACTION_CREATORS.joinClub({
-                    data: {amount: amount, address: wallet.accounts[0].address},
+                    data: {amount, address: wallet.accounts[0].address},
                     invitation: invitationID,
                     callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
                 }));
@@ -115,7 +115,6 @@ const UserInviteDepositFunds = ({invitationID}) => {
                                     variant="outlined"
                                     placeholder="Amount"
                                     label="Deposit"
-                                    disabled={loading}
                                     value={formik.values.deposit}
                                     color="secondary"
                                     name="deposit"
@@ -172,7 +171,6 @@ const UserInviteDepositFunds = ({invitationID}) => {
                                     textTransform: 'capitalize',
                                     py: 1.2
                                 }}
-                                disabled={Boolean(error || invitationError || loading || invitationLoading)}
                                 color="secondary"
                                 type="submit"
                                 fullWidth={true}

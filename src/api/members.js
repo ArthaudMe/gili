@@ -15,4 +15,12 @@ const getCurrentMember = async (club, member) => {
     });
 }
 
-export const MEMBERS_API = {getMembers, getCurrentMember};
+const addMember = async (club, member) => {
+    return axios({
+        method: 'POST',
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${club}/members`,
+        data: member
+    });
+}
+
+export const MEMBERS_API = {getMembers, getCurrentMember, addMember};

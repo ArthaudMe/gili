@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {CLUBS_API} from "../../../api/clubs";
+import {MEMBERS_API} from "../../../api/members";
 
 const getClubs = createAsyncThunk('clubs/getClubs', async ({address}, thunkAPI) => {
     try {
@@ -9,6 +10,24 @@ const getClubs = createAsyncThunk('clubs/getClubs', async ({address}, thunkAPI) 
         return thunkAPI.rejectWithValue(e.response.error.message);
     }
 });
+
+
+const addMember = createAsyncThunk(
+    'members/addMember',
+    async ({club, member, addAdminToSafe, showMessage}, thunkAPI) => {
+        try {
+            const response = await MEMBERS_API.addMember(club, member);
+            if(addAdminToSafe){
+                await addAdminToSafe(member.address);
+            }
+            showMessage(response.data.message, {variant: 'success'});
+            return response.data;
+        } catch (e) {
+            const {message} = e.response.data;
+            showMessage(message, {variant: 'success'});
+            return thunkAPI.rejectWithValue(message);
+        }
+    });
 
 
 const depositFunds = createAsyncThunk(
@@ -178,11 +197,30 @@ const clubsSlice = createSlice({
         }).addCase(depositFunds.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
+        }).addCase(addMember.pending, (state) => {
+            state.membersLoading = true;
+            state.memberError = null;
+        }).addCase(addMember.fulfilled, (state, action) => {
+            state.membersLoading = false;
+            state.member = action.payload.data;
+            state.memberError = null;
+        }).addCase(addMember.rejected, (state, action) => {
+            state.memberLoading = false;
+            state.memberError = action.payload;
         })
     }
 });
 
 
 export const selectClubs = state => state.clubs;
-export const CLUBS_ACTION_CREATORS = {getClub, getClubs, updateClub, createClub, joinClub, getClubBySafe, depositFunds};
+export const CLUBS_ACTION_CREATORS = {
+    getClub,
+    getClubs,
+    updateClub,
+    createClub,
+    joinClub,
+    getClubBySafe,
+    depositFunds,
+    addMember
+};
 export default clubsSlice.reducer;

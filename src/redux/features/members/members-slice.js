@@ -2,7 +2,9 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {MEMBERS_API} from "../../../api/members";
 
 
-const getMembers = createAsyncThunk('members/getMembers', async ({club}, thunkAPI) => {
+const getMembers = createAsyncThunk(
+    'members/getMembers',
+    async ({club}, thunkAPI) => {
     try {
         const response = await MEMBERS_API.getMembers(club);
         return response.data;
@@ -11,6 +13,19 @@ const getMembers = createAsyncThunk('members/getMembers', async ({club}, thunkAP
         return thunkAPI.rejectWithValue(message);
     }
 });
+
+
+const addMember = createAsyncThunk(
+    'members/addMember',
+    async ({club, member}, thunkAPI) => {
+        try {
+            const response = await MEMBERS_API.addMember(club, member);
+            return response.data;
+        } catch (e) {
+            const {message} = e.response.data;
+            return thunkAPI.rejectWithValue(message);
+        }
+    });
 
 
 const getCurrentMember = createAsyncThunk(
@@ -53,6 +68,16 @@ const membersSlice = createSlice({
             state.member = action.payload.data;
             state.memberError = null;
         }).addCase(getCurrentMember.rejected, (state, action) => {
+            state.memberLoading = false;
+            state.memberError = action.payload;
+        }).addCase(addMember.pending, (state) => {
+            state.membersLoading = true;
+            state.memberError = null;
+        }).addCase(addMember.fulfilled, (state, action) => {
+            state.membersLoading = false;
+            state.member = action.payload.data;
+            state.memberError = null;
+        }).addCase(addMember.rejected, (state, action) => {
             state.memberLoading = false;
             state.memberError = action.payload;
         })

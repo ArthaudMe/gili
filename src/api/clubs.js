@@ -54,4 +54,12 @@ const depositFunds = (address, club, amount) => {
     })
 }
 
-export const CLUBS_API = {getClubs, createClub, updateClub, getClub, joinClub, getClubBySafe, depositFunds};
+const addMember = async (club, member) => {
+    return axios({
+        method: 'POST',
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${club}/members`,
+        data: member
+    });
+}
+
+export const CLUBS_API = {getClubs, createClub, updateClub, getClub, joinClub, getClubBySafe, depositFunds, addMember};

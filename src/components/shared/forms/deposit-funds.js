@@ -26,7 +26,11 @@ const DepositFunds = () => {
     const handleValidatePost = async (amount) => {
         try {
             const tx = await safe.createTransaction({
-                safeTransactionData: {value: `${amount}`, data: '0x', to: safe.getAddress()},
+                safeTransactionData: {
+                    value: web3.utils.toWei(`${amount}`, 'ether').toString(),
+                    data: '0x',
+                    to: safe.getAddress()
+                },
                 onlyCalls: true,
                 options: {refundReceiver: wallet.accounts[0].address}
             });
@@ -36,7 +40,7 @@ const DepositFunds = () => {
                 // await safe.approveTransactionHash(txHash);
                 // await safe.executeTransaction(safeTX);
                 dispatch(CLUBS_ACTION_CREATORS.joinClub({
-                    data: {amount: web3.utils.fromWei(`${amount}`, 'ether'), address: wallet.accounts[0].address},
+                    data: {amount, address: wallet.accounts[0].address},
                     club: club?._id,
                     callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next()),
                     showMessage

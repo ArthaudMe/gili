@@ -108,7 +108,6 @@ const ClubDepositFundsPage = () => {
                                                 variant="outlined"
                                                 placeholder="Amount in wei"
                                                 label="Deposit"
-                                                disabled={loading}
                                                 value={formik.values.deposit}
                                                 color="secondary"
                                                 name="deposit"
