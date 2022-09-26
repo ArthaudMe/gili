@@ -35,7 +35,7 @@ const Activity = ({transactions}) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Address</TableCell>
-                                <TableCell>Amount</TableCell>
+                                <TableCell align="center">Amount</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -71,7 +71,7 @@ const Activity = ({transactions}) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Address</TableCell>
-                                <TableCell>Amount</TableCell>
+                                <TableCell align="center">Amount</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

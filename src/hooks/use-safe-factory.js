@@ -26,6 +26,7 @@ const SafeFactoryProvider = ({children}) => {
                 threshold: 1,
             };
 
+
             const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
             const web3 = new Web3(window.ethereum);
             const web3Adapter = new Web3Adapter({web3, signerAddress: accounts[0]});
