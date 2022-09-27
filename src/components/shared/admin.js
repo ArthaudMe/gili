@@ -3,14 +3,10 @@ import React from "react";
 
 const Admin = ({admin}) => {
 
-    const calculateHolding = admin => {
-        return 50
-    }
-
     return (
         <React.Fragment>
             <TableCell>{admin.address}</TableCell>
-            <TableCell align="center">{calculateHolding(admin)}%</TableCell>
+            <TableCell align="center">{admin.ownership}%</TableCell>
         </React.Fragment>
     )
 }

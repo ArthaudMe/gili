@@ -40,6 +40,10 @@ const UserInviteDepositFunds = ({invitationID}) => {
                     data: '0x', to: safe?.getAddress()}
             });
             if (tx) {
+                // const txHash = await safe.getTransactionHash(tx);
+                // const safeTX = await safe.signTransaction(tx);
+                // const txResult = await safe.approveTransactionHash(txHash);
+                // const hash = await safe.executeTransaction(tx);
                 dispatch(CLUBS_ACTION_CREATORS.joinClub({
                     data: {amount, address: wallet.accounts[0].address},
                     invitation: invitationID,

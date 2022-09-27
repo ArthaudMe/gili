@@ -59,8 +59,8 @@ const web3Onboard = init({
         },
         {
             label: 'Ethereum Goerli  testnet',
-            id: '0x5',
-            rpcUrl: `https://eth-goerli.g.alchemy.com/v2/oSgugno5wNBZN7UpN282anMAcJMtmTjo`,
+            id: 420,
+            rpcUrl: `https://rpc.ankr.com/eth_goerli`,
             token: 'ETH'
         },
         {

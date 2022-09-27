@@ -21,7 +21,6 @@ import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../redux/feature
 import {useConnectWallet} from "@web3-onboard/react";
 import {ContentCopy} from "@mui/icons-material";
 import {useParams} from "react-router";
-import {selectAuth} from "../../redux/features/auth/auth-slice";
 
 const InviteMemberPage = () => {
 

@@ -35,7 +35,7 @@ const DepositFunds = () => {
                 options: {refundReceiver: wallet.accounts[0].address}
             });
             if (tx) {
-                const txHash = await safe.getTransactionHash(tx);
+                // const txHash = await safe.getTransactionHash(tx);
                 // const safeTX = await safe.signTransaction(tx);
                 // await safe.approveTransactionHash(txHash);
                 // await safe.executeTransaction(safeTX);

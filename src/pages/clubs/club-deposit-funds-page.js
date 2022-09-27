@@ -42,10 +42,10 @@ const ClubDepositFundsPage = () => {
             safeTransactionData: {value: `${amount}`, data: '0x', to: safe.getAddress()}
         });
         if(tx){
-            const txHash = await safe.getTransactionHash(tx);
+            // const txHash = await safe.getTransactionHash(tx);
             // const safeTX = await safe.signTransaction(tx);
             // const txResult = await safe.approveTransactionHash(txHash);
-            // const hash = await safe.executeTransaction(safeTX);
+            // const hash = await safe.executeTransaction(tx);
             // console.log(hash, txResult);
             dispatch(CLUBS_ACTION_CREATORS.depositFunds({club: clubID, amount: web3.utils.fromWei(`${amount}`, 'ether'), address: wallet.accounts[0].address}));
         }

@@ -3,6 +3,8 @@ import Web3 from "web3";
 import Web3Adapter from "@gnosis.pm/safe-web3-lib";
 import Safe, {SafeFactory} from "@gnosis.pm/safe-core-sdk";
 import {Buffer} from 'buffer';
+import EthersAdapter from "@gnosis.pm/safe-ethers-lib";
+import {ethers} from "ethers";
 
 window.Buffer = window.Buffer || Buffer;
 
@@ -27,15 +29,15 @@ const SafeFactoryProvider = ({children}) => {
             };
 
 
-            const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
-            const web3 = new Web3(window.ethereum);
-            const web3Adapter = new Web3Adapter({web3, signerAddress: accounts[0]});
+            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
 
             setOwnerAddress(ownerAddress);
             setLoading(true);
             setConnected(false);
-
-            const safeFactory = await SafeFactory.create({ethAdapter: web3Adapter});
+            const ethAdapter = new EthersAdapter({ethers, signer});
+            const safeFactory = await SafeFactory.create({ethAdapter});
             setSafeFactory(safeFactory);
             const safeDeploymentConfig = {
                 saltNonce: `${Math.floor(Math.random() * 1000)}`
@@ -60,12 +62,8 @@ const SafeFactoryProvider = ({children}) => {
                 threshold: 1,
             }
             setLoading(true);
-            const safeDeploymentConfig = {
-                saltNonce: `${Math.floor(Math.random() * 1000)}`
-            };
             const safe = await safeFactory.deploySafe({
                 safeAccountConfig,
-                safeDeploymentConfig,
                 callback: setTXHash
             });
             setLoading(false);
@@ -79,12 +77,14 @@ const SafeFactoryProvider = ({children}) => {
 
     const connectSafe = useCallback(async (safeAddress) => {
         try {
-            const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
-            const web3 = new Web3(window.ethereum);
-            const web3Adapter = new Web3Adapter({web3, signerAddress: accounts[0]});
+            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+
             setLoading(true);
             setConnected(false);
-            const safe = await Safe.create({ethAdapter: web3Adapter, safeAddress});
+            const ethAdapter = new EthersAdapter({ethers, signer});
+            const safe = await Safe.create({ethAdapter, safeAddress});
             setSafe(safe);
             setConnected(true);
             setLoading(false);
