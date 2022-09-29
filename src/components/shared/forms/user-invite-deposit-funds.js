@@ -57,17 +57,10 @@ const UserInviteDepositFunds = ({invitationID}) => {
         request: {
             to: safeAddress,
             value: formik.values.deposit
-        },
-        onSuccess: () => {
-            dispatch(CLUBS_ACTION_CREATORS.joinClub({
-                data: {amount: web3.utils.fromWei(formik.values.deposit, 'ether'), address: wallet.accounts[0].address},
-                invitation: invitationID,
-                callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
-            }));
         }
     });
 
-    const {sendTransaction} = useSendTransaction(config);
+    const {sendTransaction, isSuccess, isLoading} = useSendTransaction(config);
 
 
     const handleValidatePost = async () => {
@@ -98,6 +91,15 @@ const UserInviteDepositFunds = ({invitationID}) => {
         connect().then(() => console.log('connecting'));
     }, []);
 
+    useEffect(() => {
+        if(isSuccess){
+            dispatch(CLUBS_ACTION_CREATORS.joinClub({
+                data: {amount: web3.utils.fromWei(formik.values.deposit, 'ether'), address: wallet.accounts[0].address},
+                invitation: invitationID,
+                callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
+            }));
+        }
+    }, [isSuccess]);
 
     return (
         <Card
@@ -106,7 +108,8 @@ const UserInviteDepositFunds = ({invitationID}) => {
                 backdropFilter: 'blur(5px)'
             }}>
             {invitationLoading && <LinearProgress variant="query" color="secondary"/>}
-            {loading && <LinearProgress variant="query" color="primary"/>}
+            {isLoading && <LinearProgress variant="query" color="secondary"/>}
+            {loading && <LinearProgress variant="query" color="secondary"/>}
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 Deposit funds to join club
             </Typography>
