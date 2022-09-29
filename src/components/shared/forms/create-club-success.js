@@ -4,6 +4,8 @@ import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/c
 import {useDispatch, useSelector} from "react-redux";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
+import {useNetwork} from "wagmi";
+import {UTILS} from "../../../utils/utils";
 
 const CreateClubSuccess = () => {
 
@@ -12,13 +14,15 @@ const CreateClubSuccess = () => {
     const {safe, txHash} = useSafeFactory();
     const {club, loading} = useSelector(selectClubs);
 
+    const {chain} = useNetwork();
+
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
             {loading && <LinearProgress variant="query" color="secondary"/>}
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 Congrats, you’ve created a new club!
             </Typography>
-            <CardContent sx={{paddingX: 5}}>
+            <CardContent>
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
@@ -52,9 +56,9 @@ const CreateClubSuccess = () => {
                         </Typography>
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
-                        <Link href={`https://goerli.etherscan.io/tx/${txHash}`} target="_blank">
+                        <Link href={`${UTILS.getNetworkById(chain.id).blockExplorer}/tx/${txHash}`} target="_blank">
                             <Typography sx={{color: 'text.primary'}} variant="body1">
-                                https://goerli.etherscan.io/tx/{txHash}
+                                {UTILS.getNetworkById(chain.id).blockExplorer}/tx/{`${txHash?.slice(0, 5)}...${txHash?.slice(txHash?.length - 5)}`}
                             </Typography>
                         </Link>
                     </Grid>

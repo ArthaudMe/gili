@@ -54,6 +54,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "vconsole": "^3.14.6",
+    "wagmi": "^0.6.7",
     "web-vitals": "^3.0.1",
     "web3": "^1.8.0",
     "web3-detect-network": "^0.0.18",

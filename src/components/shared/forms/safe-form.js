@@ -3,16 +3,18 @@ import personalWalletIcon from "./../../../assets/images/img.png";
 import newWalletIcon from "./../../../assets/images/new-wallet.png";
 import {useDispatch} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {useConnectWallet} from "@web3-onboard/react";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {CREATE_CLUB_ACTION_CREATORS} from "../../../redux/features/create-club/create-club-slice";
 import ConnectSafeSdkDialog from "../dialogs/connect-safe-sdk-dialog";
+import {useConnectWallet} from "@web3-onboard/react";
+import {useConnect} from "wagmi";
 
 const SafeForm = () => {
 
-    const [{connecting, wallet}, connect] = useConnectWallet();
     const dispatch = useDispatch();
     const {initializeFactory, loading, connectSafe} = useSafeFactory();
+    const [{wallet}, connect, connecting] = useConnectWallet();
+    const wagmiConnect = useConnect();
 
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -24,10 +26,11 @@ const SafeForm = () => {
         const init = async () => {
             if (wallet) {
                 await initializeFactory(wallet.accounts[0].address);
+                wagmiConnect.connect({connector: wagmiConnect.connectors[0]});
                 dispatch(CREATE_CLUB_ACTION_CREATORS.next());
             }
         }
-        init();
+        init().then();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wallet]);
 

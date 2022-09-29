@@ -1,21 +1,20 @@
 import {Button, Card, CardContent, Grid, LinearProgress, Stack, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {CREATE_CLUB_ACTION_CREATORS, selectCreateClub} from "../../../redux/features/create-club/create-club-slice";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {UTILS} from "../../../utils/utils";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
 import {useSnackbar} from "notistack";
-import {useConnectWallet} from "@web3-onboard/react";
+import {useAccount, useNetwork} from "wagmi";
 
 const CreateClubSummary = () => {
 
     const {club, gas} = useSelector(selectCreateClub);
-
+    const {chain} = useNetwork();
+    const {address} = useAccount();
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
-    const [network, setNetwork] = useState(null);
-    const [{wallet}] = useConnectWallet();
     const {safeAddress, deploySafe, connected, loading, setLoading} = useSafeFactory();
 
     const showMessage = (message, options) => {
@@ -29,8 +28,8 @@ const CreateClubSummary = () => {
                 dispatch(CLUBS_ACTION_CREATORS.createClub({
                     data: {
                         ...club,
-                        createdBy: wallet.accounts[0].address,
-                        network,
+                        createdBy: address,
+                        network: chain?.id,
                         safeAddress
                     },
                     callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next()),
@@ -49,17 +48,14 @@ const CreateClubSummary = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        setNetwork(wallet.chains[0].id);
-    }, [wallet.chains]);
-
+    console.log(chain)
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
             {loading && <LinearProgress variant="query" color="secondary"/>}
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2}} variant="h6" align="center">
                 Finalise the creation of your club
             </Typography>
-            <CardContent sx={{paddingX: 5}}>
+            <CardContent>
                 <Stack direction="column" spacing={3} sx={{mb: 2}}>
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
                         <Typography sx={{color: 'text.primary'}} variant="body2" align="center">
@@ -122,7 +118,7 @@ const CreateClubSummary = () => {
                             Network
                         </Typography>
                         <Typography sx={{color: 'text.primary'}} variant="body1" align="center">
-                            {network}
+                            {chain?.network}
                         </Typography>
                     </Stack>
                 </Stack>

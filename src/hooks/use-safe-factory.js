@@ -21,6 +21,10 @@ const SafeFactoryProvider = ({children}) => {
     const [ownerAddress, setOwnerAddress] = useState(null);
     const [txHash, setTXHash] = useState(null);
 
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const ethAdapter = new EthersAdapter({ethers, signer});
+
     const initializeFactory = useCallback(async (ownerAddress) => {
         try {
             const safeAccountConfig = {
@@ -28,15 +32,9 @@ const SafeFactoryProvider = ({children}) => {
                 threshold: 1,
             };
 
-
-            const provider = new ethers.providers.Web3Provider(window.ethereum)
-            await provider.send("eth_requestAccounts", []);
-            const signer = provider.getSigner();
-
             setOwnerAddress(ownerAddress);
             setLoading(true);
             setConnected(false);
-            const ethAdapter = new EthersAdapter({ethers, signer});
             const safeFactory = await SafeFactory.create({ethAdapter});
             setSafeFactory(safeFactory);
             const safeDeploymentConfig = {
@@ -53,7 +51,7 @@ const SafeFactoryProvider = ({children}) => {
         } catch (e) {
             setError(e.message);
         }
-    }, []);
+    }, [signer]);
 
     const deploySafe = useCallback(async () => {
         try {
@@ -77,13 +75,8 @@ const SafeFactoryProvider = ({children}) => {
 
     const connectSafe = useCallback(async (safeAddress) => {
         try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum)
-            await provider.send("eth_requestAccounts", []);
-            const signer = provider.getSigner();
-
             setLoading(true);
             setConnected(false);
-            const ethAdapter = new EthersAdapter({ethers, signer});
             const safe = await Safe.create({ethAdapter, safeAddress});
             setSafe(safe);
             setConnected(true);
@@ -93,7 +86,7 @@ const SafeFactoryProvider = ({children}) => {
             console.log(e.message, 'connect safe error')
             setLoading(false);
         }
-    }, []);
+    }, [ethAdapter]);
 
     const contextValue = useMemo(() => ({
         initializeFactory,

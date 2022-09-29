@@ -25,6 +25,8 @@ import {CLUBS_ACTION_CREATORS, selectClubs} from "../../redux/features/clubs/clu
 import {useParams} from "react-router";
 import {useConnectWallet} from "@web3-onboard/react";
 import web3 from "web3";
+import {usePrepareSendTransaction, useSendTransaction} from "wagmi";
+import {useSnackbar} from "notistack";
 
 
 const ClubDepositFundsPage = () => {
@@ -36,20 +38,8 @@ const ClubDepositFundsPage = () => {
     const {club, loading, message, error} = useSelector(selectClubs);
     const [{wallet}] = useConnectWallet();
     const dispatch = useDispatch();
+    const {enqueueSnackbar} = useSnackbar();
 
-    const handleValidatePost = async (amount) => {
-        const tx = await safe.createTransaction({
-            safeTransactionData: {value: `${amount}`, data: '0x', to: safe.getAddress()}
-        });
-        if(tx){
-            // const txHash = await safe.getTransactionHash(tx);
-            // const safeTX = await safe.signTransaction(tx);
-            // const txResult = await safe.approveTransactionHash(txHash);
-            // const hash = await safe.executeTransaction(tx);
-            // console.log(hash, txResult);
-            dispatch(CLUBS_ACTION_CREATORS.depositFunds({club: clubID, amount: web3.utils.fromWei(`${amount}`, 'ether'), address: wallet.accounts[0].address}));
-        }
-    }
 
     const formik = useFormik({
         validateOnBlur: true,
@@ -65,6 +55,31 @@ const ClubDepositFundsPage = () => {
             deposit: ''
         }
     });
+
+    const {config} = usePrepareSendTransaction({
+        request: {
+            to: safe.getAddress(),
+            value: formik.values.deposit
+        },
+        onSuccess: (data) => {
+            dispatch(CLUBS_ACTION_CREATORS.depositFunds({
+                club: clubID,
+                amount: web3.utils.fromWei(`${formik.values.deposit}`, 'ether'),
+                address: wallet.accounts[0].address
+            }));
+        }
+    });
+
+    const {sendTransaction} = useSendTransaction(config);
+
+    const handleValidatePost = async () => {
+        try {
+            sendTransaction();
+        } catch (e) {
+            console.log(e.message);
+            enqueueSnackbar(e.message, {variant: 'error'});
+        }
+    }
 
     return (
         <AuthLayout>

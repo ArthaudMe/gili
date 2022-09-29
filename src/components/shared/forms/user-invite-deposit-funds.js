@@ -21,39 +21,23 @@ import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
 import {useConnectWallet} from "@web3-onboard/react";
 import {useSnackbar} from "notistack";
+import {useSearchParams} from "react-router-dom";
+import {useLocation} from "react-router";
+import {usePrepareSendTransaction, useSendTransaction} from "wagmi";
 import web3 from "web3";
 
 const UserInviteDepositFunds = ({invitationID}) => {
 
+    const {search} = useLocation();
+    const [URLSearchParams] = useSearchParams(search);
+    const safeAddress = URLSearchParams.get('safeAddress');
+    const network = parseInt(URLSearchParams.get('network'));
+
     const dispatch = useDispatch();
     const {invitation, invitationLoading, invitationError} = useSelector(selectInvitation);
-    const {safe, loading, connectSafe, error} = useSafeFactory();
+    const {loading, connectSafe, error} = useSafeFactory();
     const [{wallet}, connect] = useConnectWallet();
     const {enqueueSnackbar} = useSnackbar();
-
-    const handleValidatePost = async (amount) => {
-        try {
-            await connectSafe(invitation.club.safeAddress);
-            const tx = await safe.createTransaction({
-                safeTransactionData: {
-                    value: web3.utils.toWei(amount, 'ether').toString(),
-                    data: '0x', to: safe?.getAddress()}
-            });
-            if (tx) {
-                // const txHash = await safe.getTransactionHash(tx);
-                // const safeTX = await safe.signTransaction(tx);
-                // const txResult = await safe.approveTransactionHash(txHash);
-                // const hash = await safe.executeTransaction(tx);
-                dispatch(CLUBS_ACTION_CREATORS.joinClub({
-                    data: {amount, address: wallet.accounts[0].address},
-                    invitation: invitationID,
-                    callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
-                }));
-            }
-        } catch (e) {
-            enqueueSnackbar(e.message, {variant: 'error'});
-        }
-    }
 
     const formik = useFormik({
         validateOnBlur: true,
@@ -61,27 +45,59 @@ const UserInviteDepositFunds = ({invitationID}) => {
         validationSchema: yup.object().shape({
             deposit: yup.number().required('Deposit required')
         }),
-        onSubmit: async (values, formikHelpers) => {
-            await handleValidatePost(values.deposit);
-            formikHelpers.resetForm();
+        onSubmit: async () => {
+            await handleValidatePost();
         },
         initialValues: {
-            deposit: ''
+            deposit: '0'
         }
     });
+
+    const {config} = usePrepareSendTransaction({
+        request: {
+            to: safeAddress,
+            value: formik.values.deposit
+        },
+        onSuccess: () => {
+            dispatch(CLUBS_ACTION_CREATORS.joinClub({
+                data: {amount: web3.utils.fromWei(formik.values.deposit, 'ether'), address: wallet.accounts[0].address},
+                invitation: invitationID,
+                callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
+            }));
+        }
+    });
+
+    const {sendTransaction} = useSendTransaction(config);
+
+
+    const handleValidatePost = async () => {
+        try {
+            sendTransaction();
+        } catch (e) {
+            enqueueSnackbar(e.message, {variant: 'error'});
+        }
+    }
 
     useEffect(() => {
         const connectWallet = async () => {
             await connect();
         }
-        connectWallet();
-    }, [connect, dispatch]);
+        connectWallet().then();
+    }, []);
 
     useEffect(() => {
         dispatch(INVITATIONS_ACTION_CREATORS.verifyInvitation(
             {invitation: invitationID})
         );
     }, [invitationID]);
+
+    useEffect(() => {
+        const connect = async () => {
+            await connectSafe(safeAddress, network);
+        }
+        connect().then(() => console.log('connecting'));
+    }, []);
+
 
     return (
         <Card

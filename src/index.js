@@ -15,6 +15,8 @@ import injectedModule from "@web3-onboard/injected-wallets";
 import gnosisModule from "@web3-onboard/gnosis";
 import {SnackbarProvider} from "notistack";
 import SafeFactoryProvider from "./hooks/use-safe-factory";
+import {chain, configureChains, createClient, WagmiConfig} from "wagmi";
+import {publicProvider} from "wagmi/providers/public";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -86,6 +88,17 @@ const web3Onboard = init({
     }
 });
 
+const {provider, webSocketProvider} = configureChains(
+    [chain.polygon, chain.rinkeby, chain.ropsten, chain.kovan, chain.mainnet, chain.goerli, chain.localhost],
+    [publicProvider()]
+)
+
+const client = createClient({
+    autoConnect: true,
+    provider,
+    webSocketProvider
+});
+
 root.render(
     <React.StrictMode>
         <BrowserRouter>
@@ -93,15 +106,17 @@ root.render(
                 <ThemeProvider theme={THEMES.darkTheme}>
                     <CssBaseline enableColorScheme={true}/>
                     <Web3OnboardProvider web3Onboard={web3Onboard}>
-                        <SnackbarProvider
-                            color="primary"
-                            autoHideDuration={2000}
-                            anchorOrigin={{vertical: 'top', horizontal: 'left'}}
-                            maxSnack={5}>
-                            <SafeFactoryProvider>
-                                <App/>
-                            </SafeFactoryProvider>
-                        </SnackbarProvider>
+                        <WagmiConfig client={client}>
+                            <SnackbarProvider
+                                color="primary"
+                                autoHideDuration={2000}
+                                anchorOrigin={{vertical: 'top', horizontal: 'left'}}
+                                maxSnack={5}>
+                                <SafeFactoryProvider>
+                                    <App/>
+                                </SafeFactoryProvider>
+                            </SnackbarProvider>
+                        </WagmiConfig>
                     </Web3OnboardProvider>
                 </ThemeProvider>
             </Provider>

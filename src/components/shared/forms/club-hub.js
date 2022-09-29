@@ -23,7 +23,7 @@ const ClubHub = () => {
             <Typography sx={{color: 'white', px: 2, fontWeight: 300, pt: 2, mb: 4}} variant="h6" align="center">
                 {club?.name} club hub
             </Typography>
-            <CardContent sx={{paddingX: 5}}>
+            <CardContent>
                 <Grid sx={{mb: 3}} container={true} justifyContent="space-between" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.primary'}} variant="body1">

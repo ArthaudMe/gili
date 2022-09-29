@@ -5,26 +5,30 @@ import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
 import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../../redux/features/invitations/invitations-slice";
-import {useConnectWallet} from "@web3-onboard/react";
 import {ContentCopy} from "@mui/icons-material";
+import {useAccount, useNetwork} from "wagmi";
+import {useSafeFactory} from "../../../hooks/use-safe-factory";
 
 const InviteFriends = () => {
     const {enqueueSnackbar} = useSnackbar();
+    const {chain} = useNetwork();
+    const {address} = useAccount();
     const [selectedRole, setSelectedRole] = useState('Member');
     const {club} = useSelector(selectClubs);
-    const [{wallet}] = useConnectWallet();
     const {invitationLoading, invitation} = useSelector(selectInvitation);
     const dispatch = useDispatch();
+    const {safe} = useSafeFactory();
 
     const showMessage = (message, options) => {
         enqueueSnackbar(message, options);
     }
+
     const handleInvitationGenerate = () => {
         dispatch(INVITATIONS_ACTION_CREATORS.createInvitation({
             data: {
                 role: selectedRole,
                 club: club?._id,
-                inviter: wallet.accounts[0].address
+                inviter: address
             },
             showMessage
         }));
@@ -32,7 +36,7 @@ const InviteFriends = () => {
 
     const handleInvitationCopy = async () => {
         window.navigator.clipboard.writeText(
-            `You have been invited by ${club?.name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation._id} to join the club`)
+            `You have been invited by ${club?.name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation._id}?safeAddress=${safe.getAddress()}&network=${chain.id} to join the club`)
             .then(() => {
                 enqueueSnackbar('Invitation link copied', {variant: 'success'});
             });
