@@ -63,11 +63,18 @@ const ClubDepositFundsPage = () => {
         }
     });
 
-    const {sendTransaction, isSuccess, isLoading} = useSendTransaction(config);
+    const {sendTransactionAsync, isSuccess, isLoading} = useSendTransaction(config);
 
     const handleValidatePost = async () => {
         try {
-            sendTransaction();
+            const txResult = await sendTransactionAsync();
+            if(txResult){
+                dispatch(CLUBS_ACTION_CREATORS.depositFunds({
+                    club: clubID,
+                    amount: web3.utils.fromWei(`${formik.values.deposit}`, 'ether'),
+                    address: wallet.accounts[0].address
+                }));
+            }
         } catch (e) {
             console.log(e.message);
             enqueueSnackbar(e.message, {variant: 'error'});
@@ -76,11 +83,7 @@ const ClubDepositFundsPage = () => {
 
     useEffect(() => {
         if (isSuccess) {
-            dispatch(CLUBS_ACTION_CREATORS.depositFunds({
-                club: clubID,
-                amount: web3.utils.fromWei(`${formik.values.deposit}`, 'ether'),
-                address: wallet.accounts[0].address
-            }));
+
         }
     }, [clubID, formik.values.deposit, isSuccess, wallet.accounts]);
 
@@ -180,7 +183,6 @@ const ClubDepositFundsPage = () => {
                                 <Grid container={true} justifyContent="center">
                                     <Grid item={true} xs={12} md={6}>
                                         <Button
-                                            onClick={handleValidatePost}
                                             sx={{
                                                 textTransform: 'capitalize',
                                                 py: 1.2
