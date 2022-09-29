@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import {selectClubs} from "../../../redux/features/clubs/clubs-slice";
 import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../../redux/features/invitations/invitations-slice";
 import {ContentCopy} from "@mui/icons-material";
-import {useAccount, useNetwork} from "wagmi";
+import {useNetwork} from "wagmi";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {useConnectWallet} from "@web3-onboard/react";
 

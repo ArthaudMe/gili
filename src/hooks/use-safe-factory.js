@@ -21,6 +21,7 @@ const SafeFactoryProvider = ({children}) => {
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const ethAdapter = new EthersAdapter({ethers, signer});
 
     const initializeFactory = useCallback(async (ownerAddress) => {
