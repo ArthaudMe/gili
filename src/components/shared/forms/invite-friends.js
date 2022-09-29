@@ -8,16 +8,17 @@ import {INVITATIONS_ACTION_CREATORS, selectInvitation} from "../../../redux/feat
 import {ContentCopy} from "@mui/icons-material";
 import {useAccount, useNetwork} from "wagmi";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
+import {useConnectWallet} from "@web3-onboard/react";
 
 const InviteFriends = () => {
     const {enqueueSnackbar} = useSnackbar();
     const {chain} = useNetwork();
-    const {address} = useAccount();
     const [selectedRole, setSelectedRole] = useState('Member');
     const {club} = useSelector(selectClubs);
     const {invitationLoading, invitation} = useSelector(selectInvitation);
     const dispatch = useDispatch();
     const {safe} = useSafeFactory();
+    const [{wallet}] = useConnectWallet();
 
     const showMessage = (message, options) => {
         enqueueSnackbar(message, options);
@@ -28,7 +29,7 @@ const InviteFriends = () => {
             data: {
                 role: selectedRole,
                 club: club?._id,
-                inviter: address
+                inviter: wallet.accounts[0].address
             },
             showMessage
         }));

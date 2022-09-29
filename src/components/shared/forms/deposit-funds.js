@@ -38,14 +38,6 @@ const DepositFunds = () => {
         request: {
             to: safe.getAddress(),
             value: formik.values.deposit
-        },
-        onSuccess: (data) => {
-            dispatch(CLUBS_ACTION_CREATORS.joinClub({
-                data: {amount: web3.utils.fromWei(formik.values.deposit, 'ether'), address: wallet.accounts[0].address},
-                club: club?._id,
-                callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next()),
-                showMessage
-            }));
         }
     });
 
@@ -58,6 +50,14 @@ const DepositFunds = () => {
     const handleValidatePost = async () => {
         try {
             sendTransaction();
+
+            dispatch(CLUBS_ACTION_CREATORS.joinClub({
+                data: {amount: web3.utils.fromWei(formik.values.deposit, 'ether'), address: wallet.accounts[0].address},
+                club: club?._id,
+                callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next()),
+                showMessage
+            }));
+
         } catch (e) {
             console.log(e.message);
             setLoading(false);

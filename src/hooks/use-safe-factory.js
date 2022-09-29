@@ -1,6 +1,4 @@
 import {createContext, useCallback, useContext, useMemo, useState} from "react";
-import Web3 from "web3";
-import Web3Adapter from "@gnosis.pm/safe-web3-lib";
 import Safe, {SafeFactory} from "@gnosis.pm/safe-core-sdk";
 import {Buffer} from 'buffer';
 import EthersAdapter from "@gnosis.pm/safe-ethers-lib";
@@ -51,7 +49,7 @@ const SafeFactoryProvider = ({children}) => {
         } catch (e) {
             setError(e.message);
         }
-    }, [signer]);
+    }, [ethAdapter]);
 
     const deploySafe = useCallback(async () => {
         try {

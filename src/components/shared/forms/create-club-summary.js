@@ -6,15 +6,16 @@ import {UTILS} from "../../../utils/utils";
 import {useSafeFactory} from "../../../hooks/use-safe-factory";
 import {CLUBS_ACTION_CREATORS} from "../../../redux/features/clubs/clubs-slice";
 import {useSnackbar} from "notistack";
-import {useAccount, useNetwork} from "wagmi";
+import {useNetwork} from "wagmi";
+import {useConnectWallet} from "@web3-onboard/react";
 
 const CreateClubSummary = () => {
 
     const {club, gas} = useSelector(selectCreateClub);
     const {chain} = useNetwork();
-    const {address} = useAccount();
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
+    const [{wallet}] = useConnectWallet();
     const {safeAddress, deploySafe, connected, loading, setLoading} = useSafeFactory();
 
     const showMessage = (message, options) => {
@@ -28,7 +29,7 @@ const CreateClubSummary = () => {
                 dispatch(CLUBS_ACTION_CREATORS.createClub({
                     data: {
                         ...club,
-                        createdBy: address,
+                        createdBy: wallet.accounts[0].address,
                         network: chain?.id,
                         safeAddress
                     },
@@ -48,7 +49,6 @@ const CreateClubSummary = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log(chain)
     return (
         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}>
             {loading && <LinearProgress variant="query" color="secondary"/>}

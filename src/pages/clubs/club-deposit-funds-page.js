@@ -1,5 +1,5 @@
 import AuthLayout from "../../components/layout/auth-layout";
-import React from "react";
+import React, {useEffect} from "react";
 import {
     Alert,
     AlertTitle,
@@ -60,17 +60,10 @@ const ClubDepositFundsPage = () => {
         request: {
             to: safe.getAddress(),
             value: formik.values.deposit
-        },
-        onSuccess: (data) => {
-            dispatch(CLUBS_ACTION_CREATORS.depositFunds({
-                club: clubID,
-                amount: web3.utils.fromWei(`${formik.values.deposit}`, 'ether'),
-                address: wallet.accounts[0].address
-            }));
         }
     });
 
-    const {sendTransaction} = useSendTransaction(config);
+    const {sendTransaction, isSuccess, isLoading} = useSendTransaction(config);
 
     const handleValidatePost = async () => {
         try {
@@ -80,6 +73,16 @@ const ClubDepositFundsPage = () => {
             enqueueSnackbar(e.message, {variant: 'error'});
         }
     }
+
+    useEffect(() => {
+        if (isSuccess) {
+            dispatch(CLUBS_ACTION_CREATORS.depositFunds({
+                club: clubID,
+                amount: web3.utils.fromWei(`${formik.values.deposit}`, 'ether'),
+                address: wallet.accounts[0].address
+            }));
+        }
+    }, [clubID, formik.values.deposit, isSuccess, wallet.accounts]);
 
     return (
         <AuthLayout>
@@ -99,6 +102,7 @@ const ClubDepositFundsPage = () => {
                         }}
                         elevation={1}>
                         {loading && <LinearProgress variant="query" color="secondary"/>}
+                        {isLoading && <LinearProgress variant="query" color="secondary"/>}
                         <CardContent>
                             {message && (
                                 <Alert sx={{mb: 2}} severity="info"><AlertTitle>{message}</AlertTitle></Alert>
