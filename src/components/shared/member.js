@@ -6,7 +6,7 @@ const Member = ({member}) => {
     return (
         <React.Fragment>
             <TableCell>{member.address}</TableCell>
-            <TableCell align="center">{member.holding}</TableCell>
+            <TableCell align="center">{member.ownership}%</TableCell>
         </React.Fragment>
     )
 }

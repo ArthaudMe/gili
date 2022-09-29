@@ -30,7 +30,7 @@ const DepositFunds = () => {
             formikHelpers.resetForm();
         },
         initialValues: {
-            deposit: '0'
+            deposit: ''
         }
     });
 
@@ -41,7 +41,7 @@ const DepositFunds = () => {
         }
     });
 
-    const {sendTransaction} = useSendTransaction(config);
+    const {sendTransactionAsync} = useSendTransaction(config);
 
     const showMessage = (message, options) => {
         enqueueSnackbar(message, options);
@@ -49,14 +49,16 @@ const DepositFunds = () => {
 
     const handleValidatePost = async () => {
         try {
-            sendTransaction();
+            const txResult = await sendTransactionAsync();
 
-            dispatch(CLUBS_ACTION_CREATORS.joinClub({
-                data: {amount: web3.utils.fromWei(formik.values.deposit, 'ether'), address: wallet.accounts[0].address},
-                club: club?._id,
-                callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next()),
-                showMessage
-            }));
+            if(txResult){
+                dispatch(CLUBS_ACTION_CREATORS.joinClub({
+                    data: {amount: web3.utils.fromWei(formik.values.deposit, 'ether'), address: wallet.accounts[0].address},
+                    club: club?._id,
+                    callback: () => dispatch(CREATE_CLUB_ACTION_CREATORS.next()),
+                    showMessage
+                }));
+            }
 
         } catch (e) {
             console.log(e.message);

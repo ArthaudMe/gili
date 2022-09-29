@@ -9,6 +9,8 @@ const UserInvitationClubHub = () => {
 
     const {club, member} = useSelector(selectClubs);
 
+    console.log(member, 'get current member');
+
     return (
         <Card
             sx={{
@@ -29,7 +31,7 @@ const UserInvitationClubHub = () => {
                     </Grid>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
-                            {member?.stake} GEO
+                            {member?.stake} {club && UTILS.selectCurrency(club?.currency)}
                         </Typography>
                     </Grid>
                 </Grid>

@@ -1,19 +1,16 @@
 import AuthLayout from "../../components/layout/auth-layout";
-import {Box, Button, Container} from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
-import {CREATE_CLUB_ACTION_CREATORS, selectCreateClub} from "../../redux/features/create-club/create-club-slice";
-import {West} from "@mui/icons-material";
+import {Box, Container} from "@mui/material";
+import {useSelector} from "react-redux";
 import React from "react";
 import UserInviteDepositFunds from "../../components/shared/forms/user-invite-deposit-funds";
 import UserInvitationClubHub from "../../components/shared/forms/user-invitation-club-hub";
 import {useParams} from "react-router";
+import {selectInvitation} from "../../redux/features/invitations/invitations-slice";
 
 const ClubInvitationPage = () => {
 
-    const {step} = useSelector(selectCreateClub);
+    const {step} = useSelector(selectInvitation);
     const {invitationID} = useParams();
-
-    const dispatch = useDispatch();
 
     const renderForm = step => {
         switch (step) {
@@ -22,7 +19,7 @@ const ClubInvitationPage = () => {
             case 2:
                 return <UserInvitationClubHub/>;
             default:
-                return <UserInviteDepositFunds/>;
+                return <UserInviteDepositFunds invitationID={invitationID}/>;
         }
     }
 
@@ -41,16 +38,6 @@ const ClubInvitationPage = () => {
                             <Box
                                 sx={{minWidth: '40%', maxWidth: {xs: '100%', lg: '70%'}}}>
                                 {renderForm(step)}
-                                {step > 1 && (
-                                    <Box sx={{mt: 4}}>
-                                        <Button
-                                            onClick={() => dispatch(CREATE_CLUB_ACTION_CREATORS.previous())}
-                                            startIcon={<West/>}
-                                            variant="text" sx={{color: 'text.secondary', textTransform: 'capitalize'}}>
-                                            Back
-                                        </Button>
-                                    </Box>
-                                )}
                             </Box>
                         </Box>
                     </Container>

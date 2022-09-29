@@ -32,6 +32,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
     const [URLSearchParams] = useSearchParams(search);
     const safeAddress = URLSearchParams.get('safeAddress');
     const network = parseInt(URLSearchParams.get('network'));
+    const club = URLSearchParams.get('club');
 
     const dispatch = useDispatch();
     const {invitation, invitationLoading, invitationError} = useSelector(selectInvitation);
@@ -45,11 +46,9 @@ const UserInviteDepositFunds = ({invitationID}) => {
         validationSchema: yup.object().shape({
             deposit: yup.number().required('Deposit required')
         }),
-        onSubmit: async () => {
-            await handleValidatePost();
-        },
+        onSubmit:  () => {},
         initialValues: {
-            deposit: '0'
+            deposit: ''
         }
     });
 
@@ -60,12 +59,27 @@ const UserInviteDepositFunds = ({invitationID}) => {
         }
     });
 
-    const {sendTransaction, isSuccess, isLoading} = useSendTransaction(config);
+    const {isLoading, sendTransactionAsync} = useSendTransaction(config);
 
+    const showMessage = (message, options) => {
+        enqueueSnackbar(message, options);
+    }
 
     const handleValidatePost = async () => {
         try {
-            sendTransaction();
+           const txResult = await sendTransactionAsync();
+           if(txResult){
+               dispatch(CLUBS_ACTION_CREATORS.joinClub({
+                   data: {
+                       amount: web3.utils.fromWei(formik.values.deposit, 'ether'),
+                       address: wallet.accounts[0].address,
+                       invitation: invitationID,
+                   },
+                   club,
+                   callback: () => dispatch(INVITATIONS_ACTION_CREATORS.next()),
+                   showMessage
+               }));
+           }
         } catch (e) {
             enqueueSnackbar(e.message, {variant: 'error'});
         }
@@ -90,16 +104,6 @@ const UserInviteDepositFunds = ({invitationID}) => {
         }
         connect().then(() => console.log('connecting'));
     }, []);
-
-    useEffect(() => {
-        if(isSuccess){
-            dispatch(CLUBS_ACTION_CREATORS.joinClub({
-                data: {amount: web3.utils.fromWei(formik.values.deposit, 'ether'), address: wallet.accounts[0].address},
-                invitation: invitationID,
-                callback: dispatch(CREATE_CLUB_ACTION_CREATORS.next())
-            }));
-        }
-    }, [isSuccess]);
 
     return (
         <Card

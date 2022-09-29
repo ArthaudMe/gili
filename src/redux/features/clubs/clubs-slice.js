@@ -17,7 +17,7 @@ const addMember = createAsyncThunk(
     async ({club, member, addAdminToSafe, showMessage}, thunkAPI) => {
         try {
             const response = await MEMBERS_API.addMember(club, member);
-            if(addAdminToSafe){
+            if (addAdminToSafe) {
                 await addAdminToSafe(member.address);
             }
             showMessage(response.data.message, {variant: 'success'});
@@ -93,11 +93,11 @@ const joinClub = createAsyncThunk(
     async ({club, data, callback, showMessage}, thunkAPI) => {
         try {
             const response = await CLUBS_API.joinClub(club, data);
-            callback();
             showMessage(response.data.message, {variant: 'success'});
+            callback();
             return response.data;
         } catch (e) {
-            showMessage(e.response.data.message, {variant: 'error'});
+            showMessage(e.response.error.message, {variant: 'error'});
             return thunkAPI.rejectWithValue(e.response.error.message);
         }
     });

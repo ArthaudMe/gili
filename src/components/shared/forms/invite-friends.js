@@ -37,7 +37,7 @@ const InviteFriends = () => {
 
     const handleInvitationCopy = async () => {
         window.navigator.clipboard.writeText(
-            `You have been invited by ${club?.name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation._id}?safeAddress=${safe.getAddress()}&network=${chain.id} to join the club`)
+            `You have been invited by ${club?.name} to join their club. Follow the link https://gili.vercel.app/invitations/${invitation._id}?safeAddress=${safe.getAddress()}&network=${chain.id}&club=${club?._id} to join the club`)
             .then(() => {
                 enqueueSnackbar('Invitation link copied', {variant: 'success'});
             });

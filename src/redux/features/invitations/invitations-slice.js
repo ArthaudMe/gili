@@ -31,7 +31,6 @@ const verifyInvitation = createAsyncThunk(
             return response.data;
         } catch (e) {
             const {message} = e.response.data;
-            console.log(e.message, 'error from verify invitation');
             showMessage(message, {variant: 'error'});
             return thunkAPI.rejectWithValue(message);
         }
@@ -42,18 +41,12 @@ const invitationsSlice = createSlice({
     initialState: {
         invitationLoading: false,
         invitationError: null,
-        invitation: null
+        invitation: null,
+        step: 1
     },
     reducers: {
         next: (state) => {
-            if (state.step < 5) {
-                state.step += 1;
-            }
-        },
-        previous: (state) => {
-            if (state.step > 1) {
-                state.step -= 1;
-            }
+            state.step += 1;
         }
     },
     extraReducers: builder => {
@@ -82,5 +75,5 @@ const invitationsSlice = createSlice({
 });
 
 export const selectInvitation = state => state.invitation;
-export const INVITATIONS_ACTION_CREATORS = {...invitationsSlice.actions, createInvitation, verifyInvitation};
+export const INVITATIONS_ACTION_CREATORS = {next: invitationsSlice.actions.next, createInvitation, verifyInvitation};
 export default invitationsSlice.reducer;
