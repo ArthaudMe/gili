@@ -35,8 +35,7 @@ const ClubInvitationPage = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                            <Box
-                                sx={{minWidth: '40%', maxWidth: {xs: '100%', lg: '70%'}}}>
+                            <Box>
                                 {renderForm(step)}
                             </Box>
                         </Box>

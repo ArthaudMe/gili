@@ -1,5 +1,5 @@
 import AuthLayout from "../../components/layout/auth-layout";
-import React, {useEffect} from "react";
+import React from "react";
 import {
     Alert,
     AlertTitle,
@@ -40,16 +40,14 @@ const ClubDepositFundsPage = () => {
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
 
-
     const formik = useFormik({
         validateOnBlur: true,
         validateOnChange: true,
         validationSchema: yup.object().shape({
             deposit: yup.number().required('Deposit required')
         }),
-        onSubmit: async (values, formikHelpers) => {
-            await handleValidatePost(values.deposit);
-            formikHelpers.resetForm();
+        onSubmit: async () => {
+
         },
         initialValues: {
             deposit: ''
@@ -58,21 +56,26 @@ const ClubDepositFundsPage = () => {
 
     const {config} = usePrepareSendTransaction({
         request: {
-            to: safe.getAddress(),
+            to: safe?.getAddress(),
             value: formik.values.deposit
         }
     });
 
-    const {sendTransactionAsync, isSuccess, isLoading} = useSendTransaction(config);
+    const {sendTransactionAsync, isLoading} = useSendTransaction(config);
+
+    const showMessage = (message, options) => {
+        enqueueSnackbar(message, options);
+    }
 
     const handleValidatePost = async () => {
         try {
             const txResult = await sendTransactionAsync();
-            if(txResult){
+            if (txResult) {
                 dispatch(CLUBS_ACTION_CREATORS.depositFunds({
                     club: clubID,
                     amount: web3.utils.fromWei(`${formik.values.deposit}`, 'ether'),
-                    address: wallet.accounts[0].address
+                    address: wallet.accounts[0].address,
+                    showMessage
                 }));
             }
         } catch (e) {
@@ -80,12 +83,6 @@ const ClubDepositFundsPage = () => {
             enqueueSnackbar(e.message, {variant: 'error'});
         }
     }
-
-    useEffect(() => {
-        if (isSuccess) {
-
-        }
-    }, [clubID, formik.values.deposit, isSuccess, wallet.accounts]);
 
     return (
         <AuthLayout>
@@ -183,6 +180,7 @@ const ClubDepositFundsPage = () => {
                                 <Grid container={true} justifyContent="center">
                                     <Grid item={true} xs={12} md={6}>
                                         <Button
+                                            onClick={handleValidatePost}
                                             sx={{
                                                 textTransform: 'capitalize',
                                                 py: 1.2

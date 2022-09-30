@@ -23,8 +23,8 @@ const addMember = createAsyncThunk(
             showMessage(response.data.message, {variant: 'success'});
             return response.data;
         } catch (e) {
-            const {message} = e.response.data;
-            showMessage(message, {variant: 'success'});
+            const {message} = e.response.error;
+            showMessage(message, {variant: 'error'});
             return thunkAPI.rejectWithValue(message);
         }
     });
@@ -32,11 +32,13 @@ const addMember = createAsyncThunk(
 
 const depositFunds = createAsyncThunk(
     'clubs/depositFunds',
-    async ({address, club, amount}, thunkAPI) => {
+    async ({address, club, amount, showMessage}, thunkAPI) => {
         try {
             const response = await CLUBS_API.depositFunds(address, club, amount);
+            showMessage(response.data.message, {variant: 'success'});
             return response.data;
         } catch (e) {
+            showMessage(e.response.error.message, {variant: 'error'});
             return thunkAPI.rejectWithValue(e.response.error.message);
         }
     });

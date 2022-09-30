@@ -21,8 +21,7 @@ const UserInvitationClubHub = () => {
                 {club?.name} club hub
             </Typography>
             <Divider variant="fullWidth" sx={{my: 2}} light={true}/>
-            <CardContent sx={{paddingX: 5}}>
-
+            <CardContent>
                 <Grid sx={{mb: 2}} container={true} justifyContent="space-between" alignItems="center" spacing={2}>
                     <Grid item={true} xs={12} md="auto">
                         <Typography sx={{color: 'text.secondary'}} variant="body2">
@@ -88,8 +87,8 @@ const UserInvitationClubHub = () => {
                         </Typography>
                     </Grid>
                 </Grid>
-                <Grid container={true} justifyContent="space-between" alignItems="center" spacing={2}>
-                    <Grid item={true} xs={12} md="auto">
+                <Grid container={true} justifyContent="center" alignItems="center" spacing={2}>
+                    <Grid item={true} xs={12} md={5}>
                         <Link to={`/clubs/${club?._id}`} style={{textDecoration: 'none'}}>
                             <Button
                                 sx={{
@@ -100,7 +99,7 @@ const UserInvitationClubHub = () => {
                                 fullWidth={true}
                                 variant="contained"
                                 disableElevation={true}
-                                size="small">
+                                size="large">
                                 Portfolio
                             </Button>
                         </Link>

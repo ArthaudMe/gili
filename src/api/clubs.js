@@ -49,8 +49,8 @@ const joinClub = (club, data) => {
 const depositFunds = (address, club, amount) => {
     return axios({
         method: 'PUT',
-        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${club}/deposit`,
-        data: {amount}
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs/${club}/funds/deposit`,
+        data: {amount, club, address}
     })
 }
 

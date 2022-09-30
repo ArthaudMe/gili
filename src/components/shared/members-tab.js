@@ -10,8 +10,6 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
-import Members from "./members";
-import Admins from "./admins";
 import React from "react";
 
 const MembersTab = ({members}) => {
@@ -46,7 +44,14 @@ const MembersTab = ({members}) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <Admins admins={filterByRole(members, 'Admin')}/>
+                            {filterByRole(members, 'Admin').map(admin => {
+                                return (
+                                    <TableRow key={admin._id} hover={true}>
+                                        <TableCell>{admin.address}</TableCell>
+                                        <TableCell align="center">{admin.ownership}%</TableCell>
+                                    </TableRow>
+                                )
+                            })}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -92,7 +97,14 @@ const MembersTab = ({members}) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <Members members={filterByRole(members, 'Member')}/>
+                            {filterByRole(members, 'Member').map(member => {
+                                return (
+                                    <TableRow key={member._id} hover={true}>
+                                        <TableCell>{member.address}</TableCell>
+                                        <TableCell align="center">{member.ownership}%</TableCell>
+                                    </TableRow>
+                                )
+                            })}
                         </TableBody>
                     </Table>
                 </TableContainer>

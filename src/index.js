@@ -17,6 +17,8 @@ import {SnackbarProvider} from "notistack";
 import SafeFactoryProvider from "./hooks/use-safe-factory";
 import {chain, configureChains, createClient, WagmiConfig} from "wagmi";
 import {publicProvider} from "wagmi/providers/public";
+import {InjectedConnector} from "wagmi/connectors/injected";
+import {MetaMaskConnector} from "wagmi/connectors/metaMask";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -91,12 +93,16 @@ const web3Onboard = init({
 const {provider, webSocketProvider} = configureChains(
     [chain.polygon, chain.rinkeby, chain.ropsten, chain.kovan, chain.mainnet, chain.goerli, chain.localhost],
     [publicProvider()]
-)
+);
+
+const injectorConnector = new InjectedConnector();
+const metaMaskConnector = new MetaMaskConnector();
 
 const client = createClient({
     autoConnect: true,
     provider,
-    webSocketProvider
+    webSocketProvider,
+    connectors: [injectorConnector, metaMaskConnector]
 });
 
 root.render(

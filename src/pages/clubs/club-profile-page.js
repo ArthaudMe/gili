@@ -29,6 +29,7 @@ import {MEMBERS_ACTION_CREATORS, selectMembers} from "../../redux/features/membe
 import {UTILS} from "../../utils/utils";
 import {useConnectWallet} from "@web3-onboard/react";
 import Activity from "../../components/shared/activity";
+import {useSafeFactory} from "../../hooks/use-safe-factory";
 
 const ClubProfilePage = () => {
 
@@ -40,6 +41,8 @@ const ClubProfilePage = () => {
     const {collectibles} = useSelector(selectCollectibles);
     const [{wallet}] = useConnectWallet();
     const dispatch = useDispatch();
+
+    const {connectSafe} = useSafeFactory();
 
     const {clubID} = useParams();
     const [index, setIndex] = useState("assets");
@@ -81,6 +84,15 @@ const ClubProfilePage = () => {
     useEffect(() => {
         dispatch(MEMBERS_ACTION_CREATORS.getCurrentMember({club: clubID, member: wallet.accounts[0].address}));
     }, [clubID, dispatch, wallet.accounts]);
+
+    useEffect(() => {
+        const connect = async (safeAddress) => {
+            await connectSafe(safeAddress);
+        }
+        if(club){
+            connect(club.safeAddress).then(() => console.log('connecting'));
+        }
+    }, [club]);
 
     return (
         <AuthLayout>
