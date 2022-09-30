@@ -27,7 +27,7 @@ const SafeForm = () => {
             if (wallet) {
                 await initializeFactory(wallet.accounts[0].address);
                 wagmiConnect.connect({connector: wagmiConnect.connectors[0]});
-                dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+                // dispatch(CREATE_CLUB_ACTION_CREATORS.next());
             }
         }
         init().then();
@@ -70,7 +70,7 @@ const SafeForm = () => {
                                 variant="text"
                                 startIcon={<img src={personalWalletIcon} alt="" style={{width: 30, height: 30}}/>}
                                 fullWidth={true}
-                                size="small">
+                                size="large">
                                 Connect your personal wallet
                             </Button>
                         </Grid>
@@ -81,16 +81,29 @@ const SafeForm = () => {
                                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                                     textTransform: 'capitalize',
                                     padding: 2,
-                                    mb: 4,
+                                    mb: 2,
                                     color: 'white',
                                     justifyContent: 'flex-start'
                                 }}
                                 startIcon={<img src={newWalletIcon} alt="" style={{width: 30, height: 30}}/>}
                                 fullWidth={true}
-                                size="small">
+                                size="large">
                                 Create a new wallet
                             </Button>
                         </Grid>
+                        {wallet && (
+                            <Grid item={true} xs={12} md={8}>
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={() => dispatch(CREATE_CLUB_ACTION_CREATORS.next())}
+                                    sx={{textTransform: 'capitalize', mb: 4}}
+                                    fullWidth={true}
+                                    size="large">
+                                    Next
+                                </Button>
+                            </Grid>
+                        )}
                     </Grid>
 
                     <Button

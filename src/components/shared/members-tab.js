@@ -48,7 +48,7 @@ const MembersTab = ({members}) => {
                                 return (
                                     <TableRow key={admin._id} hover={true}>
                                         <TableCell>{admin.address}</TableCell>
-                                        <TableCell align="center">{admin.ownership}%</TableCell>
+                                        <TableCell align="center">{Number.parseFloat(`${admin.ownership}`).toFixed(1)}%</TableCell>
                                     </TableRow>
                                 )
                             })}
@@ -101,7 +101,7 @@ const MembersTab = ({members}) => {
                                 return (
                                     <TableRow key={member._id} hover={true}>
                                         <TableCell>{member.address}</TableCell>
-                                        <TableCell align="center">{member.ownership}%</TableCell>
+                                        <TableCell align="center">{Number.parseFloat(`${member.ownership}`).toFixed(1)}%</TableCell>
                                     </TableRow>
                                 )
                             })}

@@ -21,7 +21,7 @@ const darkTheme = createTheme({
         fontFamily: 'Inter'
     },
     shape: {
-        borderRadius: 8
+        borderRadius: 32
     }
 });
 

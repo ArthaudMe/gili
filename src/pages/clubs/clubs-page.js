@@ -23,13 +23,15 @@ import {
 } from "@mui/material";
 import {useConnectWallet} from "@web3-onboard/react";
 import {Link} from "react-router-dom";
+import {useSnackbar} from "notistack";
 
 const ClubsPage = () => {
     const {clubs, loading, error} = useSelector(selectClubs);
     const [tab, setTab] = useState('admin');
     const [memberClubs, setMemberClubs] = useState([]);
     const [adminClubs, setAdminClubs] = useState([]);
-    const [{wallet}] = useConnectWallet();
+    const [{wallet}, connect] = useConnectWallet();
+    const {enqueueSnackbar} = useSnackbar();
 
     const dispatch = useDispatch();
 
@@ -68,6 +70,15 @@ const ClubsPage = () => {
         });
         return ownership;
     }
+
+    useEffect(() => {
+        const connectWallet = async () => {
+            await connect();
+        }
+        if(!wallet){
+            connectWallet().then(() => enqueueSnackbar('Connected to wallet', {variant: 'success'}))
+        }
+    }, [wallet]);
 
     return (
         <AuthLayout>
