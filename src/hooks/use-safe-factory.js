@@ -69,7 +69,7 @@ const SafeFactoryProvider = ({children}) => {
             setSafe(safe);
             return safe;
         } catch (e) {
-            console.log(e.message, 'error use safe factory');
+            console.log(e.message, 'error from deploy safe');
             setLoading(false);
         }
     }, [ownerAddress, safeFactory]);
@@ -90,7 +90,7 @@ const SafeFactoryProvider = ({children}) => {
             setLoading(false);
         } catch (e) {
             setError(e.message);
-            console.log(e.message, 'connect safe error')
+            console.log(e.message, 'from connect safe')
             setLoading(false);
         }
     }, [signer]);

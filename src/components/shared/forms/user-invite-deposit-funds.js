@@ -49,7 +49,8 @@ const UserInviteDepositFunds = ({invitationID}) => {
 
     useEffect(() => {
         wagmiConnect.connect({connector: wagmiConnect.connectors[0]});
-    }, [wagmiConnect]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const {config} = usePrepareSendTransaction({
         request: {
@@ -103,8 +104,9 @@ const UserInviteDepositFunds = ({invitationID}) => {
         const connect = async () => {
             await connectSafe(safeAddress, network);
         }
-        connect().then(() => console.log('connecting'));
-    }, [connectSafe, network, safeAddress]);
+        connect().then(() => console.log('connecting to safe'));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Card
