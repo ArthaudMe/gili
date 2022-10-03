@@ -131,7 +131,6 @@ const ClubInfoForm = () => {
                                         error={Boolean(formik.touched.currency && formik.errors.currency)}
                                         placeholder="Fundraising Currency"
                                         name="currency">
-                                        <MenuItem value="Matic">Matic</MenuItem>
                                         <MenuItem value="Ethereum">Ethereum</MenuItem>
                                     </Select>
                                     {Boolean(formik.touched.currency && formik.errors.currency) && (

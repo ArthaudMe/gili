@@ -20,7 +20,7 @@ const Assets = ({tokens, collectibles, investments}) => {
     return (
         <Stack direction="column" spacing={4}>
             <Box>
-                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
+                <Typography variant="body1" sx={{color: 'text.primary', mb: 2}}>
                     Tokens
                 </Typography>
                 <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>
@@ -53,7 +53,7 @@ const Assets = ({tokens, collectibles, investments}) => {
                 )}
             </Box>
             <Box>
-                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
+                <Typography variant="body1" sx={{color: 'text.primary', mb: 2}}>
                     Investments
                 </Typography>
                 <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>
@@ -86,7 +86,7 @@ const Assets = ({tokens, collectibles, investments}) => {
                 )}
             </Box>
             <Box>
-                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
+                <Typography variant="body1" sx={{color: 'text.primary', mb: 2}}>
                     Collectibles
                 </Typography>
                 <TableContainer sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}} component={Paper} elevation={1}>

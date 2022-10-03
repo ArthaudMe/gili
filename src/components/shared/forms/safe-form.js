@@ -27,7 +27,7 @@ const SafeForm = () => {
             if (wallet) {
                 await initializeFactory(wallet.accounts[0].address);
                 wagmiConnect.connect({connector: wagmiConnect.connectors[0]});
-                // dispatch(CREATE_CLUB_ACTION_CREATORS.next());
+                dispatch(CREATE_CLUB_ACTION_CREATORS.next());
             }
         }
         init().then();
@@ -91,19 +91,6 @@ const SafeForm = () => {
                                 Create a new wallet
                             </Button>
                         </Grid>
-                        {wallet && (
-                            <Grid item={true} xs={12} md={8}>
-                                <Button
-                                    variant="outlined"
-                                    color="secondary"
-                                    onClick={() => dispatch(CREATE_CLUB_ACTION_CREATORS.next())}
-                                    sx={{textTransform: 'capitalize', mb: 4}}
-                                    fullWidth={true}
-                                    size="large">
-                                    Next
-                                </Button>
-                            </Grid>
-                        )}
                     </Grid>
 
                     <Button

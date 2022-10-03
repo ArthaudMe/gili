@@ -25,8 +25,7 @@ const MembersTab = ({members}) => {
                     variant="body1"
                     sx={{
                         color: 'text.primary',
-                        mb: 2,
-                        textDecoration: 'underline'
+                        mb: 2
                     }}>
                     Admins
                 </Typography>
@@ -78,8 +77,7 @@ const MembersTab = ({members}) => {
                     variant="body1"
                     sx={{
                         color: 'text.primary',
-                        mb: 2,
-                        textDecoration: 'underline'
+                        mb: 2
                     }}>
                     Members
                 </Typography>

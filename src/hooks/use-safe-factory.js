@@ -3,6 +3,9 @@ import Safe, {SafeFactory} from "@gnosis.pm/safe-core-sdk";
 import {Buffer} from 'buffer';
 import EthersAdapter from "@gnosis.pm/safe-ethers-lib";
 import {ethers} from "ethers";
+import SafeServiceClient from "@gnosis.pm/safe-service-client";
+import {UTILS} from "../utils/utils";
+import {getProxyFactoryDeployment} from "@gnosis.pm/safe-deployments";
 
 window.Buffer = window.Buffer || Buffer;
 
@@ -21,8 +24,6 @@ const SafeFactoryProvider = ({children}) => {
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const ethAdapter = new EthersAdapter({ethers, signer});
 
     const initializeFactory = useCallback(async (ownerAddress) => {
         try {
@@ -34,6 +35,7 @@ const SafeFactoryProvider = ({children}) => {
             setOwnerAddress(ownerAddress);
             setLoading(true);
             setConnected(false);
+            const ethAdapter = new EthersAdapter({ethers, signer});
             const safeFactory = await SafeFactory.create({ethAdapter});
             setSafeFactory(safeFactory);
             const safeDeploymentConfig = {
@@ -50,7 +52,7 @@ const SafeFactoryProvider = ({children}) => {
         } catch (e) {
             setError(e.message);
         }
-    }, [ethAdapter]);
+    }, [signer]);
 
     const deploySafe = useCallback(async () => {
         try {
@@ -72,11 +74,17 @@ const SafeFactoryProvider = ({children}) => {
         }
     }, [ownerAddress, safeFactory]);
 
-    const connectSafe = useCallback(async (safeAddress) => {
+    const connectSafe = useCallback(async (safeAddress, network) => {
         try {
             setLoading(true);
             setConnected(false);
-            const safe = await Safe.create({ethAdapter, safeAddress});
+            const contractNetworks = {
+                [network]: {
+                    safeProxyFactoryAddress: getProxyFactoryDeployment({network}).defaultAddress,
+                }
+            }
+            const ethAdapter = new EthersAdapter({ethers, signer});
+            const safe = await Safe.create({ethAdapter, safeAddress, contractNetworks, isL1SafeMasterCopy: true});
             setSafe(safe);
             setConnected(true);
             setLoading(false);
@@ -85,9 +93,32 @@ const SafeFactoryProvider = ({children}) => {
             console.log(e.message, 'connect safe error')
             setLoading(false);
         }
-    }, [ethAdapter]);
+    }, [signer]);
 
-    const contextValue = useMemo(() => ({
+    const getSafeServiceClient = useCallback(async (network) => {
+        const ethAdapter = new EthersAdapter({ethers, signer});
+        const txServiceUrl = UTILS.getNetworkById(network).txServiceURL;
+        return new SafeServiceClient({txServiceUrl, ethAdapter});
+    }, [signer]);
+
+    const contextValue = useMemo(() => {
+
+        return {
+            getSafeServiceClient,
+            initializeFactory,
+            safeAddress,
+            deploySafe,
+            error,
+            connected,
+            loading,
+            safeFactory,
+            safe,
+            txHash,
+            setLoading,
+            connectSafe
+        }
+    }, [
+        getSafeServiceClient,
         initializeFactory,
         safeAddress,
         deploySafe,
@@ -99,7 +130,7 @@ const SafeFactoryProvider = ({children}) => {
         txHash,
         setLoading,
         connectSafe
-    }), [initializeFactory, safeAddress, deploySafe, error, connected, loading, safeFactory, safe, txHash, setLoading, connectSafe]);
+    ]);
 
     return (
         <SafeFactoryContext.Provider value={contextValue}>

@@ -34,11 +34,22 @@ const ClubsPage = () => {
     const {enqueueSnackbar} = useSnackbar();
 
     const dispatch = useDispatch();
+    useEffect(() => {
+        const connectWallet = async () => {
+            await connect();
+        }
+        if (!wallet) {
+            connectWallet().then(() => enqueueSnackbar('Connected to wallet', {variant: 'success'}))
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [wallet]);
 
     useEffect(() => {
-        dispatch(CLUBS_ACTION_CREATORS.getClubs({address: wallet.accounts[0].address}));
+        if(wallet){
+            dispatch(CLUBS_ACTION_CREATORS.getClubs({address: wallet.accounts[0].address}));
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [wallet]);
 
     useEffect(() => {
         const memberClubs = [];
@@ -47,7 +58,7 @@ const ClubsPage = () => {
         if (clubs) {
             clubs.forEach(club => {
                 club.members.forEach(member => {
-                    if (member.address === wallet.accounts[0].address) {
+                    if (member?.address === wallet?.accounts[0]?.address) {
                         if (member.role === 'Member') {
                             memberClubs.push(club);
                         } else if (member.role === 'Admin') {
@@ -59,6 +70,7 @@ const ClubsPage = () => {
         }
         setMemberClubs(memberClubs);
         setAdminClubs(adminClubs);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [clubs]);
 
     const getOwnership = members => {
@@ -70,15 +82,6 @@ const ClubsPage = () => {
         });
         return ownership;
     }
-
-    useEffect(() => {
-        const connectWallet = async () => {
-            await connect();
-        }
-        if(!wallet){
-            connectWallet().then(() => enqueueSnackbar('Connected to wallet', {variant: 'success'}))
-        }
-    }, [wallet]);
 
     return (
         <AuthLayout>
@@ -210,9 +213,9 @@ const ClubsPage = () => {
                                                                 </Link>
                                                             </TableCell>
                                                             <TableCell>{club.status}</TableCell>
-                                                            <TableCell>{club.treasury}</TableCell>
+                                                            <TableCell>{Number.parseFloat(`${club.treasury}`).toFixed(1)}</TableCell>
                                                             <TableCell>{club.members.length}</TableCell>
-                                                            <TableCell>{getOwnership(club.members)}</TableCell>
+                                                            <TableCell>{Number.parseFloat(`${getOwnership(club.members)}`).toFixed(1)}%</TableCell>
                                                         </TableRow>
                                                     )
                                                 })}

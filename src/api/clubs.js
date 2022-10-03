@@ -62,4 +62,11 @@ const addMember = async (club, member) => {
     });
 }
 
+const getClubsByQuery = (query) => {
+    return axios({
+        method: 'GET',
+        url: `${CONSTANTS.BASE_SERVER_URL}/user/clubs?query=${query}`
+    });
+}
+
 export const CLUBS_API = {getClubs, createClub, updateClub, getClub, joinClub, getClubBySafe, depositFunds, addMember};

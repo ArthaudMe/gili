@@ -1,5 +1,5 @@
 import AuthLayout from "../../components/layout/auth-layout";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Alert,
     AlertTitle,
@@ -23,20 +23,27 @@ import {CLUBS_ACTION_CREATORS, selectClubs} from "../../redux/features/clubs/clu
 import {useParams} from "react-router";
 import {useConnectWallet} from "@web3-onboard/react";
 import web3 from "web3";
-import {usePrepareSendTransaction, useSendTransaction} from "wagmi";
+import {useAccount, useConnect, usePrepareSendTransaction, useSendTransaction} from "wagmi";
 import {useSnackbar} from "notistack";
 
 
 const ClubDepositFundsPage = () => {
 
     const navigate = useNavigate();
-
+    const {connector} = useAccount();
     const {clubID} = useParams();
     const {safe} = useSafeFactory();
     const {club, loading, message, error} = useSelector(selectClubs);
     const [{wallet}] = useConnectWallet();
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
+    const {connect} = useConnect({})
+
+
+    useEffect(() => {
+        connect({connector});
+    } ,[]);
+
 
     const [amount, setAmount] = useState('0');
     const handleAmountChange = event => {

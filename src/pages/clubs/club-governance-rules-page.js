@@ -1,5 +1,5 @@
 import AuthLayout from "../../components/layout/auth-layout";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {
     Alert,
     AlertTitle,
@@ -26,6 +26,7 @@ import * as yup from "yup";
 import AddOwnerDialog from "../../components/shared/dialogs/add-owner-dialog";
 import {useSnackbar} from "notistack";
 import AddMemberDialog from "../../components/shared/dialogs/add-member-dialog";
+import {useNetwork} from "wagmi";
 
 const ClubGovernanceRulesPage = () => {
 
@@ -33,11 +34,14 @@ const ClubGovernanceRulesPage = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openMemberDialog, setOpenMemberDialog] = useState(false);
     const [threshold, setThreshold] = useState(1);
-    const {safe} = useSafeFactory();
+    const {safe, getSafeServiceClient} = useSafeFactory();
     const {clubID} = useParams();
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
     const {gas} = useSelector(selectCreateClub);
+    const {chain} = useNetwork();
+    const [safeServiceClient, setSafeServiceClient] = useState(null);
+
 
     useEffect(() => {
         const getThreshold = async () => {
@@ -90,6 +94,21 @@ const ClubGovernanceRulesPage = () => {
             threshold
         }
     });
+
+    const initSafeServiceClient = useCallback(async (network) => {
+        try {
+            const safeServiceClient = await getSafeServiceClient(network);
+            setSafeServiceClient(safeServiceClient);
+        }catch (e) {
+            console.log(e.message);
+        }
+    }, [getSafeServiceClient]);
+
+    useEffect(() => {
+        if(chain){
+            initSafeServiceClient(chain.id).then(() => enqueueSnackbar('Connected', {variant: 'success'}));
+        }
+    }, [chain]);
 
     return (
         <AuthLayout>

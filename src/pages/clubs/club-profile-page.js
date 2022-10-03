@@ -30,6 +30,7 @@ import {UTILS} from "../../utils/utils";
 import {useConnectWallet} from "@web3-onboard/react";
 import Activity from "../../components/shared/activity";
 import {useSafeFactory} from "../../hooks/use-safe-factory";
+import {useSnackbar} from "notistack";
 
 const ClubProfilePage = () => {
 
@@ -39,8 +40,9 @@ const ClubProfilePage = () => {
     const {tokens} = useSelector(selectTokens);
     const {investments} = useSelector(selectInvestments);
     const {collectibles} = useSelector(selectCollectibles);
-    const [{wallet}] = useConnectWallet();
+    const [{wallet}, connect] = useConnectWallet();
     const dispatch = useDispatch();
+    const {enqueueSnackbar} = useSnackbar();
 
     const {connectSafe} = useSafeFactory();
 
@@ -72,6 +74,19 @@ const ClubProfilePage = () => {
     }
 
     useEffect(() => {
+        const connectWallet = async () => {
+            try {
+                await connect();
+            } catch (e) {
+
+            }
+        }
+        if (!wallet) {
+            connectWallet().then(() => enqueueSnackbar('Connected to wallet', {variant: 'success'}));
+        }
+    }, [wallet]);
+
+    useEffect(() => {
         dispatch(CLUBS_ACTION_CREATORS.getClub({clubID}));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [clubID]);
@@ -82,16 +97,19 @@ const ClubProfilePage = () => {
     }, [clubID]);
 
     useEffect(() => {
-        dispatch(MEMBERS_ACTION_CREATORS.getCurrentMember({club: clubID, member: wallet.accounts[0].address}));
-    }, [clubID, dispatch, wallet.accounts]);
+        if (wallet) {
+            dispatch(MEMBERS_ACTION_CREATORS.getCurrentMember({club: clubID, member: wallet.accounts[0].address}));
+        }
+    }, [clubID, dispatch, wallet]);
 
     useEffect(() => {
-        const connect = async (safeAddress) => {
-            await connectSafe(safeAddress);
+        const connect = async (safeAddress, network) => {
+            await connectSafe(safeAddress, network);
         }
-        if(club){
-            connect(club.safeAddress).then(() => console.log('connecting'));
+        if (club) {
+            connect(club.safeAddress, club.network).then(() => console.log('connecting'));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [club]);
 
     return (
@@ -108,6 +126,8 @@ const ClubProfilePage = () => {
                     )}
                     <Box sx={{mb: 2}}>
                         <Typography align="center" variant="h6" sx={{mb: 4}}>{`${club?.name} portfolio`}</Typography>
+
+                        <Typography variant="body2" sx={{mb: 1}}>{member?.role}</Typography>
                         <Card sx={{backgroundColor: 'rgba(255, 255, 255, 0.10)', backdropFilter: 'blur(5px)'}}
                               elevation={1}>
                             <CardContent>
@@ -119,7 +139,7 @@ const ClubProfilePage = () => {
                                     </Grid>
                                     <Grid item={true} xs={12} md="auto">
                                         <Typography variant="body1" sx={{color: 'text.primary'}}>
-                                            {member?.stake} {club && UTILS.selectCurrency(club.currency)} ({member?.ownership}%
+                                            {Number.parseFloat(`${member?.stake}`).toFixed(1)} {club && UTILS.selectCurrency(club.currency)} ({Number.parseFloat(`${member?.ownership}`).toFixed(1)})%
                                             of circulating supply)
                                         </Typography>
                                     </Grid>
@@ -133,7 +153,8 @@ const ClubProfilePage = () => {
                                     </Grid>
                                     <Grid item={true} xs={12} md="auto">
                                         <Typography variant="body1" sx={{color: 'text.primary'}}>
-                                            {club?.minted}% of {club?.token} total supply
+                                            {Number.parseFloat(`${club?.minted}`).toFixed(1)}% of {club?.token} total
+                                            supply
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -159,7 +180,7 @@ const ClubProfilePage = () => {
                                     </Grid>
                                     <Grid item={true} xs={12} md="auto">
                                         <Typography variant="body1" sx={{color: 'text.primary'}}>
-                                            {`${club?.treasury} ${club && UTILS.selectCurrency(club?.currency)}`}
+                                            {Number.parseFloat(`${club?.treasury}`).toFixed(1)} {club && UTILS.selectCurrency(club?.currency)}
                                         </Typography>
                                     </Grid>
                                 </Grid>

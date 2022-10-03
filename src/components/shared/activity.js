@@ -22,7 +22,9 @@ const Activity = ({transactions}) => {
     return (
         <Stack direction="column" spacing={4}>
             <Box>
-                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
+                <Typography
+                    variant="body1"
+                    sx={{color: 'text.primary', mb: 2}}>
                     Pending transactions
                 </Typography>
                 <TableContainer
@@ -61,7 +63,7 @@ const Activity = ({transactions}) => {
                 )}
             </Box>
             <Box>
-                <Typography variant="body1" sx={{color: 'text.primary', mb: 2, textDecoration: 'underline'}}>
+                <Typography variant="body1" sx={{color: 'text.primary', mb: 2}}>
                     Past transactions
                 </Typography>
                 <TableContainer

@@ -20,7 +20,7 @@ import {useConnectWallet} from "@web3-onboard/react";
 import {useSnackbar} from "notistack";
 import {useSearchParams} from "react-router-dom";
 import {useLocation} from "react-router";
-import {usePrepareSendTransaction, useSendTransaction} from "wagmi";
+import {useConnect, usePrepareSendTransaction, useSendTransaction} from "wagmi";
 import web3 from "web3";
 
 const UserInviteDepositFunds = ({invitationID}) => {
@@ -36,6 +36,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
     const {loading, connectSafe, error} = useSafeFactory();
     const [{wallet}, connect] = useConnectWallet();
     const {enqueueSnackbar} = useSnackbar();
+    const wagmiConnect = useConnect();
 
     const [amount, setAmount] = useState('0');
     const handleAmountChange = event => {
@@ -45,6 +46,10 @@ const UserInviteDepositFunds = ({invitationID}) => {
         }
         setAmount(event.target.value);
     }
+
+    useEffect(() => {
+        wagmiConnect.connect({connector: wagmiConnect.connectors[0]});
+    }, [wagmiConnect]);
 
     const {config} = usePrepareSendTransaction({
         request: {
@@ -84,12 +89,14 @@ const UserInviteDepositFunds = ({invitationID}) => {
             await connect();
         }
         connectWallet().then();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         dispatch(INVITATIONS_ACTION_CREATORS.verifyInvitation(
             {invitation: invitationID})
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [invitationID]);
 
     useEffect(() => {
@@ -97,7 +104,7 @@ const UserInviteDepositFunds = ({invitationID}) => {
             await connectSafe(safeAddress, network);
         }
         connect().then(() => console.log('connecting'));
-    }, []);
+    }, [connectSafe, network, safeAddress]);
 
     return (
         <Card
