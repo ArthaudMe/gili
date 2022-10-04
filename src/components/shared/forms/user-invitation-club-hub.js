@@ -9,8 +9,6 @@ const UserInvitationClubHub = () => {
 
     const {club, member} = useSelector(selectClubs);
 
-    console.log(member, 'get current member');
-
     return (
         <Card
             sx={{

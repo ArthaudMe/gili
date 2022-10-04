@@ -28,17 +28,7 @@ const ClubInvitationPage = () => {
             <Box sx={{display: 'relative'}}>
                 <Box sx={{minHeight: '100vh', justifyContent: 'center', alignItems: 'center', py: {xs: 4, lg: 0}}}>
                     <Container maxWidth="lg">
-                        <Box
-                            sx={{
-                                minHeight: '100vh',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}>
-                            <Box>
-                                {renderForm(step)}
-                            </Box>
-                        </Box>
+                        {renderForm(step)}
                     </Container>
                 </Box>
             </Box>
