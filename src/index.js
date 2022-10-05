@@ -32,45 +32,9 @@ const web3Onboard = init({
     wallets: [walletConnect, injected, gnosis],
     chains: [
         {
-            id: '0x1',
-            token: 'ETH',
-            label: 'Ethereum',
-            rpcUrl: `https://mainnet.infura.io/v3/${INFURA_ID}`
-        },
-        {
-            id: '0x89',
-            token: 'MATIC',
-            label: 'Polygon',
-            rpcUrl: 'https://matic-mainnet.chainstacklabs.com'
-        },
-        {
-            label: 'Gnosis',
-            id: '0x64',
-            rpcUrl: `https://mainnet.infura.io/v3/7044fd6b60b94929a59819a4c6b1e82a`,
-            token: 'GNO'
-        },
-        {
-            label: 'Ethereum Ropsten  testnet',
-            id: '0x3',
-            rpcUrl: `https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
-            token: 'ETH'
-        },
-        {
             label: 'Ethereum Rinkbey  testnet',
             id: '0x4',
             rpcUrl: `https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
-            token: 'ETH'
-        },
-        {
-            label: 'Ethereum Goerli  testnet',
-            id: 420,
-            rpcUrl: `https://rpc.ankr.com/eth_goerli`,
-            token: 'ETH'
-        },
-        {
-            label: 'Ethereum Kovan testnet',
-            id: '0x6',
-            rpcUrl: `https://kovan.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
             token: 'ETH'
         }
     ],
@@ -91,12 +55,12 @@ const web3Onboard = init({
 });
 
 const {provider, webSocketProvider} = configureChains(
-    [chain.polygon, chain.rinkeby, chain.ropsten, chain.kovan, chain.mainnet, chain.goerli, chain.localhost],
+    [chain.rinkeby],
     [publicProvider()]
 );
 
-const injectorConnector = new InjectedConnector();
-const metaMaskConnector = new MetaMaskConnector();
+const injectorConnector = new InjectedConnector({chains: [chain.rinkeby]});
+const metaMaskConnector = new MetaMaskConnector({chains: [chain.rinkeby]});
 
 const client = createClient({
     autoConnect: true,
