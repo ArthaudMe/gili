@@ -32,9 +32,9 @@ const web3Onboard = init({
     wallets: [walletConnect, injected, gnosis],
     chains: [
         {
-            label: 'Ethereum Rinkbey  testnet',
-            id: '0x4',
-            rpcUrl: `https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
+            label: 'Ethereum Goerli Testnet',
+            id: '0x5',
+            rpcUrl: `https://www.ethercluster.com/goerli`,
             token: 'ETH'
         }
     ],
@@ -55,12 +55,12 @@ const web3Onboard = init({
 });
 
 const {provider, webSocketProvider} = configureChains(
-    [chain.rinkeby],
+    [chain.goerli],
     [publicProvider()]
 );
 
-const injectorConnector = new InjectedConnector({chains: [chain.rinkeby]});
-const metaMaskConnector = new MetaMaskConnector({chains: [chain.rinkeby]});
+const injectorConnector = new InjectedConnector({chains: [chain.goerli]});
+const metaMaskConnector = new MetaMaskConnector({chains: [chain.goerli]});
 
 const client = createClient({
     autoConnect: true,
